@@ -1,0 +1,9 @@
+*.png !text !filter !merge !diff
+*.jpg !text !filter !merge !diff
+*.fbx !text !filter !merge !diff
+*.mp3 !text !filter !merge !diff
+*.wav !text !filter !merge !diff
+*.mp4 !text !filter !merge !diff
+*.psd !text !filter !merge !diff
+*.tga !text !filter !merge !diff
+*.unitypackage !text !filter !merge !diff
