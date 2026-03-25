@@ -1,0 +1,29 @@
+using YamlDotNet.Core;
+using YamlDotNet.Core.Events;
+using YamlDotNet.Serialization;
+using Assets.Scripts.Yaml.CustomConverters;
+using YamlDotNet.Serialization.NamingConventions;
+
+namespace Assets.Scripts.Yaml
+{
+    public class YamlParser
+    {
+        public static ISerializer Serializer = new SerializerBuilder()
+            .WithNamingConvention(PascalCaseNamingConvention.Instance)
+            .WithTypeConverter(new Vector2Converter())
+            .WithTypeConverter(new Vector3Converter())
+            .WithTypeConverter(new Vector4Converter())
+            .WithTypeConverter(new CustomColorConverter())
+            .WithTypeConverter(new QuaternionConverter())
+            .Build();
+
+        public static IDeserializer Deserializer = new DeserializerBuilder()
+            .WithNamingConvention(PascalCaseNamingConvention.Instance)
+            .WithTypeConverter(new Vector2Converter())
+            .WithTypeConverter(new Vector3Converter())
+            .WithTypeConverter(new Vector4Converter())
+            .WithTypeConverter(new CustomColorConverter())
+            .WithTypeConverter(new QuaternionConverter())
+            .Build();
+    }
+}
