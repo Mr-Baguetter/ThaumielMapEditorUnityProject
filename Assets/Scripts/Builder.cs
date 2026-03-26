@@ -12,7 +12,7 @@ namespace Assets.Scripts
 {
     public class Builder : MonoBehaviour
     {
-        public static event Action OnBuild;
+        public static event Action? OnBuild;
 
         public void CompileData()
         {
@@ -30,7 +30,7 @@ namespace Assets.Scripts
             
             CompileAnimators(directoryPath, schematic);
             File.WriteAllText(Path.Combine(directoryPath, $"{name}.yml"), YamlParser.Serializer.Serialize(schematic));
-            OnBuild.Invoke();
+            OnBuild?.Invoke();
         }
 
         public List<YamlCustomObject> CompileObjects()
