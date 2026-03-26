@@ -88,6 +88,10 @@ namespace Assets.Scripts
                     case PickupObject:
                         block.Type = ObjectType.Pickup;
                         break;
+
+                    case TargetObject:
+                        block.Type = ObjectType.Target;
+                        break;
                 }
 
                 YamlCustomObject customObject = new()

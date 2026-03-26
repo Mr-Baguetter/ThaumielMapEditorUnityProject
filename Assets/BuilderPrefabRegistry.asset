@@ -43,6 +43,9 @@ MonoBehaviour:
   MedkitPrefab: {fileID: 4396330084524856915, guid: 92973fc86e6c2214ba25c7233af03adc, type: 3}
   AdrenalinePrefab: {fileID: 4396330084524856915, guid: b05a783e1271e0a43a08effb5af0e8be, type: 3}
   ExperimentalWeaponPrefab: {fileID: 0}
+  BinaryTargetPrefab: {fileID: 1293416695957104, guid: 48db979ebbd073540b1d48769da7f789, type: 3}
+  ClassDTargetPrefab: {fileID: 1794249146665082, guid: c8a8beff4c91afe49a733de9f7d2817f, type: 3}
+  SportTargetPrefab: {fileID: 1063572469519635, guid: 562b1806dd10b0441a0ee1489d8232f4, type: 3}
   TextToyPrefab: {fileID: 0}
   CapybaraPrefab: {fileID: 1405633505657105, guid: 2d19cdc4839fc2d4fbed55ef688e4e1e, type: 3}
   LightPrefab: {fileID: 2384682681152602343, guid: 32801e3b8b7d65e42b72f12653496d4a, type: 3}

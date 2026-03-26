@@ -67,7 +67,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b5c270f3cc7054045a1526b85d005eec, type: 2}
+  - {fileID: 2100000, guid: 37f3de7d1b4098346be0782ec794755b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -100,7 +100,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4558558686773751}
-  - component: {fileID: 6445942439450200835}
+  - component: {fileID: 8189073012354965400}
   m_Layer: 0
   m_Name: sportTargetPrefab
   m_TagString: Untagged
@@ -124,7 +124,7 @@ Transform:
   - {fileID: 4307580986542469}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -0, z: -0}
---- !u!114 &6445942439450200835
+--- !u!114 &8189073012354965400
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -133,7 +133,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1063572469519635}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e892c36c58db71448d7d1efeb4d45cd, type: 3}
+  m_Script: {fileID: 11500000, guid: 61eecc25284c175458f51219980d37ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Components.TargetObject
   <Static>k__BackingField: 0
@@ -838,6 +838,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -1220,7 +1221,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b5c270f3cc7054045a1526b85d005eec, type: 2}
+  - {fileID: 2100000, guid: 37f3de7d1b4098346be0782ec794755b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

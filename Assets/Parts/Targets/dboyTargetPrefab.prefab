@@ -394,6 +394,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -528,7 +529,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 30408ffcc4c63064bb01c62fa10ff5d8, type: 2}
+  - {fileID: 2100000, guid: 7ced5a9adc2a14c4bb9cfc29bcd45b7e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1144,7 +1145,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4748251453178713}
-  - component: {fileID: 504350376073316457}
+  - component: {fileID: 8586196681943408915}
   m_Layer: 0
   m_Name: dboyTargetPrefab
   m_TagString: Untagged
@@ -1168,7 +1169,7 @@ Transform:
   - {fileID: 4376256583295864}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -0, z: -0}
---- !u!114 &504350376073316457
+--- !u!114 &8586196681943408915
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1177,7 +1178,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1794249146665082}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e892c36c58db71448d7d1efeb4d45cd, type: 3}
+  m_Script: {fileID: 11500000, guid: 61eecc25284c175458f51219980d37ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Components.TargetObject
   <Static>k__BackingField: 0
