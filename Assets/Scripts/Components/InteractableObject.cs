@@ -1,5 +1,6 @@
 using UnityEngine;
 using Assets.Scripts.Enums;
+using System;
 
 namespace Assets.Scripts.Components
 {
@@ -43,6 +44,15 @@ namespace Assets.Scripts.Components
                     meshFilter.mesh = Resources.GetBuiltinResource<Mesh>("Capsule.fbx");
                     break;
             }
+        }
+
+        public override void Decompile(Transform root)
+        {
+            base.Decompile(root);
+
+            Shape = Properties.TryGetValue("Shape", out object shape) ? (ColliderShape)Enum.Parse(typeof(ColliderShape), shape.ToString()) : default;
+            Duration = Properties.TryGetValue("Duration", out object duration) ? (float)duration : default;
+            Locked = Properties.TryGetValue("Locked", out object locked) && (bool)locked;
         }
     }
 }

@@ -27,6 +27,16 @@ namespace Assets.Scripts.Components
                 ["IsInfinite"] = IsInfinite
             };
         }
+
+        public override void Decompile(Transform root)
+        {
+            base.Decompile(root);
+
+            ItemToSpawn = Properties.TryGetValue("ItemToSpawn", out object itemToSpawn) ? (ItemType)System.Enum.Parse(typeof(ItemType), itemToSpawn.ToString()) : default;
+            SpawnPercentage = Properties.TryGetValue("SpawnPercentage", out object spawnPercentage) ? (float)spawnPercentage : default;
+            MaxAmount = Properties.TryGetValue("MaxAmount", out object maxAmount) ? (uint)maxAmount : default;
+            IsInfinite = Properties.TryGetValue("IsInfinite", out object isInfinite) && (bool)isInfinite;
+        }
     }
 }
 

@@ -76,5 +76,17 @@ namespace Assets.Scripts.Components
             else
                 _textMesh.SetText(TextFormat);
         }
+
+        public override void Decompile(Transform root)
+        {
+            base.Decompile(root);
+
+            DisplaySize = Properties.TryGetValue("DisplaySize", out object displaySize) ? (Vector2)displaySize : default;
+            TextFormat = Properties.TryGetValue("TextFormat", out object textFormat) ? textFormat.ToString() : string.Empty;
+            Arguments = Properties.TryGetValue("Arguments", out object arguments) && arguments is List<string> argsList ? argsList : new List<string>();
+
+            ApplyDisplaySize();
+            RefreshText();
+        }
     }
 }

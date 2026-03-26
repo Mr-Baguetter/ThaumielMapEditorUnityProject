@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Assets.Scripts.Components;
 using Assets.Scripts.Enums;
+using Assets.Scripts.Areas;
 using Assets.Scripts.Yaml;
 using UnityEditor;
 using UnityEngine;
@@ -11,19 +12,25 @@ namespace Assets.Scripts
 {
     public class Builder : MonoBehaviour
     {
+        public static event Action OnBuild;
+
         public void CompileData()
         {
             SetupOutput(out string directoryPath);
 
             YamlSchematic schematic = new()
             {
+                RootObjectId = transform.gameObject.GetInstanceID(),
                 FileName = name.Replace(' ', '_'),
                 Rotation = transform.rotation.eulerAngles,
                 Scale = transform.localScale,
-                Objects = CompileObjects()
+                Objects = CompileObjects(),
+                Areas = CompileAreas()
             };
+            
             CompileAnimators(directoryPath, schematic);
             File.WriteAllText(Path.Combine(directoryPath, $"{name}.yml"), YamlParser.Serializer.Serialize(schematic));
+            OnBuild.Invoke();
         }
 
         public List<YamlCustomObject> CompileObjects()
@@ -85,6 +92,8 @@ namespace Assets.Scripts
 
                 YamlCustomObject customObject = new()
                 {
+                    ObjectId = block.ObjectId,
+                    ParentId = block.ParentId,
                     Name = block.Name,
                     Position = block.Position,
                     Rotation = block.Rotation,
@@ -99,6 +108,33 @@ namespace Assets.Scripts
             }
 
             return customObjects;
+        }
+
+        private List<YamlArea> CompileAreas()
+        {
+            List<YamlArea> areas = new();
+            foreach (AreaBase area in GetComponentsInChildren<AreaBase>())
+            {
+                switch (area)
+                {
+                    case CullableArea:
+                        area.Type = AreaType.CullingArea;
+                        break;
+                }
+
+                YamlArea yaml = new()
+                {
+                    ObjectId = area.ObjectId,
+                    ParentId = area.ParentId,
+                    SchematicName = name.Replace(' ', '_'),
+                    AreaType = area.Type,
+                    Values = area.Properties
+                };
+
+                areas.Add(yaml);
+            }
+
+            return areas;
         }
 
         private void CompileAnimators(string directoryPath, YamlSchematic schematic)

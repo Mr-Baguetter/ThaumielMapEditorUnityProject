@@ -14,5 +14,7 @@ namespace Assets.Scripts.Enums
         Camera = 10,
         Waypoint = 11,
         Locker = 12,
+        Target = 13,
+        Schematic = 14,
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using Assets.Scripts.Enums;
 using UnityEngine;
 
@@ -16,6 +17,13 @@ namespace Assets.Scripts.Components
             {
                 ["ClutterType"] = ClutterType,
             };
+        }
+
+        public override void Decompile(Transform root)
+        {
+            base.Decompile(root);
+
+            ClutterType = Properties.TryGetValue("ClutterType", out object clutterType) ? (ClutterType)Enum.Parse(typeof(ClutterType), clutterType.ToString()) : default;
         }
     }
 }

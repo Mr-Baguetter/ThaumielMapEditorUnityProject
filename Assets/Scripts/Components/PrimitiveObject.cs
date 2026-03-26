@@ -1,4 +1,6 @@
+using System;
 using Assets.Scripts.Enums;
+using Assets.Scripts.Yaml;
 using UnityEngine;
 
 namespace Assets.Scripts.Components
@@ -13,6 +15,9 @@ namespace Assets.Scripts.Components
 
         [field: SerializeField]
         public PrimitiveFlags PrimitiveFlags { get; set; }
+
+        private Material _materialInstance;
+        private MeshRenderer _meshRenderer;
 
         private void OnValidate()
         {
@@ -32,10 +37,25 @@ namespace Assets.Scripts.Components
 
         private void ApplyColor()
         {
-            if (!TryGetComponent<MeshRenderer>(out var renderer))
+            if (_meshRenderer == null && !TryGetComponent(out _meshRenderer))
                 return;
 
-            renderer.material.color = Color;
+            if (_materialInstance == null)
+                _materialInstance = _meshRenderer.material;
+
+            _materialInstance.color = Color;
+        }
+
+        public override void Decompile(Transform root)
+        {
+            base.Decompile(root);
+
+            Color = Properties.TryGetValue("Color", out object color) ? YamlHelpers.ParseColor(color) : default;
+            PrimitiveType = Properties.TryGetValue("PrimitiveType", out object primitiveType) ? YamlHelpers.ParseEnum<PrimitiveType>(primitiveType) : default;
+            PrimitiveFlags = Properties.TryGetValue("PrimitiveFlags", out object primitiveFlags) ? YamlHelpers.ParseEnum<PrimitiveFlags>(primitiveFlags) : default;
+
+            Debug.Log($"Parsed Color: {Color}");
+            ApplyColor();
         }
     }
 }

@@ -22,7 +22,6 @@ namespace Assets.Scripts.Lockers
         [Range(0f, 100f)]
         public float SpawnPercent;
 
-
         public int AmountToSpawn;
     }
 }

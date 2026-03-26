@@ -6,6 +6,8 @@ namespace Assets.Scripts.Yaml
 {
     public class YamlCustomObject
     {
+        public int ObjectId { get; set; }
+        public int ParentId { get; set; }
         public string Name { get; set; }
         public Vector3 Position { get; set; }
         public Vector3 Scale { get; set; }

@@ -9,5 +9,10 @@ namespace Assets.Scripts.Components
             base.Compile(root);
             base.Properties = new();
         }
+
+        public override void Decompile(Transform root)
+        {
+            base.Decompile(root);
+        }
     }
 }

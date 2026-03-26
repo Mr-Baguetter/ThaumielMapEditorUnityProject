@@ -15,5 +15,12 @@ namespace Assets.Scripts.Components
                 ["Collisions"] = Collisions,
             };
         }
+
+        public override void Decompile(Transform root)
+        {
+            base.Decompile(root);
+
+            Collisions = Properties.TryGetValue("Collisions", out object collisions) ? (bool)collisions : default;
+        }
     }
 }

@@ -1,4 +1,6 @@
+using System;
 using Assets.Scripts.Enums;
+using Assets.Scripts.Yaml;
 using UnityEngine;
 using CameraType = Assets.Scripts.Enums.CameraType;
 
@@ -38,6 +40,18 @@ namespace Assets.Scripts.Components
                 ["HorizontalConstraint"] = HorizontalConstraint,
                 ["ZoomConstraint"] = ZoomConstraint,
             };
+        }
+
+        public override void Decompile(Transform root)
+        {
+            base.Decompile(root);
+
+            CameraType = Properties.TryGetValue("CameraType", out object cameraType) ? (CameraType)Enum.Parse(typeof(CameraType), cameraType.ToString()) : default;
+            Label = Properties.TryGetValue("Label", out object label) ? label.ToString() : string.Empty;
+            Room = Properties.TryGetValue("Room", out object room) ? (RoomName)Enum.Parse(typeof(RoomName), room.ToString()) : default;
+            VerticalConstraint = Properties.TryGetValue("VerticalConstraint", out object verticalConstraint) ? YamlHelpers.ParseVector2(verticalConstraint) : default;
+            HorizontalConstraint = Properties.TryGetValue("HorizontalConstraint", out object horizontalConstraint) ? YamlHelpers.ParseVector2(horizontalConstraint) : default;
+            ZoomConstraint = Properties.TryGetValue("ZoomConstraint", out object zoomConstraint) ? YamlHelpers.ParseVector2(zoomConstraint) : default;
         }
     }
 }

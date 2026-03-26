@@ -1,3 +1,4 @@
+using Assets.Scripts.Yaml;
 using UnityEngine;
 
 namespace Assets.Scripts.Components
@@ -19,6 +20,15 @@ namespace Assets.Scripts.Components
                 ["VisualizeBounds"] = VisualizeBounds,
                 ["BoundsSize"] = transform.localScale
             };
+        }
+
+        public override void Decompile(Transform root)
+        {
+            base.Decompile(root);
+
+            Priority = Properties.TryGetValue("Priority", out object priority) ? (float)priority : default;
+            VisualizeBounds = Properties.TryGetValue("VisualizeBounds", out object visualizeBounds) && (bool)visualizeBounds;
+            transform.localScale = Properties.TryGetValue("BoundsSize", out object boundsSize) ? YamlHelpers.ParseVector3(boundsSize) : default;
         }
     }
 }

@@ -24,6 +24,7 @@ namespace Assets.Scripts.Yaml
             .WithTypeConverter(new Vector4Converter())
             .WithTypeConverter(new CustomColorConverter())
             .WithTypeConverter(new QuaternionConverter())
+            .WithTypeConverter(new IntegerEnumConverter())
             .Build();
     }
 }
