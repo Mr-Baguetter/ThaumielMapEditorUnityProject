@@ -13,5 +13,6 @@ namespace Assets.Scripts.Yaml
         public bool ContainsAnimator { get; set; }
         public List<YamlCustomObject> Objects { get; set; } = new();
         public List<YamlArea> Areas { get; set; } = new();
+        public List<YamlLOD> LOD { get; set; } = new();
     }
 }

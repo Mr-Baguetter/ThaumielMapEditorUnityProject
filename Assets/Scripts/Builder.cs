@@ -12,6 +12,9 @@ namespace Assets.Scripts
 {
     public class Builder : MonoBehaviour
     {
+        [field: SerializeField]
+        public List<YamlLOD> LODSettings { get; set; } = new();
+
         public static event Action? OnBuild;
 
         public void CompileData()
@@ -25,7 +28,8 @@ namespace Assets.Scripts
                 Rotation = transform.rotation.eulerAngles,
                 Scale = transform.localScale,
                 Objects = CompileObjects(),
-                Areas = CompileAreas()
+                Areas = CompileAreas(),
+                LOD = LODSettings
             };
             
             CompileAnimators(directoryPath, schematic);
