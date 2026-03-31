@@ -16,5 +16,6 @@ namespace Assets.Scripts.Enums
         Locker = 12,
         Target = 13,
         Schematic = 14,
+        Teleporter = 15,
     }
 }

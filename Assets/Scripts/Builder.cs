@@ -92,6 +92,10 @@ namespace Assets.Scripts
                     case TargetObject:
                         block.Type = ObjectType.Target;
                         break;
+
+                    case TeleporterObject:
+                        block.Type = ObjectType.Teleporter;
+                        break;
                 }
 
                 YamlCustomObject customObject = new()

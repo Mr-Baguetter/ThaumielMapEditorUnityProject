@@ -15,6 +15,9 @@ namespace Assets.Scripts.Components
         [field: SerializeField]
         public bool Locked { get; set; }
 
+        [field: SerializeField]
+        public DoorPermissionFlags Permissions { get; set; }
+
         public override void Compile(Transform root)
         {
             base.Compile(root);
@@ -23,6 +26,7 @@ namespace Assets.Scripts.Components
                 ["Shape"] = Shape,
                 ["Duration"] = Duration,
                 ["Locked"] = Locked,
+                ["Permissions"] = Permissions
             };
         }
 
@@ -53,6 +57,7 @@ namespace Assets.Scripts.Components
             Shape = Properties.TryGetValue("Shape", out object shape) ? (ColliderShape)Enum.Parse(typeof(ColliderShape), shape.ToString()) : default;
             Duration = Properties.TryGetValue("Duration", out object duration) ? (float)duration : default;
             Locked = Properties.TryGetValue("Locked", out object locked) && (bool)locked;
+            Permissions = Properties.TryGetValue("Permissions", out object perms) ? (DoorPermissionFlags)Enum.Parse(typeof(DoorPermissionFlags), perms.ToString()) : default;
         }
     }
 }
