@@ -9,10 +9,13 @@ public class SchematicManager : EditorWindow
     public static void Compile()
     {
         Debug.ClearDeveloperConsole();
-        CompileAll();
+        foreach (Builder schematic in FindObjectsByType<Builder>())
+        {
+            schematic.CompileData();            
+        }
     }
 
-    [MenuItem("SchematicManager/Decompile Schematics %#e")]
+    [MenuItem("SchematicManager/Decompile Schematic %#e")]
     public static void Decompile()
     {
         string[] guids = AssetDatabase.FindAssets("t:BuilderPrefabRegistry");
@@ -25,11 +28,5 @@ public class SchematicManager : EditorWindow
         string path = AssetDatabase.GUIDToAssetPath(guids[0]);
         BuilderPrefabRegistry registry = AssetDatabase.LoadAssetAtPath<BuilderPrefabRegistry>(path);
         Decompiler.DecompileData(registry);
-    }
-
-    private static void CompileAll()
-    {
-        foreach (Builder schematic in FindObjectsByType<Builder>(FindObjectsSortMode.None))
-            schematic.CompileData();
     }
 }

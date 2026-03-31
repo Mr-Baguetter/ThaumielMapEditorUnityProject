@@ -59,5 +59,6 @@ namespace Assets.Scripts
         public GameObject InteractablePrefab;
         public GameObject WaypointPrefab;
         public GameObject PickupPrefab;
+        public GameObject TeleporterPrefab;
     }
 }

@@ -15,6 +15,62 @@ namespace Assets.Scripts
         [field: SerializeField]
         public List<YamlLOD> LODSettings { get; set; } = new();
 
+        private static readonly Color[] LodColors = new Color[]
+        {
+            Color.green,
+            Color.yellow,
+            Color.cyan,
+            Color.magenta,
+            Color.red,
+            Color.white
+        };
+
+        private void OnDrawGizmosSelected()
+        {
+            if (LODSettings == null)
+                return;
+
+            for (int i = 0; i < LODSettings.Count; i++)
+            {
+                YamlLOD lod = LODSettings[i];
+                if (lod == null)
+                    continue;
+
+                Color lodColor = LodColors[i % LodColors.Length];
+
+                Gizmos.color = lodColor;
+                Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, transform.lossyScale);
+                Gizmos.DrawWireCube(Vector3.zero, lod.Bounds);
+
+                if (lod.Primitives == null)
+                    continue;
+
+                Gizmos.matrix = Matrix4x4.identity;
+
+                foreach (PrimitiveObject primitive in GetComponentsInChildren<PrimitiveObject>())
+                {
+                    if (!lod.Primitives.Contains(primitive.PrimitiveType))
+                        continue;
+
+                    DrawCulledX(primitive.transform, lodColor);
+                }
+            }
+        }
+
+        private static void DrawCulledX(Transform t, Color color)
+        {
+            Gizmos.color = color;
+
+            Vector3 center = t.position;
+            float size = Mathf.Max(t.lossyScale.x, t.lossyScale.y, t.lossyScale.z) * 0.5f;
+
+            Vector3 right = t.right * size;
+            Vector3 up = t.up * size;
+
+            Gizmos.DrawLine(center - right - up, center + right + up);
+            Gizmos.DrawLine(center + right - up, center - right + up);
+        }
+        
         public static event Action? OnBuild;
 
         public void CompileData()

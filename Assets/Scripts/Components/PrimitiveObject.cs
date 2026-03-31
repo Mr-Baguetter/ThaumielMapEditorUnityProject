@@ -41,7 +41,7 @@ namespace Assets.Scripts.Components
                 return;
 
             if (_materialInstance == null)
-                _materialInstance = _meshRenderer.sharedMaterial;
+                _materialInstance = _meshRenderer.material;
 
             _materialInstance.color = Color;
         }

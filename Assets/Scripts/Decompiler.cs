@@ -11,7 +11,7 @@ namespace Assets.Scripts
 {
     public static class Decompiler
     {
-        private static BuilderPrefabRegistry _registry;
+        public static BuilderPrefabRegistry _registry;
 
         public static void DecompileData(BuilderPrefabRegistry registry)
         {
@@ -27,6 +27,7 @@ namespace Assets.Scripts
             GameObject root = new(schematic.FileName);
             root.transform.rotation = Quaternion.Euler(schematic.Rotation);
             root.transform.localScale = schematic.Scale;
+            root.AddComponent<Builder>();
 
             Undo.RegisterCreatedObjectUndo(root, $"Decompile {schematic.FileName}");
 
@@ -40,7 +41,6 @@ namespace Assets.Scripts
                 }
 
                 GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(prefab, root.transform);
-                instance.AddComponent<Builder>();
                 instance.name = obj.Name;
 
                 if (instance.TryGetComponent(out ObjectBase block))
@@ -65,7 +65,7 @@ namespace Assets.Scripts
             Debug.Log($"Decompiled schematic '{schematic.FileName}' with {schematic.Objects.Count} objects.");
         }
 
-        private static void LoadRegistry()
+        public static void LoadRegistry()
         {
             string[] guids = AssetDatabase.FindAssets("t:BuilderPrefabRegistry");
             if (guids.Length == 0)
@@ -75,7 +75,7 @@ namespace Assets.Scripts
             _registry = AssetDatabase.LoadAssetAtPath<BuilderPrefabRegistry>(path);
         }
 
-        private static GameObject GetPrefabForObject(YamlCustomObject obj)
+        public static GameObject GetPrefabForObject(YamlCustomObject obj)
         {
             return obj.ObjectType switch
             {
@@ -96,7 +96,7 @@ namespace Assets.Scripts
             };
         }
 
-        private static GameObject GetPrimitivePrefab(YamlCustomObject obj)
+        public static GameObject GetPrimitivePrefab(YamlCustomObject obj)
         {
             if (!obj.Values.TryGetValue("PrimitiveType", out object primitiveType))
                 return null;
@@ -113,7 +113,7 @@ namespace Assets.Scripts
             };
         }
 
-        private static GameObject GetDoorPrefab(YamlCustomObject obj)
+        public static GameObject GetDoorPrefab(YamlCustomObject obj)
         {
             if (!obj.Values.TryGetValue("DoorType", out object doorType))
                 return null;
@@ -129,7 +129,7 @@ namespace Assets.Scripts
             };
         }
 
-        private static GameObject GetCameraPrefab(YamlCustomObject obj)
+        public static GameObject GetCameraPrefab(YamlCustomObject obj)
         {
             if (!obj.Values.TryGetValue("CameraType", out object cameraType))
                 return null;
@@ -145,7 +145,7 @@ namespace Assets.Scripts
             };
         }
 
-        private static GameObject GetClutterPrefab(YamlCustomObject obj)
+        public static GameObject GetClutterPrefab(YamlCustomObject obj)
         {
             if (!obj.Values.TryGetValue("ClutterType", out object clutterType))
                 return null;
@@ -164,7 +164,7 @@ namespace Assets.Scripts
             };
         }
 
-        private static GameObject GetLockerPrefab(YamlCustomObject obj)
+        public static GameObject GetLockerPrefab(YamlCustomObject obj)
         {
             if (!obj.Values.TryGetValue("LockerType", out object lockerType))
                 return null;
@@ -182,7 +182,7 @@ namespace Assets.Scripts
             };
         }
 
-        private static GameObject GetTargetPrefab(YamlCustomObject obj)
+        public static GameObject GetTargetPrefab(YamlCustomObject obj)
         {
             if (!obj.Values.TryGetValue("TargetType", out object targetType))
                 return null;
