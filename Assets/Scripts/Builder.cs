@@ -83,23 +83,38 @@ namespace Assets.Scripts
                 FileName = name.Replace(' ', '_'),
                 Rotation = transform.rotation.eulerAngles,
                 Scale = transform.localScale,
-                Objects = CompileObjects(),
+                Objects = CompileObjects(directoryPath),
                 Areas = CompileAreas(),
                 LOD = LODSettings
             };
             
-            // CompileAnimators(directoryPath, schematic);
-            BuildPipeline.BuildAssetBundles(directoryPath, BuildAssetBundleOptions.None, BuildTarget.StandaloneWindows64);
             File.WriteAllText(Path.Combine(directoryPath, $"{name}.yml"), YamlParser.Serializer.Serialize(schematic));
             OnBuild?.Invoke(this);
         }
 
-        public List<YamlCustomObject> CompileObjects()
+        public List<YamlCustomObject> CompileObjects(string directoryPath)
         {
             List<YamlCustomObject> customObjects = new();
             foreach (ObjectBase block in GetComponentsInChildren<ObjectBase>())
             {
                 block.Compile(transform);
+                if (block.TryGetComponent(out Animator animator) && animator.runtimeAnimatorController != null)
+                {
+                    RuntimeAnimatorController runtimeAnimatorController = animator.runtimeAnimatorController;
+                    AssetBundleBuild bundleBuild = new()
+                    {
+                        assetBundleName = runtimeAnimatorController.name,
+                        assetNames = new[] { AssetDatabase.GetAssetPath(runtimeAnimatorController) }
+                    };
+
+                    BuildPipeline.BuildAssetBundles(
+                        directoryPath,
+                        new[] { bundleBuild },
+                        BuildAssetBundleOptions.ChunkBasedCompression | BuildAssetBundleOptions.ForceRebuildAssetBundle | BuildAssetBundleOptions.StrictMode,
+                        EditorUserBuildSettings.activeBuildTarget
+                    );
+                }
+                
                 YamlCustomObject customObject = new()
                 {
                     ObjectId = block.ObjectId,
@@ -146,46 +161,6 @@ namespace Assets.Scripts
 
             return areas;
         }
-
-/*
-        Testing new method to compile
-        private void CompileAnimators(string directoryPath, YamlSchematic schematic)
-        {
-            foreach (Animator animator in GetComponentsInChildren<Animator>())
-            {
-                RuntimeAnimatorController controller = animator.runtimeAnimatorController;
-                if (controller == null)
-                    continue;
-
-                string controllerPath = AssetDatabase.GetAssetPath(controller);
-                if (string.IsNullOrEmpty(controllerPath))
-                {
-                    Debug.LogWarning($"Could not find asset path for controller '{controller.name}', skipping.");
-                    continue;
-                }
-
-                List<string> assetPaths = new() { controllerPath };
-                foreach (AnimationClip clip in controller.animationClips)
-                {
-                    string clipPath = AssetDatabase.GetAssetPath(clip);
-                    if (!string.IsNullOrEmpty(clipPath) && !assetPaths.Contains(clipPath))
-                        assetPaths.Add(clipPath);
-                }
-
-                AssetBundleBuild[] builds = new AssetBundleBuild[]
-                {
-                    new()
-                    {
-                        assetBundleName = controller.name,
-                        assetNames = assetPaths.ToArray()
-                    }
-                };
-
-                BuildPipeline.BuildAssetBundles(directoryPath, builds, BuildAssetBundleOptions.ChunkBasedCompression | BuildAssetBundleOptions.ForceRebuildAssetBundle | BuildAssetBundleOptions.StrictMode, EditorUserBuildSettings.activeBuildTarget);
-                Debug.Log($"Built animator controller '{controller.name}' for schematic '{name}'.");
-            }
-        }
-*/
         
         private void SetupOutput(out string directoryPath)
         {
