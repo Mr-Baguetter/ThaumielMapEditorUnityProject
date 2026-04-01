@@ -66,7 +66,7 @@ namespace Assets.Scripts.Converter
                     block.Name = obj.Name;
                     block.Static = obj.IsStatic;
                     block.MovementSmoothing = obj.MovementSmoothing;
-                    block.Type = obj.ObjectType;
+                    block.ObjectType = obj.ObjectType;
                     block.Properties = obj.Values;
 
                     block.Position = obj.Position;

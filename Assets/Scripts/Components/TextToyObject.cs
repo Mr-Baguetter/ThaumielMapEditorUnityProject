@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Assets.Scripts.Enums;
 using TMPro;
 using UnityEngine;
 
@@ -15,6 +16,8 @@ namespace Assets.Scripts.Components
 
         [field: SerializeField]
         public List<string> Arguments { get; set; } = new();
+
+        public override ObjectType ObjectType => ObjectType.TextToy;
 
         private TextMeshPro _textMesh;
         private RectTransform _rectTransform;

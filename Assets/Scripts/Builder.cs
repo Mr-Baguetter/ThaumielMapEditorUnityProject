@@ -100,65 +100,6 @@ namespace Assets.Scripts
             foreach (ObjectBase block in GetComponentsInChildren<ObjectBase>())
             {
                 block.Compile(transform);
-                switch (block)
-                {
-                    case PrimitiveObject:
-                        block.Type = ObjectType.Primitive;
-                        break;
-
-                    case DoorObject:
-                        block.Type = ObjectType.Door;
-                        break;
-
-                    case CameraObject:
-                        block.Type = ObjectType.Camera;
-                        break;
-
-                    case ClutterObject:
-                        block.Type = ObjectType.Clutter;
-                        break;
-
-                    case TextToyObject:
-                        block.Type = ObjectType.TextToy;
-                        break;
-
-                    case CapyBaraObject:
-                        block.Type = ObjectType.Capybara;
-                        break;
-
-                    case LightObject:
-                        block.Type = ObjectType.Light;
-                        break;
-
-                    case LockerObject:
-                        block.Type = ObjectType.Locker;
-                        break;
-
-                    case WorkstationObject:
-                        block.Type = ObjectType.Workstation;
-                        break;
-
-                    case InteractableObject:
-                        block.Type = ObjectType.Interactable;
-                        break;
-
-                    case WaypointObject:
-                        block.Type = ObjectType.Waypoint;
-                        break;
-
-                    case PickupObject:
-                        block.Type = ObjectType.Pickup;
-                        break;
-
-                    case TargetObject:
-                        block.Type = ObjectType.Target;
-                        break;
-
-                    case TeleporterObject:
-                        block.Type = ObjectType.Teleporter;
-                        break;
-                }
-
                 YamlCustomObject customObject = new()
                 {
                     ObjectId = block.ObjectId,
@@ -169,7 +110,7 @@ namespace Assets.Scripts
                     Scale = block.Scale,
                     IsStatic = block.Static,
                     MovementSmoothing = block.MovementSmoothing,
-                    ObjectType = block.Type,
+                    ObjectType = block.ObjectType,
                     Values = block.Properties
                 };
 

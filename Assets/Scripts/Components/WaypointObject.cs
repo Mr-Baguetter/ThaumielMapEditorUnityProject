@@ -1,3 +1,4 @@
+using Assets.Scripts.Enums;
 using Assets.Scripts.Yaml;
 using UnityEngine;
 
@@ -10,6 +11,8 @@ namespace Assets.Scripts.Components
 
         [field: SerializeField]
         public bool VisualizeBounds { get; set; }
+
+        public override ObjectType ObjectType => ObjectType.Waypoint;
 
         public override void Compile(Transform root)
         {
