@@ -62,7 +62,7 @@ namespace Assets.Scripts
             Gizmos.color = color;
 
             Vector3 center = t.position;
-            float size = Mathf.Max(t.lossyScale.x, t.lossyScale.y, t.lossyScale.z) * 0.5f;
+            float size = Mathf.Max(t.lossyScale.x, t.lossyScale.y, t.lossyScale.z) * 0.3f;
 
             Vector3 right = t.right * size;
             Vector3 up = t.up * size;
@@ -71,7 +71,7 @@ namespace Assets.Scripts
             Gizmos.DrawLine(center + right - up, center - right + up);
         }
         
-        public static event Action? OnBuild;
+        public static event Action<Builder>? OnBuild;
 
         public void CompileData()
         {
@@ -90,7 +90,7 @@ namespace Assets.Scripts
             
             CompileAnimators(directoryPath, schematic);
             File.WriteAllText(Path.Combine(directoryPath, $"{name}.yml"), YamlParser.Serializer.Serialize(schematic));
-            OnBuild?.Invoke();
+            OnBuild?.Invoke(this);
         }
 
         public List<YamlCustomObject> CompileObjects()

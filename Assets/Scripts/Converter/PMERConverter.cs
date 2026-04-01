@@ -7,6 +7,7 @@ using Assets.Scripts.Yaml;
 using Newtonsoft.Json;
 using UnityEditor;
 using UnityEngine;
+using Assets.Scripts.Extensions;
 
 namespace Assets.Scripts.Converter
 {
@@ -27,7 +28,7 @@ namespace Assets.Scripts.Converter
             Interactable = 9,
         }
 
-        [MenuItem("SchematicManager/Convert PMER Schematic")]
+        [MenuItem("Thaumiel/Tools/PMER Converter")]
         public static void Open()
         {
             string[] guids = AssetDatabase.FindAssets("t:BuilderPrefabRegistry");
@@ -192,15 +193,43 @@ namespace Assets.Scripts.Converter
                     if (dict.TryGetValue("ShadowType", out var shadowtype))
                         dict["ShadowType"] = (LightShadows)Convert.ToInt32(shadowtype);
                     break;
+    
+                case PMERBlockType.Pickup:
+                    if (dict.TryGetValue("ItemType", out var itemtype))
+                        dict["ItemToSpawn"] = (ItemType)Convert.ToInt32(itemtype);
 
-                // Teleporter
+                    if (dict.TryGetValue("Chance", out var chance))
+                        dict["SpawnPercentage"] = Convert.ToSingle(chance);
+
+                    if (dict.TryGetValue("Uses", out var uses))
+                        dict["MaxAmount"] = Convert.ToInt32(uses);
+                    break;
+
                 case PMERBlockType.Teleport:
+                    if (dict.TryGetValue("Cooldown", out var cooldown))
+                        dict["Cooldown"] = Convert.ToSingle(cooldown);
 
                     break;
 
-                // Texttoy
-                case PMERBlockType.Text:
+                case PMERBlockType.Interactable:
+                    if (dict.TryGetValue("ColliderShape", out var collidershape))
+                        dict["Shape"] = (ColliderShape)Convert.ToInt32(collidershape);
 
+                    if (dict.TryGetValue("InteractionDuration", out var duration))
+                        dict["Duration"] = Convert.ToSingle(duration);
+
+                    if (dict.TryGetValue("IsLocked", out var locked))
+                        dict["Locked"] = Convert.ToSingle(locked);
+
+                    break;
+
+                case PMERBlockType.Text:
+                    if (dict.TryGetValue("Text", out var text))
+                        dict["TextFormat"] = Convert.ToString(text);
+
+                    if (dict.TryGetValue("DisplaySize", out var displaysize))
+                        dict["DisplaySize"] = ConvertExtensions.ToVector2(displaysize);
+                        
                     break;
             }
 

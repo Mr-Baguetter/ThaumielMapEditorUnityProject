@@ -53,3 +53,4 @@ MonoBehaviour:
   InteractablePrefab: {fileID: 254159507964864611, guid: 441576f97b3ef06458ffe38548aa07a0, type: 3}
   WaypointPrefab: {fileID: 254159507964864611, guid: 3d158d0ff726285438031860bb2fbb99, type: 3}
   PickupPrefab: {fileID: 254159507964864611, guid: 6315298258ce06c4bb07f22ce2c538fc, type: 3}
+  TeleporterPrefab: {fileID: 254159507964864611, guid: e708fb43843aac8438b8de83aa27e894, type: 3}
