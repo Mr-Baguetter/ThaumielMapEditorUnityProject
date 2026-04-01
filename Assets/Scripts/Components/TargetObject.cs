@@ -9,6 +9,8 @@ namespace Assets.Scripts.Components
         [field: SerializeField]
         public TargetType TargetType { get; set; }
 
+        public override ObjectType ObjectType => ObjectType.Target;
+
         public override void Compile(Transform root)
         {
             base.Compile(root);

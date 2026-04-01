@@ -18,6 +18,8 @@ namespace Assets.Scripts.Components
         [field: SerializeField]
         public DoorPermissionFlags Permissions { get; set; }
 
+        public override ObjectType ObjectType => ObjectType.Interactable;
+
         public override void Compile(Transform root)
         {
             base.Compile(root);

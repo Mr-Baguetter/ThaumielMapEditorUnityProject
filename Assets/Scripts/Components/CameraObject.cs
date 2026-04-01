@@ -27,6 +27,7 @@ namespace Assets.Scripts.Components
         [field: SerializeField]
         public Vector2 ZoomConstraint { get; set; }
 
+        public override ObjectType ObjectType => ObjectType.Camera;
 
         public override void Compile(Transform root)
         {

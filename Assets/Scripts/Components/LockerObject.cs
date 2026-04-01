@@ -17,6 +17,8 @@ namespace Assets.Scripts.Components
         [field: SerializeField]
         public List<LockerChamber> Chambers { get; set; }
 
+        public override ObjectType ObjectType => ObjectType.Locker;
+
         private void OnValidate()
         {
             if (Chambers == null)

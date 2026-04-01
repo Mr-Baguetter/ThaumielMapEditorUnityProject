@@ -21,6 +21,8 @@ namespace Assets.Scripts.Components
         [field: SerializeField]
         public bool PerPlayerCooldown { get; set; }
 
+        public override ObjectType ObjectType => ObjectType.Teleporter;
+
         public override void Compile(Transform root)
         {
             base.Compile(root);

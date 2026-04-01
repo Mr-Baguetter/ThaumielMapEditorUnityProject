@@ -1,3 +1,4 @@
+using Assets.Scripts.Enums;
 using UnityEngine;
 
 namespace Assets.Scripts.Components
@@ -6,6 +7,8 @@ namespace Assets.Scripts.Components
     {
         [field: SerializeField]
         public bool Collisions { get; set; }
+
+        public override ObjectType ObjectType => ObjectType.Capybara;
 
         public override void Compile(Transform root)
         {

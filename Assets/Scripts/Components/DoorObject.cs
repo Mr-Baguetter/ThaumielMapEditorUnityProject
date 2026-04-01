@@ -31,6 +31,8 @@ namespace Assets.Scripts.Components
         [field: SerializeField]
         public bool IsLocked { get; set; }
 
+        public override ObjectType ObjectType => ObjectType.Door;
+
         public override void Compile(Transform root)
         {
             base.Compile(root);

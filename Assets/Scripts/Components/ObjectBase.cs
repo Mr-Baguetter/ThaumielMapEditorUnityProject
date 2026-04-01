@@ -1,11 +1,15 @@
 using System.Collections.Generic;
 using Assets.Scripts.Enums;
 using UnityEngine;
+using YamlDotNet.Serialization;
 
 namespace Assets.Scripts.Components
 {
     public class ObjectBase : MonoBehaviour
     {
+        [YamlIgnore]
+        public virtual ObjectType ObjectType { get; internal set; }
+
         public int ObjectId { get; set; }
         public int ParentId { get; set; }
 
@@ -20,8 +24,7 @@ namespace Assets.Scripts.Components
         [field: SerializeField]
         public float MovementSmoothing { get; set; }
 
-        public ObjectType Type { get; set; }
-        public Dictionary<string, object> Properties { get; set; }
+    public Dictionary<string, object> Properties { get; set; }
 
         public virtual void Compile(Transform root)
         {

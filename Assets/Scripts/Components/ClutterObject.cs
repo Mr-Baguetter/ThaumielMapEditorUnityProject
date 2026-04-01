@@ -10,6 +10,8 @@ namespace Assets.Scripts.Components
         [field: SerializeField]
         public ClutterType ClutterType { get; set; }
 
+        public override ObjectType ObjectType => ObjectType.Clutter;
+
         public override void Compile(Transform root)
         {
             base.Compile(root);

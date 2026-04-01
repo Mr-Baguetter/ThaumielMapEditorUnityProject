@@ -16,6 +16,8 @@ namespace Assets.Scripts.Components
         [field: SerializeField]
         public bool IsInfinite { get; set; }
 
+        public override ObjectType ObjectType => ObjectType.Pickup;
+
         public override void Compile(Transform root)
         {
             base.Compile(root);

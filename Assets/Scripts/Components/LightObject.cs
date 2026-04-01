@@ -1,4 +1,5 @@
 using System;
+using Assets.Scripts.Enums;
 using Assets.Scripts.Yaml;
 using UnityEngine;
 namespace Assets.Scripts.Components
@@ -133,6 +134,8 @@ namespace Assets.Scripts.Components
                     _light.innerSpotAngle = value;
             }
         }
+
+        public override ObjectType ObjectType => ObjectType.Light;
 
         private void Awake()
         {

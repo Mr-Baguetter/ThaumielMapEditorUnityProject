@@ -16,6 +16,8 @@ namespace Assets.Scripts.Components
         [field: SerializeField]
         public PrimitiveFlags PrimitiveFlags { get; set; }
 
+        public override ObjectType ObjectType => ObjectType.Primitive;
+
         public override void Compile(Transform root)
         {
             base.Compile(root);
