@@ -241,7 +241,6 @@ namespace Assets.Scripts
                 };
 
                 BuildPipeline.BuildAssetBundles(directoryPath, builds, BuildAssetBundleOptions.ChunkBasedCompression | BuildAssetBundleOptions.ForceRebuildAssetBundle | BuildAssetBundleOptions.StrictMode, EditorUserBuildSettings.activeBuildTarget);
-                schematic.ContainsAnimator = true;
                 Debug.Log($"Built animator controller '{controller.name}' for schematic '{name}'.");
             }
         }
