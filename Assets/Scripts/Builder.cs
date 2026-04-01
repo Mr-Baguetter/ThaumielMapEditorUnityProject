@@ -88,7 +88,8 @@ namespace Assets.Scripts
                 LOD = LODSettings
             };
             
-            CompileAnimators(directoryPath, schematic);
+            // CompileAnimators(directoryPath, schematic);
+            BuildPipeline.BuildAssetBundles(directoryPath, BuildAssetBundleOptions.None, BuildTarget.StandaloneWindows64);
             File.WriteAllText(Path.Combine(directoryPath, $"{name}.yml"), YamlParser.Serializer.Serialize(schematic));
             OnBuild?.Invoke(this);
         }
@@ -205,6 +206,8 @@ namespace Assets.Scripts
             return areas;
         }
 
+/*
+        Testing new method to compile
         private void CompileAnimators(string directoryPath, YamlSchematic schematic)
         {
             foreach (Animator animator in GetComponentsInChildren<Animator>())
@@ -242,6 +245,7 @@ namespace Assets.Scripts
                 Debug.Log($"Built animator controller '{controller.name}' for schematic '{name}'.");
             }
         }
+*/
         
         private void SetupOutput(out string directoryPath)
         {

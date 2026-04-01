@@ -11,7 +11,7 @@ public class SchematicManager : EditorWindow
         Debug.ClearDeveloperConsole();
         foreach (Builder schematic in FindObjectsByType<Builder>())
         {
-            schematic.CompileData();            
+            schematic.CompileData();
         }
     }
 
