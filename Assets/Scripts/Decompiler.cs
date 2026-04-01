@@ -101,7 +101,7 @@ namespace Assets.Scripts
             if (!obj.Values.TryGetValue("PrimitiveType", out object primitiveType))
                 return null;
 
-            return Enum.Parse<PrimitiveType>(primitiveType.ToString()) switch
+            return Enum.Parse<PrimitiveType>(Convert.ToString(primitiveType)) switch
             {
                 PrimitiveType.Sphere => _registry.SpherePrefab,
                 PrimitiveType.Cube => _registry.CubePrefab,
@@ -118,7 +118,7 @@ namespace Assets.Scripts
             if (!obj.Values.TryGetValue("DoorType", out object doorType))
                 return null;
 
-            return Enum.Parse<DoorType>(doorType.ToString()) switch
+            return Enum.Parse<DoorType>(Convert.ToString(doorType)) switch
             {
                 DoorType.Lcz => _registry.LczDoorPrefab,
                 DoorType.Hcz => _registry.HczDoorPrefab,
@@ -134,7 +134,7 @@ namespace Assets.Scripts
             if (!obj.Values.TryGetValue("CameraType", out object cameraType))
                 return null;
 
-            return Enum.Parse<Enums.CameraType>(cameraType.ToString()) switch
+            return Enum.Parse<Enums.CameraType>(Convert.ToString(cameraType)) switch
             {
                 Enums.CameraType.Lcz => _registry.LczCameraPrefab,
                 Enums.CameraType.Hcz => _registry.HczCameraPrefab,
@@ -150,7 +150,7 @@ namespace Assets.Scripts
             if (!obj.Values.TryGetValue("ClutterType", out object clutterType))
                 return null;
 
-            return Enum.Parse<ClutterType>(clutterType.ToString()) switch
+            return Enum.Parse<ClutterType>(Convert.ToString(clutterType)) switch
             {
                 ClutterType.SimpleBoxes => _registry.SimpleBoxesPrefab,
                 ClutterType.PipesShort => _registry.PipesShortPrefab,
@@ -169,7 +169,7 @@ namespace Assets.Scripts
             if (!obj.Values.TryGetValue("LockerType", out object lockerType))
                 return null;
 
-            return Enum.Parse<LockerType>(lockerType.ToString()) switch
+            return Enum.Parse<LockerType>(Convert.ToString(lockerType)) switch
             {
                 LockerType.Pedestal => _registry.PedestalPrefab,
                 LockerType.LargeGun => _registry.LargeGunPrefab,
@@ -187,7 +187,7 @@ namespace Assets.Scripts
             if (!obj.Values.TryGetValue("TargetType", out object targetType))
                 return null;
 
-            return Enum.Parse<TargetType>(targetType.ToString()) switch
+            return Enum.Parse<TargetType>(Convert.ToString(targetType)) switch
             {
                 TargetType.Binary => _registry.BinaryTargetPrefab,
                 TargetType.ClassD => _registry.ClassDTargetPrefab,

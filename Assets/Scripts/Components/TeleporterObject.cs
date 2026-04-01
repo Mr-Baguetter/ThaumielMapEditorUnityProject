@@ -7,7 +7,7 @@ namespace Assets.Scripts.Components
 {
     public class TeleporterObject : ObjectBase
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public Guid Id { get; set; }
 
         [field: SerializeField]
         public TeleporterObject Target { get; set; }
@@ -42,6 +42,11 @@ namespace Assets.Scripts.Components
             CoolDown = Properties.TryGetValue("CoolDown", out object cooldown) ? (float)cooldown : default;
             AllowedRoles = Properties.TryGetValue("AllowedRoles", out object allowed) ? (List<RoleTypeId>)allowed : default;
             PerPlayerCooldown = Properties.TryGetValue("PerPlayerCooldown", out object perplayer) && (bool)perplayer;
+        }
+
+        private void Start()
+        {
+            Id = Guid.NewGuid();
         }
     }
 }
