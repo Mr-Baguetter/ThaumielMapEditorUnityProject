@@ -17,9 +17,9 @@ namespace Assets.Scripts.Components
 
         public override ObjectType ObjectType => ObjectType.Primitive;
 
-        private Material _materialInstance;
         private MeshRenderer _meshRenderer;
         private MeshFilter _meshFilter;
+        private MaterialPropertyBlock _propertyBlock;
 
         private void OnValidate()
         {
@@ -42,24 +42,17 @@ namespace Assets.Scripts.Components
             if (_meshRenderer == null && !TryGetComponent(out _meshRenderer))
                 return;
 
-            if (_materialInstance == null)
-                _materialInstance = _meshRenderer.material = new(_meshRenderer.material);
+            if (_propertyBlock == null)
+                _propertyBlock = new MaterialPropertyBlock();
 
-            _materialInstance.color = Color;
+            _meshRenderer.GetPropertyBlock(_propertyBlock);
+            _propertyBlock.SetColor("_BaseColor", Color);
+            _meshRenderer.SetPropertyBlock(_propertyBlock);
         }
 
         private void Start()
         {
             TryGetComponent(out _meshFilter);
-        }
-
-        private void OnDestroy()
-        {
-            if (_materialInstance == null)
-                return;
-
-            Destroy(_materialInstance);
-            _materialInstance = null;
         }
 
         public override void Decompile(Transform root)
