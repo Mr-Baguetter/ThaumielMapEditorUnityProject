@@ -94,14 +94,6 @@ namespace Assets.Scripts.Converter
             Selection.activeGameObject = root;
         }
 
-        public static Transform GetParentForBlock(ObjectBase block, Transform root)
-        {
-            if (block.ParentId != 0 && _instanceMap.TryGetValue(block.ParentId, out Transform parent))
-                return parent;
-
-            return root;
-        }
-
         /// <summary>
         /// Converts a PMER schematic into a TME schematic
         /// </summary>
