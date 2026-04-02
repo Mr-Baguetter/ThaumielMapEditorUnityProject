@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using UnityEditor;
 using UnityEngine;
 using Assets.Scripts.Extensions;
+using System.Linq;
 
 namespace Assets.Scripts.Converter
 {
@@ -214,6 +215,19 @@ namespace Assets.Scripts.Converter
                 case PMERBlockType.Teleport:
                     if (dict.TryGetValue("Cooldown", out var cooldown))
                         dict["Cooldown"] = Convert.ToSingle(cooldown);
+
+                    if (dict.TryGetValue("Id", out var id))
+                        dict["Id"] = Guid.Parse(Convert.ToString(id));
+
+                    if (dict.TryGetValue("TargetTeleporters", out var targets))
+                    {
+                        if (targets is object[] array)
+                        {
+                            List<string?> ids = array.Select(t => t.GetType().GetField("Id")?.GetValue(t) as string).Where(id => id != null).ToList();
+                            if (Guid.TryParse(ids.First(), out var targetid))
+                                dict["Target"] = targetid;
+                        }
+                    }
 
                     break;
 
