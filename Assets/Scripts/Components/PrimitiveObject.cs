@@ -19,6 +19,7 @@ namespace Assets.Scripts.Components
 
         private Material _materialInstance;
         private MeshRenderer _meshRenderer;
+        private MeshFilter _meshFilter;
 
         private void OnValidate()
         {
@@ -47,6 +48,11 @@ namespace Assets.Scripts.Components
             _materialInstance.color = Color;
         }
 
+        private void Start()
+        {
+            TryGetComponent(out _meshFilter);
+        }
+
         private void OnDestroy()
         {
             if (_materialInstance == null)
@@ -66,6 +72,16 @@ namespace Assets.Scripts.Components
 
             Debug.Log($"Parsed Color: {Color}");
             ApplyColor();
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (PrimitiveFlags.HasFlag(PrimitiveFlags.Visible))
+                return;
+
+            Gizmos.color = Color.white;
+            Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, transform.lossyScale);
+            Gizmos.DrawWireMesh(_meshFilter.sharedMesh);
         }
     }
 }
