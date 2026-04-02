@@ -1,3 +1,5 @@
+using System;
+
 namespace Assets.Scripts.Enums
 {
     [Flags]

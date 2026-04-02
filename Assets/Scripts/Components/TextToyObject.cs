@@ -40,7 +40,7 @@ namespace Assets.Scripts.Components
             base.Properties = new()
             {
                 ["DisplaySize"] = DisplaySize,
-                ["TextFormat"] = Text
+                ["Text"] = Text
             };
         }
 
