@@ -1,6 +1,7 @@
 using System;
 using Assets.Scripts.Enums;
 using Assets.Scripts.Yaml;
+using UnityEditor;
 using UnityEngine;
 
 namespace Assets.Scripts.Components
@@ -42,15 +43,14 @@ namespace Assets.Scripts.Components
         {
             TryGetComponent(out _filter);
             TryGetComponent(out _renderer);
-            Shader litShader = Shader.Find("Universal Render Pipeline/Lit");
-
-            if (litShader == null)
+            Material loaded = AssetDatabase.LoadAssetAtPath<Material>("Assets/Materials/Regular.mat");
+            if (loaded == null)
             {
-                Debug.LogError("Failed to find shader 'Universal Render Pipeline/Lit'.");
+                Debug.LogError("Failed to load 'Assets/Materials/Regular.mat'.");
                 return;
             }
 
-            _sharedRegular = new Material(litShader);
+            _sharedRegular = new Material(loaded);
         }
 
         private void Update()

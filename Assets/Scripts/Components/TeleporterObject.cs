@@ -13,6 +13,8 @@ namespace Assets.Scripts.Components
         [field: SerializeField]
         public TeleporterObject Target { get; set; }
 
+        internal Guid TargetId { get; set; }
+
         [field: SerializeField]
         public float CoolDown { get; set; }
 
@@ -29,11 +31,13 @@ namespace Assets.Scripts.Components
 
         public override void Compile(Transform root)
         {
+            TargetId = Target.Id;
+
             base.Compile(root);
             base.Properties = new()
             {
                 ["Id"] = Id,
-                ["Target"] = Target.Id,
+                ["Target"] = TargetId,
                 ["CoolDown"] = CoolDown,
                 ["AllowedRoles"] = AllowedRoles,
                 ["PerPlayerCooldown"] = PerPlayerCooldown,
@@ -46,6 +50,7 @@ namespace Assets.Scripts.Components
             base.Decompile(root);
 
             Id = Properties.TryGetValue("Id", out object id) ? (Guid)id : Guid.NewGuid();
+            TargetId = Properties.TryGetValue("Target", out object targetid) ? (Guid)targetid : Guid.NewGuid();
             CoolDown = Properties.TryGetValue("CoolDown", out object cooldown) ? (float)cooldown : default;
             AllowedRoles = Properties.TryGetValue("AllowedRoles", out object allowed) ? (List<RoleTypeId>)allowed : default;
             PerPlayerCooldown = Properties.TryGetValue("PerPlayerCooldown", out object perplayer) && (bool)perplayer;
