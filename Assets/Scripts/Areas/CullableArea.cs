@@ -5,7 +5,6 @@ namespace Assets.Scripts.Areas
 {
     public class CullableArea : AreaBase
     {
-        [HideInInspector]
         [field: SerializeField]
         public Vector3 Bounds { get; set; }
 

@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Assets.Scripts.Components;
-using Assets.Scripts.Enums;
 using Assets.Scripts.Areas;
 using Assets.Scripts.Yaml;
 using UnityEditor;
 using UnityEngine;
+using Assets.Scripts.Enums;
 
 namespace Assets.Scripts
 {
@@ -14,6 +14,9 @@ namespace Assets.Scripts
     {
         [field: SerializeField]
         public List<YamlLOD> LODSettings { get; set; } = new();
+
+        [field: SerializeField]
+        public CullableArea CullingSettings { get; set; }
 
         private static readonly Color[] LodColors = new Color[]
         {
@@ -25,8 +28,18 @@ namespace Assets.Scripts
             Color.white
         };
 
+        private static readonly Color CullingAreaColor = new Color(1f, 0.5f, 0f);
+
         private void OnDrawGizmosSelected()
         {
+            if (CullingSettings != null)
+            {
+                Gizmos.color = CullingAreaColor;
+                Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, transform.lossyScale);
+                Gizmos.DrawWireCube(Vector3.zero, CullingSettings.Bounds);
+                Gizmos.matrix = Matrix4x4.identity;
+            }
+
             if (LODSettings == null)
                 return;
 
@@ -84,7 +97,7 @@ namespace Assets.Scripts
                 Rotation = transform.rotation.eulerAngles,
                 Scale = transform.localScale,
                 Objects = CompileObjects(directoryPath),
-                Areas = CompileAreas(),
+                Areas = CompileCulling(),
                 LOD = LODSettings
             };
             
@@ -135,33 +148,24 @@ namespace Assets.Scripts
             return customObjects;
         }
 
-        private List<YamlArea> CompileAreas()
+        // TODO: Test this.
+        private List<YamlArea> CompileCulling()
         {
             List<YamlArea> areas = new();
-            foreach (AreaBase area in GetComponentsInChildren<AreaBase>())
+            CullingSettings.Compile(transform);
+            YamlArea culling = new()
             {
-                switch (area)
-                {
-                    case CullableArea:
-                        area.Type = AreaType.CullingArea;
-                        break;
-                }
+                ObjectId = transform.gameObject.GetInstanceID(),
+                ParentId = transform.gameObject.GetInstanceID(),
+                SchematicName = name.Replace(' ', '_'),
+                AreaType = AreaType.CullingArea,
+                Values = CullingSettings.Properties
+            };
 
-                YamlArea yaml = new()
-                {
-                    ObjectId = area.ObjectId,
-                    ParentId = area.ParentId,
-                    SchematicName = name.Replace(' ', '_'),
-                    AreaType = area.Type,
-                    Values = area.Properties
-                };
-
-                areas.Add(yaml);
-            }
-
+            areas.Add(culling);
             return areas;
         }
-        
+
         private void SetupOutput(out string directoryPath)
         {
             string parentDirectoryPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "ThaumielMapEditor");

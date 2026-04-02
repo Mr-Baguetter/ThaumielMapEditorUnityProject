@@ -56,6 +56,16 @@ namespace Assets.Scripts.Components
             _renderer.enabled = PrimitiveFlags.HasFlag(PrimitiveFlags.Visible);
         }
 
+        private void OnDrawGizmos()
+        {
+            if (PrimitiveFlags.HasFlag(PrimitiveFlags.Visible) || _filter == null || _filter.sharedMesh == null)
+                return;
+
+            Gizmos.color = Color.white;
+            Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, transform.lossyScale);
+            Gizmos.DrawWireMesh(_filter.sharedMesh);
+        }
+
         internal MeshFilter _filter;
         private MeshRenderer _renderer;
         private Material _sharedRegular;
