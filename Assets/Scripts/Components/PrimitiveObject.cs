@@ -43,10 +43,10 @@ namespace Assets.Scripts.Components
         {
             TryGetComponent(out _filter);
             TryGetComponent(out _renderer);
-            Material loaded = AssetDatabase.LoadAssetAtPath<Material>("Assets/Materials/Regular.mat");
+            Material loaded = AssetDatabase.LoadAssetAtPath<Material>("Assets/Materials/Regulart.mat");
             if (loaded == null)
             {
-                Debug.LogError("Failed to load 'Assets/Materials/Regular.mat'.");
+                Debug.LogError("Failed to load 'Assets/Materials/Regulart.mat'.");
                 return;
             }
 
