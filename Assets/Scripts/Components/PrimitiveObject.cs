@@ -1,7 +1,5 @@
-using System;
 using Assets.Scripts.Enums;
 using Assets.Scripts.Yaml;
-using UnityEditor;
 using UnityEngine;
 
 namespace Assets.Scripts.Components
@@ -19,6 +17,14 @@ namespace Assets.Scripts.Components
 
         public override ObjectType ObjectType => ObjectType.Primitive;
 
+        private Material _materialInstance;
+        private MeshRenderer _meshRenderer;
+
+        private void OnValidate()
+        {
+            ApplyColor();
+        }
+
         public override void Compile(Transform root)
         {
             base.Compile(root);
@@ -30,6 +36,26 @@ namespace Assets.Scripts.Components
             };
         }
 
+        private void ApplyColor()
+        {
+            if (_meshRenderer == null && !TryGetComponent(out _meshRenderer))
+                return;
+
+            if (_materialInstance == null)
+                _materialInstance = _meshRenderer.material = new(_meshRenderer.material);
+
+            _materialInstance.color = Color;
+        }
+
+        private void OnDestroy()
+        {
+            if (_materialInstance == null)
+                return;
+
+            Destroy(_materialInstance);
+            _materialInstance = null;
+        }
+
         public override void Decompile(Transform root)
         {
             base.Decompile(root);
@@ -37,45 +63,9 @@ namespace Assets.Scripts.Components
             Color = Properties.TryGetValue("Color", out object color) ? YamlHelpers.ParseColor(color) : default;
             PrimitiveType = Properties.TryGetValue("PrimitiveType", out object primitiveType) ? YamlHelpers.ParseEnum<PrimitiveType>(primitiveType) : default;
             PrimitiveFlags = Properties.TryGetValue("PrimitiveFlags", out object primitiveFlags) ? YamlHelpers.ParseEnum<PrimitiveFlags>(primitiveFlags) : default;
+
+            Debug.Log($"Parsed Color: {Color}");
+            ApplyColor();
         }
-
-        private void Start()
-        {
-            TryGetComponent(out _filter);
-            TryGetComponent(out _renderer);
-            Material loaded = AssetDatabase.LoadAssetAtPath<Material>("Assets/Materials/Regulart.mat");
-            if (loaded == null)
-            {
-                Debug.LogError("Failed to load 'Assets/Materials/Regulart.mat'.");
-                return;
-            }
-
-            _sharedRegular = new Material(loaded);
-        }
-
-        private void Update()
-        {
-            _filter.hideFlags = HideFlags.HideInInspector;
-            _renderer.hideFlags = HideFlags.HideInInspector;
-
-            _renderer.sharedMaterial = _sharedRegular;
-            _renderer.sharedMaterial.color = Color;
-
-            _renderer.enabled = PrimitiveFlags.HasFlag(PrimitiveFlags.Visible);
-        }
-
-        private void OnDrawGizmos()
-        {
-            if (PrimitiveFlags.HasFlag(PrimitiveFlags.Visible) || _filter == null || _filter.sharedMesh == null)
-                return;
-
-            Gizmos.color = Color.white;
-            Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, transform.lossyScale);
-            Gizmos.DrawWireMesh(_filter.sharedMesh);
-        }
-
-        internal MeshFilter _filter;
-        private MeshRenderer _renderer;
-        private Material _sharedRegular;
     }
 }
