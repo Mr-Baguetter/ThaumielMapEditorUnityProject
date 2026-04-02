@@ -47,14 +47,19 @@ namespace Assets.Scripts.Converter
                 return;
 
             string json = File.ReadAllText(jsonPath);
-            YamlSchematic tmeschematic = ConvertSchematic(JsonConvert.DeserializeObject<PMERSchematic>(json), Path.GetFileNameWithoutExtension(jsonPath));
+            PMERSchematic pmer = JsonConvert.DeserializeObject<PMERSchematic>(json);
+            YamlSchematic tmeschematic = ConvertSchematic(pmer, Path.GetFileNameWithoutExtension(jsonPath));
+
             GameObject root = new(tmeschematic.FileName);
             root.transform.rotation = Quaternion.Euler(tmeschematic.Rotation);
             root.transform.localScale = tmeschematic.Scale;
             root.AddComponent<Builder>();
 
-            foreach (YamlCustomObject obj in tmeschematic.Objects)
+            for (int i = 0; i < tmeschematic.Objects.Count; i++)
             {
+                YamlCustomObject obj = tmeschematic.Objects[i];
+                PMERBlock originalBlock = pmer.Blocks[i];
+
                 GameObject prefab = Decompiler.GetPrefabForObject(obj);
                 if (prefab == null)
                 {
@@ -65,6 +70,9 @@ namespace Assets.Scripts.Converter
                 GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
                 instance.name = obj.Name;
 
+                Transform parent = originalBlock.ParentId == pmer.RootObjectId ? root.transform : _instanceMap.TryGetValue(originalBlock.ParentId, out Transform p) ? p : root.transform;
+                instance.transform.SetParent(parent, true);
+
                 if (instance.TryGetComponent(out ObjectBase block))
                 {
                     block.Name = obj.Name;
@@ -73,16 +81,13 @@ namespace Assets.Scripts.Converter
                     block.ObjectType = obj.ObjectType;
                     block.Properties = obj.Values;
 
-                    block.Position = obj.Position;
-                    block.Rotation = obj.Rotation;
-                    block.Scale = obj.Scale;
-
                     block.Decompile(root.transform);
                 }
 
-                ObjectBase originalBlock = root.GetComponents<ObjectBase>().First(b => b.Name == obj.Name);
+                instance.transform.SetLocalPositionAndRotation(obj.Position, Quaternion.Euler(obj.Rotation));
+                instance.transform.localScale = obj.Scale;
+
                 _instanceMap[originalBlock.ObjectId] = instance.transform;
-                instance.transform.SetParent(GetParentForBlock(originalBlock, root.transform));
                 Undo.RegisterCreatedObjectUndo(instance, $"Convert {obj.Name}");
             }
 
