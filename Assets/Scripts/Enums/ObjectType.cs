@@ -2,6 +2,7 @@ namespace Assets.Scripts.Enums
 {
     public enum ObjectType
     {
+        None = 0,
         Primitive = 1,
         Light = 2,
         Door = 3,

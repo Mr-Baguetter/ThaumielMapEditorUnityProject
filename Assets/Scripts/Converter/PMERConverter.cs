@@ -122,6 +122,12 @@ namespace Assets.Scripts.Converter
 
         private static ObjectType MapBlockType(PMERBlockType blockType)
         {
+            ObjectType Warn()
+            {
+                Debug.LogWarning($"Unsupported BlockType {blockType} was found. Setting type to None.");
+                return ObjectType.None;
+            }
+
             return blockType switch
             {
                 PMERBlockType.Primitive => ObjectType.Primitive,
@@ -133,7 +139,7 @@ namespace Assets.Scripts.Converter
                 PMERBlockType.Locker => ObjectType.Locker,
                 PMERBlockType.Text => ObjectType.TextToy,
                 PMERBlockType.Interactable => ObjectType.Interactable,
-                _ => throw new InvalidOperationException(),
+                _ => Warn(),
             };
         }
 
