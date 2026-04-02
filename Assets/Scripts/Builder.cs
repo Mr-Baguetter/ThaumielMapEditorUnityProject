@@ -15,9 +15,6 @@ namespace Assets.Scripts
         [field: SerializeField]
         public List<YamlLOD> LODSettings { get; set; } = new();
 
-        [field: SerializeField]
-        public CullableArea CullingSettings { get; set; }
-
         private static readonly Color[] LodColors = new Color[]
         {
             Color.green,
@@ -32,14 +29,6 @@ namespace Assets.Scripts
 
         private void OnDrawGizmosSelected()
         {
-            if (CullingSettings != null)
-            {
-                Gizmos.color = CullingAreaColor;
-                Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, transform.lossyScale);
-                Gizmos.DrawWireCube(Vector3.zero, CullingSettings.Bounds);
-                Gizmos.matrix = Matrix4x4.identity;
-            }
-
             if (LODSettings == null)
                 return;
 
@@ -97,7 +86,7 @@ namespace Assets.Scripts
                 Rotation = transform.rotation.eulerAngles,
                 Scale = transform.localScale,
                 Objects = CompileObjects(directoryPath),
-                Areas = CompileCulling(),
+                Areas = new(),
                 LOD = LODSettings
             };
             
@@ -149,6 +138,7 @@ namespace Assets.Scripts
         }
 
         // TODO: Test this.
+        /*
         private List<YamlArea> CompileCulling()
         {
             List<YamlArea> areas = new();
@@ -165,6 +155,7 @@ namespace Assets.Scripts
             areas.Add(culling);
             return areas;
         }
+        */
 
         private void SetupOutput(out string directoryPath)
         {

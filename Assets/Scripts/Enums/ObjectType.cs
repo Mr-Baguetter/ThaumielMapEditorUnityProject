@@ -18,5 +18,6 @@ namespace Assets.Scripts.Enums
         Target = 13,
         Schematic = 14,
         Teleporter = 15,
+        GameObject = 16,
     }
 }

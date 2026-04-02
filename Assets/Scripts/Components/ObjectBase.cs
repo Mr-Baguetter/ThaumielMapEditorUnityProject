@@ -32,7 +32,7 @@ namespace Assets.Scripts.Components
             Name = t.name;
 
             ObjectId = transform.gameObject.GetInstanceID();
-            ParentId = root.gameObject.GetInstanceID();
+            ParentId = transform.parent?.gameObject.GetInstanceID() ?? 0;
             Position = root.InverseTransformPoint(t.position);
             Rotation = Quaternion.Inverse(root.rotation) * t.rotation.eulerAngles;
             Scale = gameObject.transform.localScale;
