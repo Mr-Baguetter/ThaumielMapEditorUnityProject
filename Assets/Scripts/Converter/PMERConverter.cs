@@ -29,9 +29,12 @@ namespace Assets.Scripts.Converter
             Interactable = 9,
         }
 
+        private static Dictionary<int, Transform> _instanceMap = new();
+
         [MenuItem("Thaumiel/Tools/PMER Converter")]
         public static void Open()
         {
+            _instanceMap.Clear();
             string[] guids = AssetDatabase.FindAssets("t:BuilderPrefabRegistry");
             if (guids.Length > 0)
             {
@@ -59,7 +62,7 @@ namespace Assets.Scripts.Converter
                     continue;
                 }
 
-                GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(prefab, root.transform);
+                GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
                 instance.name = obj.Name;
 
                 if (instance.TryGetComponent(out ObjectBase block))
@@ -77,10 +80,21 @@ namespace Assets.Scripts.Converter
                     block.Decompile(root.transform);
                 }
 
+                ObjectBase originalBlock = root.GetComponents<ObjectBase>().First(b => b.Name == obj.Name);
+                _instanceMap[originalBlock.ObjectId] = instance.transform;
+                instance.transform.SetParent(GetParentForBlock(originalBlock, root.transform));
                 Undo.RegisterCreatedObjectUndo(instance, $"Convert {obj.Name}");
             }
 
             Selection.activeGameObject = root;
+        }
+
+        public static Transform GetParentForBlock(ObjectBase block, Transform root)
+        {
+            if (block.ParentId != 0 && _instanceMap.TryGetValue(block.ParentId, out Transform parent))
+                return parent;
+
+            return root;
         }
 
         /// <summary>
