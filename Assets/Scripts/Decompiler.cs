@@ -92,6 +92,8 @@ namespace Assets.Scripts
                 ObjectType.Interactable => _registry.InteractablePrefab,
                 ObjectType.Waypoint => _registry.WaypointPrefab,
                 ObjectType.Pickup => _registry.PickupPrefab,
+                ObjectType.Teleporter => _registry.TeleporterPrefab,
+                ObjectType.GameObject => _registry.EmptyGameObjectPrefab,
                 _ => null
             };
         }

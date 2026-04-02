@@ -140,6 +140,7 @@ namespace Assets.Scripts.Converter
                 PMERBlockType.Locker => ObjectType.Locker,
                 PMERBlockType.Text => ObjectType.TextToy,
                 PMERBlockType.Interactable => ObjectType.Interactable,
+                PMERBlockType.Empty => ObjectType.GameObject,
                 _ => Warn(),
             };
         }

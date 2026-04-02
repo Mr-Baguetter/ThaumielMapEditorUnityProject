@@ -60,5 +60,6 @@ namespace Assets.Scripts
         public GameObject WaypointPrefab;
         public GameObject PickupPrefab;
         public GameObject TeleporterPrefab;
+        public GameObject EmptyGameObjectPrefab;
     }
 }
