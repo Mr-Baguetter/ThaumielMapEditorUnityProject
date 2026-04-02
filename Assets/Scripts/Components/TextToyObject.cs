@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Assets.Scripts.Enums;
 using TMPro;
@@ -12,31 +13,24 @@ namespace Assets.Scripts.Components
         public Vector2 DisplaySize { get; set; }
 
         [field: SerializeField]
-        public string TextFormat { get; set; }
-
-        [field: SerializeField]
-        public List<string> Arguments { get; set; } = new();
+        public string Text { get; set; }
 
         public override ObjectType ObjectType => ObjectType.TextToy;
 
-        private TextMeshPro _textMesh;
-        private RectTransform _rectTransform;
+        private TMP_Text _textMesh;
+        private MeshRenderer _renderer;
 
         private void Awake()
         {
-            _textMesh = GetComponent<TextMeshPro>();
-            _rectTransform = _textMesh.GetComponent<RectTransform>();
+            TryGetComponent(out _textMesh);
+            TryGetComponent(out _renderer);
         }
 
         private void OnValidate()
         {
-            if (_textMesh == null)
-                _textMesh = GetComponent<TextMeshPro>();
+            _textMesh.margin = Vector4.zero;
+            _renderer.hideFlags = HideFlags.HideInInspector;
 
-            if (_rectTransform == null && _textMesh != null)
-                _rectTransform = _textMesh.GetComponent<RectTransform>();
-
-            ApplyDisplaySize();
             RefreshText();
         }
 
@@ -46,38 +40,16 @@ namespace Assets.Scripts.Components
             base.Properties = new()
             {
                 ["DisplaySize"] = DisplaySize,
-                ["TextFormat"] = TextFormat,
-                ["Arguments"] = Arguments,
+                ["TextFormat"] = Text
             };
-        }
-
-        private void ApplyDisplaySize()
-        {
-            if (_rectTransform == null)
-                return;
-
-            _rectTransform.sizeDelta = DisplaySize;
         }
 
         private void RefreshText()
         {
-            if (_textMesh == null || string.IsNullOrEmpty(TextFormat))
+            if (_textMesh == null || string.IsNullOrEmpty(Text))
                 return;
 
-            if (Arguments != null && Arguments.Count > 0)
-            {
-                try
-                {
-                    _textMesh.SetText(string.Format(TextFormat, Arguments.ToArray()));
-                }
-                catch (System.FormatException ex)
-                {
-                    _textMesh.SetText(TextFormat);
-                    Debug.LogWarning($"[TextToyObject] Failed to format text on '{gameObject.name}': {ex.Message}");
-                }
-            }
-            else
-                _textMesh.SetText(TextFormat);
+            _textMesh.SetText(Text);
         }
 
         public override void Decompile(Transform root)
@@ -85,10 +57,8 @@ namespace Assets.Scripts.Components
             base.Decompile(root);
 
             DisplaySize = Properties.TryGetValue("DisplaySize", out object displaySize) ? (Vector2)displaySize : default;
-            TextFormat = Properties.TryGetValue("TextFormat", out object textFormat) ? textFormat.ToString() : string.Empty;
-            Arguments = Properties.TryGetValue("Arguments", out object arguments) && arguments is List<string> argsList ? argsList : new List<string>();
+            Text = Properties.TryGetValue("Text", out object text) ? Convert.ToString(text) : string.Empty;
 
-            ApplyDisplaySize();
             RefreshText();
         }
     }
