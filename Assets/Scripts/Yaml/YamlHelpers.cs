@@ -96,5 +96,13 @@ namespace Assets.Scripts.Yaml
                 
             return default;
         }
+
+        public static List<T> ParseEnumList<T>(object value) where T : struct, Enum
+        {
+            if (value is not List<object> list)
+                return new List<T>();
+
+            return list.Select(item => ParseEnum<T>(item)).ToList();
+        }
     }
 }

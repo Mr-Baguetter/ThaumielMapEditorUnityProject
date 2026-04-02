@@ -52,7 +52,7 @@ namespace Assets.Scripts.Components
             Id = Properties.TryGetValue("Id", out object id) ? (Guid)id : Guid.NewGuid();
             TargetId = Properties.TryGetValue("Target", out object targetid) ? (Guid)targetid : Guid.NewGuid();
             CoolDown = Properties.TryGetValue("CoolDown", out object cooldown) ? (float)cooldown : default;
-            AllowedRoles = Properties.TryGetValue("AllowedRoles", out object allowed) ? (List<RoleTypeId>)allowed : default;
+            AllowedRoles = Properties.TryGetValue("AllowedRoles", out object allowed) ? YamlHelpers.ParseEnumList<RoleTypeId>(allowed) : default;
             PerPlayerCooldown = Properties.TryGetValue("PerPlayerCooldown", out object perplayer) && (bool)perplayer;
             Flags = Properties.TryGetValue("Flags", out object teleporterFlags) ? YamlHelpers.ParseEnum<TeleporterFlags>(teleporterFlags) : default;
         }
