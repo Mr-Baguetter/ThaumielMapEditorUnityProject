@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Assets.Scripts.Enums;
+using Assets.Scripts.Yaml;
 using UnityEngine;
 
 namespace Assets.Scripts.Components
@@ -21,6 +22,9 @@ namespace Assets.Scripts.Components
         [field: SerializeField]
         public bool PerPlayerCooldown { get; set; }
 
+        [field: SerializeField]
+        public TeleporterFlags Flags { get; set; }
+
         public override ObjectType ObjectType => ObjectType.Teleporter;
 
         public override void Compile(Transform root)
@@ -33,6 +37,7 @@ namespace Assets.Scripts.Components
                 ["CoolDown"] = CoolDown,
                 ["AllowedRoles"] = AllowedRoles,
                 ["PerPlayerCooldown"] = PerPlayerCooldown,
+                ["Flags"] = Flags
             };
         }
 
@@ -44,6 +49,7 @@ namespace Assets.Scripts.Components
             CoolDown = Properties.TryGetValue("CoolDown", out object cooldown) ? (float)cooldown : default;
             AllowedRoles = Properties.TryGetValue("AllowedRoles", out object allowed) ? (List<RoleTypeId>)allowed : default;
             PerPlayerCooldown = Properties.TryGetValue("PerPlayerCooldown", out object perplayer) && (bool)perplayer;
+            Flags = Properties.TryGetValue("Flags", out object teleporterFlags) ? YamlHelpers.ParseEnum<TeleporterFlags>(teleporterFlags) : default;
         }
 
         private void Start()
