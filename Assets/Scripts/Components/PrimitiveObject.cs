@@ -42,7 +42,7 @@ namespace Assets.Scripts.Components
         {
             TryGetComponent(out _filter);
             TryGetComponent(out _renderer);
-            _sharedRegular = new Material((Material)Resources.Load("Materials/Regular"));
+            _sharedRegular = new Material((Material)Resources.Load("Materials/Regulart"));
         }
 
         private void Update()
