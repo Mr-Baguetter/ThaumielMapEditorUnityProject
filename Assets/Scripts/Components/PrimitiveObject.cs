@@ -42,7 +42,15 @@ namespace Assets.Scripts.Components
         {
             TryGetComponent(out _filter);
             TryGetComponent(out _renderer);
-            _sharedRegular = new Material((Material)Resources.Load("Materials/Regulart"));
+            Shader litShader = Shader.Find("Universal Render Pipeline/Lit");
+
+            if (litShader == null)
+            {
+                Debug.LogError("Failed to find shader 'Universal Render Pipeline/Lit'.");
+                return;
+            }
+
+            _sharedRegular = new Material(litShader);
         }
 
         private void Update()
