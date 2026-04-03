@@ -1,3 +1,4 @@
+using System;
 using Assets.Scripts.Enums;
 using UnityEngine;
 
@@ -23,7 +24,7 @@ namespace Assets.Scripts.Components
         {
             base.Decompile(root);
 
-            Collisions = Properties.TryGetValue("Collisions", out object collisions) ? (bool)collisions : default;
+            Collisions = Properties.TryGetValue("Collisions", out object collisions) ? Convert.ToBoolean(collisions) : default;
         }
     }
 }

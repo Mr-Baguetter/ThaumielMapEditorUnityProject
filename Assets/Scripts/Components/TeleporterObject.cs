@@ -49,11 +49,11 @@ namespace Assets.Scripts.Components
         {
             base.Decompile(root);
 
-            Id = Properties.TryGetValue("Id", out object id) ? (Guid)id : Guid.NewGuid();
-            TargetId = Properties.TryGetValue("Target", out object targetid) ? (Guid)targetid : Guid.NewGuid();
-            CoolDown = Properties.TryGetValue("CoolDown", out object cooldown) ? (float)cooldown : default;
+            Id = Properties.TryGetValue("Id", out object id) ? Guid.Parse(Convert.ToString(id)) : Guid.NewGuid();
+            TargetId = Properties.TryGetValue("Target", out object targetid) ? Guid.Parse(Convert.ToString(targetid)) : Guid.NewGuid();
+            CoolDown = Properties.TryGetValue("CoolDown", out object cooldown) ? Convert.ToSingle(cooldown) : default;
             AllowedRoles = Properties.TryGetValue("AllowedRoles", out object allowed) ? YamlHelpers.ParseEnumList<RoleTypeId>(allowed) : default;
-            PerPlayerCooldown = Properties.TryGetValue("PerPlayerCooldown", out object perplayer) && (bool)perplayer;
+            PerPlayerCooldown = Properties.TryGetValue("PerPlayerCooldown", out object perplayer) && Convert.ToBoolean(perplayer);
             Flags = Properties.TryGetValue("Flags", out object teleporterFlags) ? YamlHelpers.ParseEnum<TeleporterFlags>(teleporterFlags) : default;
         }
 

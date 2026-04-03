@@ -1,3 +1,4 @@
+using System;
 using Assets.Scripts.Enums;
 using Assets.Scripts.Yaml;
 using UnityEngine;
@@ -29,8 +30,8 @@ namespace Assets.Scripts.Components
         {
             base.Decompile(root);
 
-            Priority = Properties.TryGetValue("Priority", out object priority) ? (float)priority : default;
-            VisualizeBounds = Properties.TryGetValue("VisualizeBounds", out object visualizeBounds) && (bool)visualizeBounds;
+            Priority = Properties.TryGetValue("Priority", out object priority) ? Convert.ToSingle(priority) : default;
+            VisualizeBounds = Properties.TryGetValue("VisualizeBounds", out object visualizeBounds) && Convert.ToBoolean(visualizeBounds);
             transform.localScale = Properties.TryGetValue("BoundsSize", out object boundsSize) ? YamlHelpers.ParseVector3(boundsSize) : default;
         }
     }

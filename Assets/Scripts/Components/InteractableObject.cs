@@ -1,6 +1,7 @@
 using UnityEngine;
 using Assets.Scripts.Enums;
 using System;
+using Assets.Scripts.Yaml;
 
 namespace Assets.Scripts.Components
 {
@@ -56,10 +57,10 @@ namespace Assets.Scripts.Components
         {
             base.Decompile(root);
 
-            Shape = Properties.TryGetValue("Shape", out object shape) ? (ColliderShape)Enum.Parse(typeof(ColliderShape), shape.ToString()) : default;
-            Duration = Properties.TryGetValue("Duration", out object duration) ? (float)duration : default;
-            Locked = Properties.TryGetValue("Locked", out object locked) && (bool)locked;
-            Permissions = Properties.TryGetValue("Permissions", out object perms) ? (DoorPermissionFlags)Enum.Parse(typeof(DoorPermissionFlags), perms.ToString()) : default;
+            Shape = Properties.TryGetValue("Shape", out object shape) ? YamlHelpers.ParseEnum<ColliderShape>(shape) : default;
+            Duration = Properties.TryGetValue("Duration", out object duration) ? Convert.ToSingle(duration) : default;
+            Locked = Properties.TryGetValue("Locked", out object locked) && Convert.ToBoolean(locked);
+            Permissions = Properties.TryGetValue("Permissions", out object perms) ? YamlHelpers.ParseEnum<DoorPermissionFlags>(perms) : default;
         }
     }
 }

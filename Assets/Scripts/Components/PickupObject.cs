@@ -1,4 +1,6 @@
+using System;
 using Assets.Scripts.Enums;
+using Assets.Scripts.Yaml;
 using UnityEngine;
 namespace Assets.Scripts.Components
 {
@@ -34,10 +36,10 @@ namespace Assets.Scripts.Components
         {
             base.Decompile(root);
 
-            ItemToSpawn = Properties.TryGetValue("ItemToSpawn", out object itemToSpawn) ? (ItemType)System.Enum.Parse(typeof(ItemType), itemToSpawn.ToString()) : default;
-            SpawnPercentage = Properties.TryGetValue("SpawnPercentage", out object spawnPercentage) ? (float)spawnPercentage : default;
-            MaxAmount = Properties.TryGetValue("MaxAmount", out object maxAmount) ? (uint)maxAmount : default;
-            IsInfinite = Properties.TryGetValue("IsInfinite", out object isInfinite) && (bool)isInfinite;
+            ItemToSpawn = Properties.TryGetValue("ItemToSpawn", out object itemToSpawn) ? YamlHelpers.ParseEnum<ItemType>(itemToSpawn) : default;
+            SpawnPercentage = Properties.TryGetValue("SpawnPercentage", out object spawnPercentage) ? Convert.ToSingle(spawnPercentage) : default;
+            MaxAmount = Properties.TryGetValue("MaxAmount", out object maxAmount) ? Convert.ToUInt32(maxAmount) : default;
+            IsInfinite = Properties.TryGetValue("IsInfinite", out object isInfinite) && Convert.ToBoolean(isInfinite);
         }
     }
 }

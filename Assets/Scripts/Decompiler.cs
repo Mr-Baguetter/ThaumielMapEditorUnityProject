@@ -13,6 +13,8 @@ namespace Assets.Scripts
     {
         public static BuilderPrefabRegistry _registry;
 
+        private static Dictionary<int, Transform> _instanceMap = new();
+
         public static void DecompileData(BuilderPrefabRegistry registry)
         {
             _registry = registry;
@@ -40,8 +42,11 @@ namespace Assets.Scripts
                     continue;
                 }
 
-                GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(prefab, root.transform);
+                GameObject instance = UnityEngine.Object.Instantiate(prefab);
                 instance.name = obj.Name;
+
+                Transform parent = obj.ParentId == schematic.RootObjectId ? root.transform : _instanceMap.TryGetValue(obj.ParentId, out Transform p) ? p : root.transform;
+                instance.transform.SetParent(parent, true);
 
                 if (instance.TryGetComponent(out ObjectBase block))
                 {
@@ -51,13 +56,13 @@ namespace Assets.Scripts
                     block.ObjectType = obj.ObjectType;
                     block.Properties = obj.Values;
 
-                    block.Position = obj.Position;
-                    block.Rotation = obj.Rotation;
-                    block.Scale = obj.Scale;
-
                     block.Decompile(root.transform);
                 }
 
+                instance.transform.SetLocalPositionAndRotation(obj.Position, Quaternion.Euler(obj.Rotation));
+                instance.transform.localScale = obj.Scale;
+
+                _instanceMap[obj.ObjectId] = instance.transform;
                 Undo.RegisterCreatedObjectUndo(instance, $"Decompile {obj.Name}");
             }
 

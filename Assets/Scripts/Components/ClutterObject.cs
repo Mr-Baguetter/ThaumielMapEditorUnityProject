@@ -1,5 +1,6 @@
 using System;
 using Assets.Scripts.Enums;
+using Assets.Scripts.Yaml;
 using UnityEngine;
 
 namespace Assets.Scripts.Components
@@ -25,7 +26,7 @@ namespace Assets.Scripts.Components
         {
             base.Decompile(root);
 
-            ClutterType = Properties.TryGetValue("ClutterType", out object clutterType) ? (ClutterType)Enum.Parse(typeof(ClutterType), clutterType.ToString()) : default;
+            ClutterType = Properties.TryGetValue("ClutterType", out object clutterType) ? YamlHelpers.ParseEnum<ClutterType>(clutterType) : default;
         }
     }
 }

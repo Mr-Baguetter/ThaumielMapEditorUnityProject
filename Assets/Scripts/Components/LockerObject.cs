@@ -47,7 +47,7 @@ namespace Assets.Scripts.Components
         {
             base.Decompile(root);
 
-            LockerType = Properties.TryGetValue("LockerType", out object lockerType) ? (LockerType)Enum.Parse(typeof(LockerType), lockerType.ToString()) : default;
+            LockerType = Properties.TryGetValue("LockerType", out object lockerType) ? YamlHelpers.ParseEnum<LockerType>(lockerType) : default;
             Chambers = Properties.TryGetValue("Chambers", out object chambers) && chambers is List<object> chamberList ? chamberList.Select(c => YamlHelpers.ParseChamber(c)).ToList() : new List<LockerChamber>();
         }
     }

@@ -47,9 +47,9 @@ namespace Assets.Scripts.Components
         {
             base.Decompile(root);
 
-            CameraType = Properties.TryGetValue("CameraType", out object cameraType) ? (CameraType)Enum.Parse(typeof(CameraType), cameraType.ToString()) : default;
-            Label = Properties.TryGetValue("Label", out object label) ? label.ToString() : string.Empty;
-            Room = Properties.TryGetValue("Room", out object room) ? (RoomName)Enum.Parse(typeof(RoomName), room.ToString()) : default;
+            CameraType = Properties.TryGetValue("CameraType", out object cameraType) ? YamlHelpers.ParseEnum<CameraType>(cameraType) : default;
+            Label = Properties.TryGetValue("Label", out object label) ? Convert.ToString(label) : string.Empty;
+            Room = Properties.TryGetValue("Room", out object room) ? YamlHelpers.ParseEnum<RoomName>(room) : default;
             VerticalConstraint = Properties.TryGetValue("VerticalConstraint", out object verticalConstraint) ? YamlHelpers.ParseVector2(verticalConstraint) : default;
             HorizontalConstraint = Properties.TryGetValue("HorizontalConstraint", out object horizontalConstraint) ? YamlHelpers.ParseVector2(horizontalConstraint) : default;
             ZoomConstraint = Properties.TryGetValue("ZoomConstraint", out object zoomConstraint) ? YamlHelpers.ParseVector2(zoomConstraint) : default;

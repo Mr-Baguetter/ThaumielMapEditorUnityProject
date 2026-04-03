@@ -67,7 +67,7 @@ namespace Assets.Scripts.Converter
                     continue;
                 }
 
-                GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
+                GameObject instance = Instantiate(prefab);
                 instance.name = obj.Name;
 
                 Transform parent = originalBlock.ParentId == pmer.RootObjectId ? root.transform : _instanceMap.TryGetValue(originalBlock.ParentId, out Transform p) ? p : root.transform;

@@ -199,10 +199,10 @@ namespace Assets.Scripts.Components
             Intensity = Properties.TryGetValue("LightIntensity", out object intensity) ? Convert.ToSingle(intensity) : default;
             Range = Properties.TryGetValue("LightRange", out object range) ? Convert.ToSingle(range) : default;
             Color = Properties.TryGetValue("LightColor", out object color) ? YamlHelpers.ParseColor(color) : Color.white;
-            ShadowType = Properties.TryGetValue("ShadowType", out object shadowType) ? (LightShadows)Enum.Parse(typeof(LightShadows), shadowType.ToString()) : default;
+            ShadowType = Properties.TryGetValue("ShadowType", out object shadowType) ? YamlHelpers.ParseEnum<LightShadows>(shadowType) : default;
             ShadowStrength = Properties.TryGetValue("ShadowStrength", out object shadowStrength) ? Convert.ToSingle(shadowStrength) : default;
-            LightType = Properties.TryGetValue("LightType", out object lightType) ? (LightType)Enum.Parse(typeof(LightType), lightType.ToString()) : default;
-            LightShape = Properties.TryGetValue("LightShape", out object lightShape) ? (LightShape)Enum.Parse(typeof(LightShape), lightShape.ToString()) : default;
+            LightType = Properties.TryGetValue("LightType", out object lightType) ? YamlHelpers.ParseEnum<LightType>(lightType) : default;
+            LightShape = Properties.TryGetValue("LightShape", out object lightShape) ? YamlHelpers.ParseEnum<LightShape>(lightShape) : default;
             SpotAngle = Properties.TryGetValue("SpotAngle", out object spotAngle) ? Convert.ToSingle(spotAngle) : default;
             InnerSpotAngle = Properties.TryGetValue("InnerSpotAngle", out object innerSpotAngle) ? Convert.ToSingle(innerSpotAngle) : default;
         }

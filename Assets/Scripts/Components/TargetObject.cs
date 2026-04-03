@@ -1,5 +1,6 @@
 using UnityEngine;
 using Assets.Scripts.Enums;
+using Assets.Scripts.Yaml;
 
 namespace Assets.Scripts.Components
 {
@@ -23,7 +24,7 @@ namespace Assets.Scripts.Components
         public override void Decompile(Transform root)
         {
             base.Decompile(root);
-            TargetType = (TargetType)Properties["TargetType"];
+            TargetType = Properties.TryGetValue("TargetType", out object targetType) ? YamlHelpers.ParseEnum<TargetType>(targetType) : default;
         }
     }
 }

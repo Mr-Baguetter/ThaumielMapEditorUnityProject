@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Assets.Scripts.Enums;
+using Assets.Scripts.Yaml;
 using TMPro;
 using UnityEngine;
 
@@ -56,7 +57,7 @@ namespace Assets.Scripts.Components
         {
             base.Decompile(root);
 
-            DisplaySize = Properties.TryGetValue("DisplaySize", out object displaySize) ? (Vector2)displaySize : default;
+            DisplaySize = Properties.TryGetValue("DisplaySize", out object displaySize) ? YamlHelpers.ParseVector2(displaySize) : default;
             Text = Properties.TryGetValue("Text", out object text) ? Convert.ToString(text) : string.Empty;
 
             RefreshText();
