@@ -1,6 +1,7 @@
 using Assets.Scripts.Enums;
 using Assets.Scripts.Yaml;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace Assets.Scripts.Components
 {
@@ -42,17 +43,37 @@ namespace Assets.Scripts.Components
             if (_meshRenderer == null && !TryGetComponent(out _meshRenderer))
                 return;
 
-            if (_propertyBlock == null)
-                _propertyBlock = new MaterialPropertyBlock();
+            _propertyBlock ??= new MaterialPropertyBlock();
+
+            foreach (Material mat in _meshRenderer.materials)
+            {
+                SetMaterialTransparent(mat);
+            }
 
             _meshRenderer.GetPropertyBlock(_propertyBlock);
             _propertyBlock.SetColor("_BaseColor", Color);
             _meshRenderer.SetPropertyBlock(_propertyBlock);
         }
 
+        private void SetMaterialTransparent(Material mat)
+        {
+            mat.SetFloat("_Surface", 1f);
+            mat.SetFloat("_Blend", 0f);
+
+            mat.SetInteger("_SrcBlend", (int)BlendMode.SrcAlpha);
+            mat.SetInteger("_DstBlend", (int)BlendMode.OneMinusSrcAlpha);
+            mat.SetInteger("_ZWrite", 0);
+
+            mat.renderQueue = (int)RenderQueue.Transparent;
+
+            mat.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
+            mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+        }
+
         private void Start()
         {
             TryGetComponent(out _meshFilter);
+            TryGetComponent(out _meshRenderer);
         }
 
         public override void Decompile(Transform root)
@@ -72,9 +93,8 @@ namespace Assets.Scripts.Components
             if (PrimitiveFlags.HasFlag(PrimitiveFlags.Visible))
                 return;
 
-            Gizmos.color = Color.white;
-            Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, transform.lossyScale);
-            Gizmos.DrawWireMesh(_meshFilter.sharedMesh);
+            Gizmos.color = new Color(Color.r, Color.g, Color.b, 1f);
+            Gizmos.DrawWireMesh(_meshFilter.sharedMesh, 0, transform.position, transform.rotation, transform.localScale);
         }
     }
 }
