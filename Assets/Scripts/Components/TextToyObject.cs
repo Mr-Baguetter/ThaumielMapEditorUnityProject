@@ -6,10 +6,10 @@ using UnityEngine;
 
 namespace Assets.Scripts.Components
 {
+    [ExecuteInEditMode]
     [RequireComponent(typeof(TextMeshPro))]
     public class TextToyObject : ObjectBase
     {
-        [field: SerializeField]
         public Vector2 DisplaySize { get; set; }
 
         [field: SerializeField]
@@ -18,20 +18,21 @@ namespace Assets.Scripts.Components
         public override ObjectType ObjectType => ObjectType.TextToy;
 
         private TMP_Text _textMesh;
-        private MeshRenderer _renderer;
 
         private void Awake()
         {
             TryGetComponent(out _textMesh);
-            TryGetComponent(out _renderer);
         }
 
         private void OnValidate()
         {
-            _textMesh.margin = Vector4.zero;
-            _renderer.hideFlags = HideFlags.HideInInspector;
-
             RefreshText();
+
+            if (_textMesh != null)
+            {
+                DisplaySize = _textMesh.rectTransform.sizeDelta;
+                _textMesh.margin = Vector4.zero;
+            }
         }
 
         public override void Compile(Transform root)

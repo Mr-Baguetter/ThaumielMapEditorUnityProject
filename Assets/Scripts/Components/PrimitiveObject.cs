@@ -21,7 +21,9 @@ namespace Assets.Scripts.Components
 
         private MeshRenderer _meshRenderer;
         private MeshFilter _meshFilter;
+
         private Material _sharedRegular;
+        private Material _sharedTransparent;
 
         private void Update()
         {
@@ -31,11 +33,17 @@ namespace Assets.Scripts.Components
             if (_sharedRegular == null)
                 _sharedRegular = new Material((Material)Resources.Load("Materials/Regular"));
 
-            if (_sharedRegular == null)
+            if (_sharedTransparent == null)
+                _sharedTransparent = new Material((Material)Resources.Load("Materials/Transparent"));
+
+            if (_sharedRegular == null || _sharedTransparent == null)
                 return;
 
-            _meshRenderer.sharedMaterial = _sharedRegular;
-            _meshRenderer.sharedMaterial.color = Color;
+            _sharedRegular.color = Color;
+            _sharedTransparent.color = Color;
+
+            if (GUIUtility.hotControl == 0)
+                _meshRenderer.sharedMaterial = Color.a >= 1f ? _sharedRegular : _sharedTransparent;
 
             _meshRenderer.enabled = PrimitiveFlags.HasFlag(PrimitiveFlags.Visible);
         }
