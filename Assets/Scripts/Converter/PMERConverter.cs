@@ -29,7 +29,7 @@ namespace Assets.Scripts.Converter
             Interactable = 9,
         }
 
-        private static Dictionary<int, Transform> _instanceMap = new();
+        private static readonly Dictionary<int, Transform> _instanceMap = new();
 
         [MenuItem("Thaumiel/Tools/PMER Converter")]
         public static void Open()

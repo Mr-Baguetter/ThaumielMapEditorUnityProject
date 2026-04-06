@@ -24,7 +24,7 @@ namespace Assets.Scripts.Components
         {
             base.Decompile(root);
 
-            Collisions = Properties.TryGetValue("Collisions", out object collisions) ? Convert.ToBoolean(collisions) : default;
+            Collisions = Properties.TryGetValue("Collisions", out object collisions) && Convert.ToBoolean(collisions);
         }
     }
 }

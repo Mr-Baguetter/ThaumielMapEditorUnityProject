@@ -2,11 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Assets.Scripts.Components;
-using Assets.Scripts.Areas;
 using Assets.Scripts.Yaml;
 using UnityEditor;
 using UnityEngine;
-using Assets.Scripts.Enums;
 
 namespace Assets.Scripts
 {
@@ -109,12 +107,7 @@ namespace Assets.Scripts
                         assetNames = new[] { AssetDatabase.GetAssetPath(runtimeAnimatorController) }
                     };
 
-                    BuildPipeline.BuildAssetBundles(
-                        directoryPath,
-                        new[] { bundleBuild },
-                        BuildAssetBundleOptions.ChunkBasedCompression | BuildAssetBundleOptions.ForceRebuildAssetBundle | BuildAssetBundleOptions.StrictMode,
-                        EditorUserBuildSettings.activeBuildTarget
-                    );
+                    BuildPipeline.BuildAssetBundles(directoryPath, new[] { bundleBuild }, BuildAssetBundleOptions.ChunkBasedCompression | BuildAssetBundleOptions.ForceRebuildAssetBundle | BuildAssetBundleOptions.StrictMode, EditorUserBuildSettings.activeBuildTarget);
                 }
                 
                 YamlCustomObject customObject = new()

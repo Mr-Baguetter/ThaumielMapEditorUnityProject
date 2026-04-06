@@ -45,29 +45,9 @@ namespace Assets.Scripts.Components
 
             _propertyBlock ??= new MaterialPropertyBlock();
 
-            foreach (Material mat in _meshRenderer.materials)
-            {
-                SetMaterialTransparent(mat);
-            }
-
             _meshRenderer.GetPropertyBlock(_propertyBlock);
             _propertyBlock.SetColor("_BaseColor", Color);
             _meshRenderer.SetPropertyBlock(_propertyBlock);
-        }
-
-        private void SetMaterialTransparent(Material mat)
-        {
-            mat.SetFloat("_Surface", 1f);
-            mat.SetFloat("_Blend", 0f);
-
-            mat.SetInteger("_SrcBlend", (int)BlendMode.SrcAlpha);
-            mat.SetInteger("_DstBlend", (int)BlendMode.OneMinusSrcAlpha);
-            mat.SetInteger("_ZWrite", 0);
-
-            mat.renderQueue = (int)RenderQueue.Transparent;
-
-            mat.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
-            mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
         }
 
         private void Start()
@@ -88,9 +68,16 @@ namespace Assets.Scripts.Components
             ApplyColor();
         }
 
+
         private void OnDrawGizmos()
         {
             if (PrimitiveFlags.HasFlag(PrimitiveFlags.Visible))
+                return;
+
+            if (_meshFilter == null)
+                TryGetComponent(out _meshFilter);
+
+            if (_meshFilter == null || _meshFilter.sharedMesh == null)
                 return;
 
             Gizmos.color = new Color(Color.r, Color.g, Color.b, 1f);
