@@ -24,7 +24,7 @@ namespace Assets.Scripts.Components
         [field: SerializeField]
         public float MovementSmoothing { get; set; }
 
-    public Dictionary<string, object> Properties { get; set; }
+        public Dictionary<string, object> Properties { get; set; }
 
         public virtual void Compile(Transform root)
         {

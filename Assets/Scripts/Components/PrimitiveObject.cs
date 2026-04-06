@@ -5,6 +5,7 @@ using UnityEngine.Rendering;
 
 namespace Assets.Scripts.Components
 {
+    [ExecuteInEditMode]
     public class PrimitiveObject : ObjectBase
     {
         [field: SerializeField]
@@ -20,11 +21,23 @@ namespace Assets.Scripts.Components
 
         private MeshRenderer _meshRenderer;
         private MeshFilter _meshFilter;
-        private MaterialPropertyBlock _propertyBlock;
+        private Material _sharedRegular;
 
-        private void OnValidate()
+        private void Update()
         {
-            ApplyColor();
+            if (_meshRenderer == null && !TryGetComponent(out _meshRenderer))
+                return;
+
+            if (_sharedRegular == null)
+                _sharedRegular = new Material((Material)Resources.Load("Materials/Regular"));
+
+            if (_sharedRegular == null)
+                return;
+
+            _meshRenderer.sharedMaterial = _sharedRegular;
+            _meshRenderer.sharedMaterial.color = Color;
+
+            _meshRenderer.enabled = PrimitiveFlags.HasFlag(PrimitiveFlags.Visible);
         }
 
         public override void Compile(Transform root)
@@ -38,22 +51,11 @@ namespace Assets.Scripts.Components
             };
         }
 
-        private void ApplyColor()
-        {
-            if (_meshRenderer == null && !TryGetComponent(out _meshRenderer))
-                return;
-
-            _propertyBlock ??= new MaterialPropertyBlock();
-
-            _meshRenderer.GetPropertyBlock(_propertyBlock);
-            _propertyBlock.SetColor("_BaseColor", Color);
-            _meshRenderer.SetPropertyBlock(_propertyBlock);
-        }
-
         private void Start()
         {
             TryGetComponent(out _meshFilter);
             TryGetComponent(out _meshRenderer);
+            _sharedRegular = new Material((Material)Resources.Load("Materials/Regular"));
         }
 
         public override void Decompile(Transform root)
@@ -63,9 +65,6 @@ namespace Assets.Scripts.Components
             Color = Properties.TryGetValue("Color", out object color) ? YamlHelpers.ParseColor(color) : default;
             PrimitiveType = Properties.TryGetValue("PrimitiveType", out object primitiveType) ? YamlHelpers.ParseEnum<PrimitiveType>(primitiveType) : default;
             PrimitiveFlags = Properties.TryGetValue("PrimitiveFlags", out object primitiveFlags) ? YamlHelpers.ParseEnum<PrimitiveFlags>(primitiveFlags) : default;
-
-            Debug.Log($"Parsed Color: {Color}");
-            ApplyColor();
         }
 
 
