@@ -2,10 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Assets.Scripts.Components;
+using Assets.Scripts.Components.Tools;
 using Assets.Scripts.Enums;
 using Assets.Scripts.Yaml;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using PhysicsTool = Assets.Scripts.Components.Tools.Physics;
 
 namespace Assets.Scripts
 {
@@ -17,6 +20,7 @@ namespace Assets.Scripts
 
         public static void DecompileData(BuilderPrefabRegistry registry)
         {
+            _instanceMap.Clear();
             _registry = registry;
 
             string yamlPath = EditorUtility.OpenFilePanel("Select Schematic", "", "yml");
@@ -29,7 +33,7 @@ namespace Assets.Scripts
             GameObject root = new(schematic.FileName);
             root.transform.rotation = Quaternion.Euler(schematic.Rotation);
             root.transform.localScale = schematic.Scale;
-            root.AddComponent<Builder>();
+            Builder builder = root.AddComponent<Builder>();
 
             Undo.RegisterCreatedObjectUndo(root, $"Decompile {schematic.FileName}");
 
@@ -64,6 +68,68 @@ namespace Assets.Scripts
 
                 _instanceMap[obj.ObjectId] = instance.transform;
                 Undo.RegisterCreatedObjectUndo(instance, $"Decompile {obj.Name}");
+            }
+
+            _instanceMap.Clear();
+            foreach (YamlCustomObject obj in schematic.ServerSideObjects)
+            {
+                GameObject prefab = GetPrefabForObject(obj);
+                if (prefab == null)
+                {
+                    Debug.LogWarning($"No prefab mapped for ObjectType '{obj.ObjectType}', skipping '{obj.Name}'.");
+                    continue;
+                }
+
+                GameObject instance = UnityEngine.Object.Instantiate(prefab);
+                instance.name = obj.Name;
+
+                Transform parent;
+                if (_instanceMap.TryGetValue(obj.ParentId, out Transform mappedParent))
+                {
+                    parent = mappedParent;
+                }
+                else
+                    parent = builder.server.gameObject.transform;
+
+                instance.transform.SetParent(parent, true);
+
+                if (instance.TryGetComponent(out ObjectBase block))
+                {
+                    block.Name = obj.Name;
+                    block.Static = obj.IsStatic;
+                    block.MovementSmoothing = obj.MovementSmoothing;
+                    block.ObjectType = obj.ObjectType;
+                    block.Properties = obj.Values;
+
+                    block.Decompile(root.transform);
+                }
+
+                instance.transform.SetLocalPositionAndRotation(obj.Position, Quaternion.Euler(obj.Rotation));
+                instance.transform.localScale = obj.Scale;
+
+                _instanceMap[obj.ObjectId] = instance.transform;
+                Undo.RegisterCreatedObjectUndo(instance, $"Decompile {obj.Name}");
+
+                foreach (YamlTool tool in obj.Tools)
+                {
+                    if (!Enum.TryParse<ToolType>(tool.ToolName, true, out var result))
+                        continue;
+
+                    switch (result)
+                    {
+                        case ToolType.Health:
+                            Health health = block.AddComponent<Health>();
+                            health.Properties = tool.Properties;
+                            health.Decompile();
+                            break;
+
+                        case ToolType.Physics:
+                            PhysicsTool physics = block.AddComponent<PhysicsTool>();
+                            physics.Properties = tool.Properties;
+                            physics.Decompile();
+                            break;
+                    }
+                }
             }
 
             Selection.activeGameObject = root;

@@ -29,7 +29,7 @@ namespace Assets.Scripts
         private static readonly Color CullingAreaColor = new Color(1f, 0.5f, 0f);
 
         [SerializeField]
-        private ServerSide server;
+        internal ServerSide server;
 
         private void Awake()
         {
