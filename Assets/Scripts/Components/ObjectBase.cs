@@ -26,13 +26,21 @@ namespace Assets.Scripts.Components
 
         public Dictionary<string, object> Properties { get; set; }
 
+        public bool ServerSide { get; set; }
+
         public virtual void Compile(Transform root)
         {
             Transform t = transform;
             Name = t.name;
 
             ObjectId = transform.gameObject.GetInstanceID();
-            ParentId = transform.parent?.gameObject.GetInstanceID() ?? 0;
+
+            if (ServerSide)
+            {
+                ParentId = transform.parent.parent?.gameObject.GetInstanceID() ?? 0;
+            }
+            else
+                ParentId = transform.parent?.gameObject.GetInstanceID() ?? 0;
             Position = t.localPosition;
             Rotation = t.localEulerAngles;
             Scale = t.localScale;

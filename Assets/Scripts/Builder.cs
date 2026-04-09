@@ -1,13 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Assets.Scripts.Components;
+using Assets.Scripts.Components.Tools;
 using Assets.Scripts.Yaml;
 using UnityEditor;
 using UnityEngine;
 
 namespace Assets.Scripts
 {
+    [ExecuteInEditMode]
     public class Builder : MonoBehaviour
     {
         [field: SerializeField]
@@ -24,6 +27,28 @@ namespace Assets.Scripts
         };
 
         private static readonly Color CullingAreaColor = new Color(1f, 0.5f, 0f);
+
+        [SerializeField]
+        private ServerSide server;
+
+        private void Awake()
+        {
+            server = GetComponentInChildren<ServerSide>();
+            if (server != null)
+                return;
+
+            GameObject obj = new("ServerSideObjects");
+            obj.transform.SetParent(transform);
+            server = obj.AddComponent<ServerSide>();
+        }
+
+        private void LateUpdate()
+        {
+            if (server == null)
+                return;
+
+            server.transform.SetPositionAndRotation(transform.position, transform.rotation);
+        }
 
         private void OnDrawGizmosSelected()
         {
@@ -71,7 +96,7 @@ namespace Assets.Scripts
             Gizmos.DrawLine(center + right - up, center - right + up);
         }
         
-        public static event Action<Builder>? OnBuild;
+        public static event Action<Builder>? OnBuilt;
 
         public void CompileData()
         {
@@ -83,20 +108,24 @@ namespace Assets.Scripts
                 FileName = name.Replace(' ', '_'),
                 Rotation = transform.rotation.eulerAngles,
                 Scale = transform.localScale,
-                Objects = CompileObjects(directoryPath),
+                Objects = CompileObjects(),
+                ServerSideObjects = CompileServerObjects(directoryPath),
                 Areas = new(),
                 LOD = LODSettings
             };
             
             File.WriteAllText(Path.Combine(directoryPath, $"{name}.yml"), YamlParser.Serializer.Serialize(schematic));
-            OnBuild?.Invoke(this);
+            OnBuilt?.Invoke(this);
         }
 
-        public List<YamlCustomObject> CompileObjects(string directoryPath)
+        public List<YamlCustomObject> CompileServerObjects(string directoryPath)
         {
-            List<YamlCustomObject> customObjects = new();
-            foreach (ObjectBase block in GetComponentsInChildren<ObjectBase>())
+            List<YamlCustomObject> serverObjects = new();
+            
+            GameObject serverobj = GetComponentsInChildren<ServerSide>().First().gameObject;
+            foreach (ObjectBase block in serverobj.GetComponentsInChildren<ObjectBase>())
             {
+                block.ServerSide = true;
                 block.Compile(transform);
                 if (block.TryGetComponent(out Animator animator) && animator.runtimeAnimatorController != null)
                 {
@@ -109,7 +138,60 @@ namespace Assets.Scripts
 
                     BuildPipeline.BuildAssetBundles(directoryPath, new[] { bundleBuild }, BuildAssetBundleOptions.ChunkBasedCompression | BuildAssetBundleOptions.ForceRebuildAssetBundle | BuildAssetBundleOptions.StrictMode, EditorUserBuildSettings.activeBuildTarget);
                 }
+
+                YamlCustomObject customObject = new()
+                {
+                    ObjectId = block.ObjectId,
+                    ParentId = block.ParentId,
+                    Name = block.Name,
+                    Position = block.Position,
+                    Rotation = block.Rotation,
+                    Scale = block.Scale,
+                    IsStatic = block.Static,
+                    MovementSmoothing = block.MovementSmoothing,
+                    ObjectType = block.ObjectType,
+                    Values = block.Properties,
+                    AnimatorName = block.gameObject.GetComponent<Animator>().name ?? string.Empty,
+                    Tools = CompileTools(block)
+                };
+
+                serverObjects.Add(customObject);
+            }
+
+            return serverObjects;
+        }
+
+        public List<YamlTool> CompileTools(ObjectBase block)
+        {
+            List<YamlTool> tools = new();
+
+            foreach (ToolBase toolBase in block.GetComponents<ToolBase>())
+            {
+                toolBase.Compile();
+                YamlTool tool = new()
+                {
+                    ToolName = toolBase.ToolType.ToString(),
+                    Properties = toolBase.Properties
+                };
                 
+                tools.Add(tool);
+            }
+
+            return tools;
+        }
+
+        public List<YamlCustomObject> CompileObjects()
+        {
+            List<YamlCustomObject> customObjects = new();
+
+            ServerSide serverSide = GetComponentInChildren<ServerSide>();
+
+            foreach (ObjectBase block in GetComponentsInChildren<ObjectBase>())
+            {
+                if (serverSide != null && block.transform.IsChildOf(serverSide.transform))
+                    continue;
+
+                block.Compile(transform);
                 YamlCustomObject customObject = new()
                 {
                     ObjectId = block.ObjectId,

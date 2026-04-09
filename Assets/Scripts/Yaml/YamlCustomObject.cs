@@ -16,5 +16,7 @@ namespace Assets.Scripts.Yaml
         public float MovementSmoothing { get; set; }
         public ObjectType ObjectType { get; set; }
         public Dictionary<string, object> Values { get; set; }
+        public List<YamlTool> Tools { get; set; }
+        public string AnimatorName { get; set; }
     }
 }
