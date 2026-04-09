@@ -27,6 +27,8 @@ namespace Assets.Scripts.Components
         public Dictionary<string, object> Properties { get; set; }
 
         public bool ServerSide { get; set; }
+        
+        public string AnimatorName { get; set; }
 
         public virtual void Compile(Transform root)
         {

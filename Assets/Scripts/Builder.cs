@@ -102,42 +102,55 @@ namespace Assets.Scripts
         {
             SetupOutput(out string directoryPath);
 
+            (List<YamlCustomObject> objects, List<YamlCustomObject> serverObjects) = CompileAllObjects(directoryPath);
+
             YamlSchematic schematic = new()
             {
                 RootObjectId = transform.gameObject.GetInstanceID(),
                 FileName = name.Replace(' ', '_'),
                 Rotation = transform.rotation.eulerAngles,
                 Scale = transform.localScale,
-                Objects = CompileObjects(),
-                ServerSideObjects = CompileServerObjects(directoryPath),
+                Objects = objects,
+                ServerSideObjects = serverObjects,
                 Areas = new(),
                 LOD = LODSettings
             };
-            
+
             File.WriteAllText(Path.Combine(directoryPath, $"{name}.yml"), YamlParser.Serializer.Serialize(schematic));
             OnBuilt?.Invoke(this);
         }
 
-        public List<YamlCustomObject> CompileServerObjects(string directoryPath)
+        public (List<YamlCustomObject> Objects, List<YamlCustomObject> ServerSideObjects) CompileAllObjects(string directoryPath)
         {
+            List<YamlCustomObject> objects = new();
             List<YamlCustomObject> serverObjects = new();
-            
-            GameObject serverobj = GetComponentsInChildren<ServerSide>().First().gameObject;
-            foreach (ObjectBase block in serverobj.GetComponentsInChildren<ObjectBase>())
+
+            ServerSide serverSide = GetComponentInChildren<ServerSide>();
+
+            foreach (ObjectBase block in GetComponentsInChildren<ObjectBase>())
             {
-                block.ServerSide = true;
-                block.Compile(transform);
-                if (block.TryGetComponent(out Animator animator) && animator.runtimeAnimatorController != null)
+                bool isServerSide = serverSide != null && block.transform.IsChildOf(serverSide.transform);
+                bool hasAnimator = block.TryGetComponent(out Animator animator) && animator.runtimeAnimatorController != null;
+
+                if (hasAnimator)
                 {
                     RuntimeAnimatorController runtimeAnimatorController = animator.runtimeAnimatorController;
+                    string animatorName = runtimeAnimatorController.name;
+                    block.AnimatorName = animatorName;
                     AssetBundleBuild bundleBuild = new()
                     {
-                        assetBundleName = runtimeAnimatorController.name,
-                        assetNames = new[] { AssetDatabase.GetAssetPath(runtimeAnimatorController) }
+                        assetBundleName = animatorName,
+                        assetNames = new[]
+                        {
+                            AssetDatabase.GetAssetPath(runtimeAnimatorController)
+                        }
                     };
 
                     BuildPipeline.BuildAssetBundles(directoryPath, new[] { bundleBuild }, BuildAssetBundleOptions.ChunkBasedCompression | BuildAssetBundleOptions.ForceRebuildAssetBundle | BuildAssetBundleOptions.StrictMode, EditorUserBuildSettings.activeBuildTarget);
                 }
+
+                block.ServerSide = isServerSide || hasAnimator;
+                block.Compile(transform);
 
                 YamlCustomObject customObject = new()
                 {
@@ -150,15 +163,20 @@ namespace Assets.Scripts
                     IsStatic = block.Static,
                     MovementSmoothing = block.MovementSmoothing,
                     ObjectType = block.ObjectType,
+                    AnimatorName = block.AnimatorName ?? string.Empty,
                     Values = block.Properties,
-                    AnimatorName = block.gameObject.GetComponent<Animator>().name ?? string.Empty,
                     Tools = CompileTools(block)
                 };
 
-                serverObjects.Add(customObject);
+                if (isServerSide || hasAnimator)
+                {
+                    serverObjects.Add(customObject);
+                }
+                else
+                    objects.Add(customObject);
             }
 
-            return serverObjects;
+            return (objects, serverObjects);
         }
 
         public List<YamlTool> CompileTools(ObjectBase block)
@@ -178,38 +196,6 @@ namespace Assets.Scripts
             }
 
             return tools;
-        }
-
-        public List<YamlCustomObject> CompileObjects()
-        {
-            List<YamlCustomObject> customObjects = new();
-
-            ServerSide serverSide = GetComponentInChildren<ServerSide>();
-
-            foreach (ObjectBase block in GetComponentsInChildren<ObjectBase>())
-            {
-                if (serverSide != null && block.transform.IsChildOf(serverSide.transform))
-                    continue;
-
-                block.Compile(transform);
-                YamlCustomObject customObject = new()
-                {
-                    ObjectId = block.ObjectId,
-                    ParentId = block.ParentId,
-                    Name = block.Name,
-                    Position = block.Position,
-                    Rotation = block.Rotation,
-                    Scale = block.Scale,
-                    IsStatic = block.Static,
-                    MovementSmoothing = block.MovementSmoothing,
-                    ObjectType = block.ObjectType,
-                    Values = block.Properties
-                };
-
-                customObjects.Add(customObject);
-            }
-
-            return customObjects;
         }
 
         // TODO: Test this.

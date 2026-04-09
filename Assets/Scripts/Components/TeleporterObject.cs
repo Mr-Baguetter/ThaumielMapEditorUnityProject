@@ -31,8 +31,13 @@ namespace Assets.Scripts.Components
 
         public override void Compile(Transform root)
         {
-            TargetId = Target.Id;
+            if (Target == null)
+            {
+                Debug.LogWarning($"TeleporterObject '{name}' has no Target assigned. Skipping compile.", this);
+                return;
+            }
 
+            TargetId = Target.Id;
             base.Compile(root);
             base.Properties = new()
             {

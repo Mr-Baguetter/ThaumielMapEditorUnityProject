@@ -110,24 +110,27 @@ namespace Assets.Scripts
                 _instanceMap[obj.ObjectId] = instance.transform;
                 Undo.RegisterCreatedObjectUndo(instance, $"Decompile {obj.Name}");
 
-                foreach (YamlTool tool in obj.Tools)
+                if (obj.Tools != null && obj.Tools.Count > 0)
                 {
-                    if (!Enum.TryParse<ToolType>(tool.ToolName, true, out var result))
-                        continue;
-
-                    switch (result)
+                    foreach (YamlTool tool in obj.Tools)
                     {
-                        case ToolType.Health:
-                            Health health = block.AddComponent<Health>();
-                            health.Properties = tool.Properties;
-                            health.Decompile();
-                            break;
+                        if (!Enum.TryParse<ToolType>(tool.ToolName, true, out var result))
+                            continue;
 
-                        case ToolType.Physics:
-                            PhysicsTool physics = block.AddComponent<PhysicsTool>();
-                            physics.Properties = tool.Properties;
-                            physics.Decompile();
-                            break;
+                        switch (result)
+                        {
+                            case ToolType.Health:
+                                Health health = block.AddComponent<Health>();
+                                health.Properties = tool.Properties;
+                                health.Decompile();
+                                break;
+
+                            case ToolType.Physics:
+                                PhysicsTool physics = block.AddComponent<PhysicsTool>();
+                                physics.Properties = tool.Properties;
+                                physics.Decompile();
+                                break;
+                        }
                     }
                 }
             }
