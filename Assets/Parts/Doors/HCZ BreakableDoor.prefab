@@ -132,7 +132,6 @@ GameObject:
   - component: {fileID: 4624799926397982}
   - component: {fileID: 33399853880473331}
   - component: {fileID: 23703362571509368}
-  - component: {fileID: 65609920754697204}
   m_Layer: 9
   m_Name: HczButton
   m_TagString: Untagged
@@ -212,27 +211,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &65609920754697204
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1067521645849881}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 2, y: 2, z: 2}
-  m_Center: {x: 0.00000006313784, y: -0.024397692, z: 0.000000008929338}
 --- !u!1 &1185090160233553
 GameObject:
   m_ObjectHideFlags: 0
@@ -334,7 +312,6 @@ GameObject:
   - component: {fileID: 4067917548176566}
   - component: {fileID: 33763159675054463}
   - component: {fileID: 23709154147103118}
-  - component: {fileID: 65686396059059489}
   m_Layer: 9
   m_Name: HczButton (1)
   m_TagString: Untagged
@@ -414,27 +391,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &65686396059059489
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1217182423452823}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 2, y: 2, z: 2}
-  m_Center: {x: 0.00000006313784, y: -0.024397692, z: 0.000000008929338}
 --- !u!1 &1354919404198714
 GameObject:
   m_ObjectHideFlags: 0
@@ -650,7 +606,6 @@ GameObject:
   - component: {fileID: 4830940106348148}
   - component: {fileID: 33241109191539007}
   - component: {fileID: 23441081075200271}
-  - component: {fileID: 65747508749566626}
   m_Layer: 27
   m_Name: Door_Left
   m_TagString: Untagged
@@ -731,27 +686,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &65747508749566626
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1540413724180463}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 2, y: 2, z: 2}
-  m_Center: {x: -0.0049999976, y: -1.5133991e-11, z: 0.016250003}
 --- !u!1 &1605679897836131
 GameObject:
   m_ObjectHideFlags: 0
@@ -909,7 +843,6 @@ GameObject:
   - component: {fileID: 4828450314574386}
   - component: {fileID: 33692575675437249}
   - component: {fileID: 23118248299196257}
-  - component: {fileID: 65246608598556031}
   m_Layer: 27
   m_Name: Door_Left_001
   m_TagString: Untagged
@@ -990,27 +923,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &65246608598556031
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1872622285733628}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 2, y: 2, z: 2}
-  m_Center: {x: 0.0049999976, y: -0.0000000031292442, z: 0.016250003}
 --- !u!1 &1893072725590875
 GameObject:
   m_ObjectHideFlags: 0
@@ -1202,7 +1114,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4475928557341090}
   - component: {fileID: 95112597723665510}
-  - component: {fileID: 65893778713430158}
   m_Layer: 18
   m_Name: Frame
   m_TagString: Untagged
@@ -1224,7 +1135,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4610328122384809}
-  - {fileID: 4330491162203636}
   - {fileID: 4476407013511545}
   - {fileID: 4428283625404826}
   - {fileID: 4635321723044002}
@@ -1252,58 +1162,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!65 &65893778713430158
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1957829036864073}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 2, y: 2, z: 2}
-  m_Center: {x: -0.0018008352, y: -0.04509632, z: 0.003833944}
---- !u!1 &1980255947275183
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4330491162203636}
-  m_Layer: 27
-  m_Name: Stator
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4330491162203636
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1980255947275183}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.7071068, z: 0.7071068, w: 0}
-  m_LocalPosition: {x: 0, y: 2.548459, z: 0.000018974448}
-  m_LocalScale: {x: 127.62568, y: 247.55193, z: 126.34718}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4475928557341090}
-  m_LocalEulerAnglesHint: {x: 90, y: -0, z: 180}
 --- !u!1 &1984292107790333
 GameObject:
   m_ObjectHideFlags: 0

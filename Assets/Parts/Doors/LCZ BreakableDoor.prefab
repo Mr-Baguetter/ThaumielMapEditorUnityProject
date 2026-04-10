@@ -134,7 +134,6 @@ GameObject:
   - component: {fileID: 33584595023414743}
   - component: {fileID: 23520043270992948}
   - component: {fileID: 95758765651994734}
-  - component: {fileID: 65081029508619068}
   m_Layer: 18
   m_Name: Frame
   m_TagString: Untagged
@@ -238,27 +237,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!65 &65081029508619068
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1310596571892881}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 2, y: 2, z: 2}
-  m_Center: {x: 0.016974665, y: -0.031536203, z: 0.0026804574}
 --- !u!1 &1330127274595980
 GameObject:
   m_ObjectHideFlags: 0
@@ -513,7 +491,6 @@ GameObject:
   - component: {fileID: 6863273279954995258}
   - component: {fileID: 6884547636560225519}
   - component: {fileID: 6485719525463654633}
-  - component: {fileID: 2705705603490237099}
   m_Layer: 9
   m_Name: TouchScreenPanel (1)
   m_TagString: DoorButton
@@ -593,27 +570,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &2705705603490237099
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7002183312467267695}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 2, y: 2, z: 2}
-  m_Center: {x: -0.0000006407506, y: 0.0045928597, z: 0.29999995}
 --- !u!1 &7438062871203646979
 GameObject:
   m_ObjectHideFlags: 0
@@ -625,7 +581,6 @@ GameObject:
   - component: {fileID: 1591758418688805666}
   - component: {fileID: 526120455247748280}
   - component: {fileID: 1323061193395935831}
-  - component: {fileID: 3343191117728940531}
   m_Layer: 9
   m_Name: TouchScreenPanel (2)
   m_TagString: DoorButton
@@ -705,24 +660,3 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &3343191117728940531
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7438062871203646979}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 2, y: 2, z: 2}
-  m_Center: {x: -0.0000006407506, y: 0.0045928597, z: 0.29999995}

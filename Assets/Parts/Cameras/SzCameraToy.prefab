@@ -162,6 +162,11 @@ MonoBehaviour:
   <Static>k__BackingField: 0
   <MovementSmoothing>k__BackingField: 0
   <CameraType>k__BackingField: 4
+  <Label>k__BackingField: 
+  <Room>k__BackingField: 0
+  <VerticalConstraint>k__BackingField: {x: 0, y: 0}
+  <HorizontalConstraint>k__BackingField: {x: 0, y: 0}
+  <ZoomConstraint>k__BackingField: {x: 0, y: 0}
 --- !u!1 &1195541957395346
 GameObject:
   m_ObjectHideFlags: 0
@@ -451,7 +456,6 @@ GameObject:
   - component: {fileID: 33928690119053513}
   - component: {fileID: 23316801922604855}
   - component: {fileID: 136250757023066116}
-  - component: {fileID: 65821333994863969}
   m_Layer: 18
   m_Name: Arm
   m_TagString: Untagged
@@ -554,27 +558,6 @@ CapsuleCollider:
   m_Height: 0.07099716
   m_Direction: 0
   m_Center: {x: 0.025332918, y: 0.00000000742107, z: -0.040226027}
---- !u!65 &65821333994863969
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1572438865511304}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 2, y: 2, z: 2}
-  m_Center: {x: 0.05937846, y: 0, z: -0.045420095}
 --- !u!1 &1581356037199676
 GameObject:
   m_ObjectHideFlags: 0
@@ -586,7 +569,6 @@ GameObject:
   - component: {fileID: 4807041609840357}
   - component: {fileID: 33925159135380143}
   - component: {fileID: 23013564007073948}
-  - component: {fileID: 65687506640725670}
   m_Layer: 18
   m_Name: glass
   m_TagString: Untagged
@@ -666,27 +648,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &65687506640725670
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1581356037199676}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 2, y: 2, z: 2}
-  m_Center: {x: -0.00006198803, y: -0.0475349, z: 0.026735801}
 --- !u!1 &1712310462594706
 GameObject:
   m_ObjectHideFlags: 0

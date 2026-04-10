@@ -1027,7 +1027,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4626932375491472}
-  - component: {fileID: 65270718587696510}
   m_Layer: 27
   m_Name: Door R
   m_TagString: Untagged
@@ -1061,27 +1060,6 @@ Transform:
   - {fileID: 4945325755380732}
   m_Father: {fileID: 4765862197989934}
   m_LocalEulerAnglesHint: {x: -90.00001, y: -89.99999, z: 0}
---- !u!65 &65270718587696510
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1531165397470491}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 2, y: 2, z: 2}
-  m_Center: {x: -0.0000000045658934, y: 0.95562744, z: 0.3}
 --- !u!1 &1551317188294562
 GameObject:
   m_ObjectHideFlags: 0
@@ -1459,8 +1437,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4464372787933843}
-  - component: {fileID: 65492550085205513}
-  - component: {fileID: 136439710409621570}
   m_Layer: 27
   m_Name: Door L
   m_TagString: Untagged
@@ -1494,50 +1470,6 @@ Transform:
   - {fileID: 4423140195676459}
   m_Father: {fileID: 4765862197989934}
   m_LocalEulerAnglesHint: {x: -90, y: 89.999985, z: 0}
---- !u!65 &65492550085205513
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1637739698134328}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 2, y: 2, z: 2}
-  m_Center: {x: -0.0000000060751577, y: 0.97516483, z: 0.30000004}
---- !u!136 &136439710409621570
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1637739698134328}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.2984463
-  m_Height: 3
-  m_Direction: 2
-  m_Center: {x: -0.0715537, y: 1.8000219, z: 0.000000008537988}
 --- !u!1 &1686620095653889
 GameObject:
   m_ObjectHideFlags: 0
@@ -2047,7 +1979,6 @@ GameObject:
   - component: {fileID: 8772772883297683970}
   - component: {fileID: 7805930362265861378}
   - component: {fileID: 1208915167302375088}
-  - component: {fileID: 5465184558959655666}
   m_Layer: 9
   m_Name: TouchScreenPanel (1)
   m_TagString: DoorButton
@@ -2127,27 +2058,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &5465184558959655666
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8147610583262654184}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 2, y: 2, z: 2}
-  m_Center: {x: -0.0000006407506, y: 0.0045928597, z: 0.29999995}
 --- !u!1 &8303302773973598761
 GameObject:
   m_ObjectHideFlags: 0
@@ -2159,7 +2069,6 @@ GameObject:
   - component: {fileID: 9081534365045077654}
   - component: {fileID: 4440225696431403822}
   - component: {fileID: 6942110301918193939}
-  - component: {fileID: 2517950523902773850}
   m_Layer: 9
   m_Name: TouchScreenPanel
   m_TagString: DoorButton
@@ -2239,24 +2148,3 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &2517950523902773850
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8303302773973598761}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 2, y: 2, z: 2}
-  m_Center: {x: -0.0000006407506, y: 0.0045928597, z: 0.29999995}

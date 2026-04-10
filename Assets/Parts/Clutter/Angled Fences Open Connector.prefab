@@ -572,7 +572,7 @@ LODGroup:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1127096912196697}
-  serializedVersion: 2
+  serializedVersion: 3
   m_LocalReferencePoint: {x: 0.000000029802322, y: 0.53060967, z: -0.000000059604645}
   m_Size: 0.939469
   m_FadeMode: 0
@@ -592,6 +592,7 @@ LODGroup:
     renderers:
     - renderer: {fileID: 23613594204679956}
   m_Enabled: 1
+  m_GlobalIlluminationLOD: 0
 --- !u!136 &136928436152004450
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -716,7 +717,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4978301189733906}
   - component: {fileID: 205862046457952367}
-  - component: {fileID: 65080822202828336}
   m_Layer: 0
   m_Name: Atlas_Wood_Cardboard_Palet (1)
   m_TagString: Untagged
@@ -748,7 +748,7 @@ LODGroup:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1128805201508117}
-  serializedVersion: 2
+  serializedVersion: 3
   m_LocalReferencePoint: {x: 0.15327454, y: -15.490305, z: 0}
   m_Size: 272.34042
   m_FadeMode: 0
@@ -764,27 +764,7 @@ LODGroup:
     renderers:
     - renderer: {fileID: 23164867084331590}
   m_Enabled: 1
---- !u!65 &65080822202828336
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1128805201508117}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 2, y: 2, z: 2}
-  m_Center: {x: 0.0016417503, y: -0.10061418, z: -0.00056415796}
+  m_GlobalIlluminationLOD: 0
 --- !u!1 &1137661233987495
 GameObject:
   m_ObjectHideFlags: 0
@@ -1071,7 +1051,7 @@ LODGroup:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1159335570481262}
-  serializedVersion: 2
+  serializedVersion: 3
   m_LocalReferencePoint: {x: -0.00013184547, y: 0.42841542, z: 0.000792861}
   m_Size: 1.114299
   m_FadeMode: 0
@@ -1087,6 +1067,7 @@ LODGroup:
     renderers:
     - renderer: {fileID: 23101563547951349}
   m_Enabled: 1
+  m_GlobalIlluminationLOD: 0
 --- !u!65 &65855348927604066
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1892,7 +1873,7 @@ LODGroup:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1244667075544723}
-  serializedVersion: 2
+  serializedVersion: 3
   m_LocalReferencePoint: {x: -0.00013184547, y: 0.42841542, z: 0.000792861}
   m_Size: 1.114299
   m_FadeMode: 0
@@ -1908,6 +1889,7 @@ LODGroup:
     renderers:
     - renderer: {fileID: 23841511902087864}
   m_Enabled: 1
+  m_GlobalIlluminationLOD: 0
 --- !u!65 &65003730521439518
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2274,7 +2256,7 @@ LODGroup:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1298684554228597}
-  serializedVersion: 2
+  serializedVersion: 3
   m_LocalReferencePoint: {x: 0.15327454, y: -15.490305, z: 0}
   m_Size: 272.34042
   m_FadeMode: 0
@@ -2290,6 +2272,7 @@ LODGroup:
     renderers:
     - renderer: {fileID: 23742897283656275}
   m_Enabled: 1
+  m_GlobalIlluminationLOD: 0
 --- !u!65 &65501342738107826
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2648,7 +2631,7 @@ LODGroup:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1313312226092613}
-  serializedVersion: 2
+  serializedVersion: 3
   m_LocalReferencePoint: {x: 0.000000029802322, y: 0.53060967, z: -0.000000059604645}
   m_Size: 0.939469
   m_FadeMode: 0
@@ -2668,6 +2651,7 @@ LODGroup:
     renderers:
     - renderer: {fileID: 23536270541704672}
   m_Enabled: 1
+  m_GlobalIlluminationLOD: 0
 --- !u!136 &136057367170893470
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3436,7 +3420,7 @@ LODGroup:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1385523941581774}
-  serializedVersion: 2
+  serializedVersion: 3
   m_LocalReferencePoint: {x: 0.000000029802322, y: 0.53060967, z: -0.000000059604645}
   m_Size: 0.939469
   m_FadeMode: 0
@@ -3456,6 +3440,7 @@ LODGroup:
     renderers:
     - renderer: {fileID: 23226787741681875}
   m_Enabled: 1
+  m_GlobalIlluminationLOD: 0
 --- !u!136 &136762198740548741
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3701,7 +3686,7 @@ LODGroup:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1420156460496165}
-  serializedVersion: 2
+  serializedVersion: 3
   m_LocalReferencePoint: {x: 0.15327454, y: -15.490305, z: 0}
   m_Size: 272.34042
   m_FadeMode: 0
@@ -3717,6 +3702,7 @@ LODGroup:
     renderers:
     - renderer: {fileID: 23632900304513155}
   m_Enabled: 1
+  m_GlobalIlluminationLOD: 0
 --- !u!65 &65765305084912132
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4295,7 +4281,7 @@ LODGroup:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1510900201779041}
-  serializedVersion: 2
+  serializedVersion: 3
   m_LocalReferencePoint: {x: 0.15327454, y: -15.490305, z: 0}
   m_Size: 272.34042
   m_FadeMode: 0
@@ -4311,6 +4297,7 @@ LODGroup:
     renderers:
     - renderer: {fileID: 23441501407364893}
   m_Enabled: 1
+  m_GlobalIlluminationLOD: 0
 --- !u!65 &65233149587411177
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4545,7 +4532,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4095344429264003}
   - component: {fileID: 205230617394019586}
-  - component: {fileID: 65377072526974216}
   m_Layer: 0
   m_Name: Atlas_Wood_Cardboard_Palet
   m_TagString: Untagged
@@ -4577,7 +4563,7 @@ LODGroup:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1550566744558422}
-  serializedVersion: 2
+  serializedVersion: 3
   m_LocalReferencePoint: {x: 0.15327454, y: -15.490305, z: 0}
   m_Size: 272.34042
   m_FadeMode: 0
@@ -4593,27 +4579,7 @@ LODGroup:
     renderers:
     - renderer: {fileID: 23492817914023579}
   m_Enabled: 1
---- !u!65 &65377072526974216
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1550566744558422}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 2, y: 2, z: 2}
-  m_Center: {x: 0.0016417503, y: -0.10061418, z: -0.00056415796}
+  m_GlobalIlluminationLOD: 0
 --- !u!1 &1568460871776074
 GameObject:
   m_ObjectHideFlags: 0
@@ -5019,7 +4985,7 @@ LODGroup:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1592242727569434}
-  serializedVersion: 2
+  serializedVersion: 3
   m_LocalReferencePoint: {x: 0.000000029802322, y: 0.53060967, z: -0.000000059604645}
   m_Size: 0.939469
   m_FadeMode: 0
@@ -5039,6 +5005,7 @@ LODGroup:
     renderers:
     - renderer: {fileID: 23520021266041004}
   m_Enabled: 1
+  m_GlobalIlluminationLOD: 0
 --- !u!136 &136855103868415421
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -5105,7 +5072,7 @@ LODGroup:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1597546170812624}
-  serializedVersion: 2
+  serializedVersion: 3
   m_LocalReferencePoint: {x: 0.000000029802322, y: 0.53060967, z: -0.000000059604645}
   m_Size: 0.939469
   m_FadeMode: 0
@@ -5125,6 +5092,7 @@ LODGroup:
     renderers:
     - renderer: {fileID: 23274728913901365}
   m_Enabled: 1
+  m_GlobalIlluminationLOD: 0
 --- !u!136 &136553502904731736
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -6787,7 +6755,7 @@ LODGroup:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1836312952037862}
-  serializedVersion: 2
+  serializedVersion: 3
   m_LocalReferencePoint: {x: 0.000000029802322, y: 0.53060967, z: -0.000000059604645}
   m_Size: 0.939469
   m_FadeMode: 0
@@ -6807,6 +6775,7 @@ LODGroup:
     renderers:
     - renderer: {fileID: 23015966989213104}
   m_Enabled: 1
+  m_GlobalIlluminationLOD: 0
 --- !u!136 &136617528129436522
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -6984,7 +6953,7 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1848619318275310}
   m_Enabled: 1
-  serializedVersion: 12
+  serializedVersion: 13
   m_Type: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 8.577348
@@ -7036,7 +7005,7 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
-  m_ShadowRadius: 0
+  m_ShapeRadius: 0
   m_ShadowAngle: 0
   m_LightUnit: 1
   m_LuxAtDistance: 1
@@ -7203,7 +7172,7 @@ LODGroup:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1858499540182894}
-  serializedVersion: 2
+  serializedVersion: 3
   m_LocalReferencePoint: {x: 0.15327454, y: -15.490305, z: 0}
   m_Size: 272.34042
   m_FadeMode: 0
@@ -7219,6 +7188,7 @@ LODGroup:
     renderers:
     - renderer: {fileID: 23506385132033349}
   m_Enabled: 1
+  m_GlobalIlluminationLOD: 0
 --- !u!65 &65176419193362752
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7282,7 +7252,7 @@ LODGroup:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1862388109300383}
-  serializedVersion: 2
+  serializedVersion: 3
   m_LocalReferencePoint: {x: 0.15327454, y: -15.490305, z: 0}
   m_Size: 272.34042
   m_FadeMode: 0
@@ -7298,6 +7268,7 @@ LODGroup:
     renderers:
     - renderer: {fileID: 23171775351682442}
   m_Enabled: 1
+  m_GlobalIlluminationLOD: 0
 --- !u!65 &65129261764582141
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7420,7 +7391,6 @@ GameObject:
   - component: {fileID: 4358531643982815}
   - component: {fileID: 33070603552250081}
   - component: {fileID: 23327636029140901}
-  - component: {fileID: 65820857058586154}
   m_Layer: 0
   m_Name: Atlas_WoodCardboard_CrateB
   m_TagString: Untagged
@@ -7501,27 +7471,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &65820857058586154
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1872035922654916}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 2, y: 2, z: 2}
-  m_Center: {x: -0.000000027786196, y: 0.00000038843822, z: 1.0824056}
 --- !u!1 &1876317237494111
 GameObject:
   m_ObjectHideFlags: 0
@@ -7563,7 +7512,7 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1876317237494111}
   m_Enabled: 1
-  serializedVersion: 12
+  serializedVersion: 13
   m_Type: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 2.3760865
@@ -7615,7 +7564,7 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
-  m_ShadowRadius: 0
+  m_ShapeRadius: 0
   m_ShadowAngle: 0
   m_LightUnit: 1
   m_LuxAtDistance: 1
@@ -7691,7 +7640,7 @@ LODGroup:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1880048469860015}
-  serializedVersion: 2
+  serializedVersion: 3
   m_LocalReferencePoint: {x: -0.00013184547, y: 0.42841542, z: 0.000792861}
   m_Size: 1.114299
   m_FadeMode: 0
@@ -7707,6 +7656,7 @@ LODGroup:
     renderers:
     - renderer: {fileID: 23975873303527194}
   m_Enabled: 1
+  m_GlobalIlluminationLOD: 0
 --- !u!65 &65494142548837275
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7771,7 +7721,7 @@ LODGroup:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1915443184292152}
-  serializedVersion: 2
+  serializedVersion: 3
   m_LocalReferencePoint: {x: 0.000000029802322, y: 0.53060967, z: -0.000000059604645}
   m_Size: 0.939469
   m_FadeMode: 0
@@ -7791,6 +7741,7 @@ LODGroup:
     renderers:
     - renderer: {fileID: 23903681467923444}
   m_Enabled: 1
+  m_GlobalIlluminationLOD: 0
 --- !u!136 &136065358925534497
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -8023,7 +7974,7 @@ LODGroup:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1959516274640614}
-  serializedVersion: 2
+  serializedVersion: 3
   m_LocalReferencePoint: {x: -0.00013184547, y: 0.42841542, z: 0.000792861}
   m_Size: 1.114299
   m_FadeMode: 0
@@ -8039,6 +7990,7 @@ LODGroup:
     renderers:
     - renderer: {fileID: 23663936546364657}
   m_Enabled: 1
+  m_GlobalIlluminationLOD: 0
 --- !u!65 &65084970819302016
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8103,7 +8055,7 @@ LODGroup:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1963287456119312}
-  serializedVersion: 2
+  serializedVersion: 3
   m_LocalReferencePoint: {x: 0.000000029802322, y: 0.53060967, z: -0.000000059604645}
   m_Size: 0.939469
   m_FadeMode: 0
@@ -8123,6 +8075,7 @@ LODGroup:
     renderers:
     - renderer: {fileID: 23828406487180724}
   m_Enabled: 1
+  m_GlobalIlluminationLOD: 0
 --- !u!136 &136350103645662608
 CapsuleCollider:
   m_ObjectHideFlags: 0
