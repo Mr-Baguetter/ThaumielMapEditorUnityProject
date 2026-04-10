@@ -1,18 +1,26 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using Assets.Scripts.Components;
 using Assets.Scripts.Components.Tools;
 using Assets.Scripts.Yaml;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using CompressionLevel = System.IO.Compression.CompressionLevel;
+using Debug = UnityEngine.Debug;
 
 namespace Assets.Scripts
 {
     [ExecuteInEditMode]
     public class Builder : MonoBehaviour
     {
+        private Config config;
+
         [field: SerializeField]
         public List<YamlLOD> LODSettings { get; set; } = new();
 
@@ -100,6 +108,13 @@ namespace Assets.Scripts
 
         public void CompileData()
         {
+            if (SceneManager.GetActiveScene().isDirty)
+            {
+                Debug.Log("Saving scene before export...");
+                EditorSceneManager.SaveScene(SceneManager.GetActiveScene());
+            }
+
+            config = ConfigBuilder.LoadConfig();
             SetupOutput(out string directoryPath);
 
             (List<YamlCustomObject> objects, List<YamlCustomObject> serverObjects) = CompileAllObjects(directoryPath);
@@ -118,6 +133,17 @@ namespace Assets.Scripts
 
             File.WriteAllText(Path.Combine(directoryPath, $"{name}.yml"), YamlParser.Serializer.Serialize(schematic));
             OnBuilt?.Invoke(this);
+
+            if (config.OpenExportAfterCompiling)
+            {
+                Process.Start(config.ExportPath);
+            }
+
+            if (config.CompressExport)
+            {
+                ZipFile.CreateFromDirectory(directoryPath, $"{directoryPath}.zip", CompressionLevel.Optimal, true);
+                Directory.Delete(directoryPath, true);
+            }
         }
 
         public (List<YamlCustomObject> Objects, List<YamlCustomObject> ServerSideObjects) CompileAllObjects(string directoryPath)
@@ -220,7 +246,7 @@ namespace Assets.Scripts
 
         private void SetupOutput(out string directoryPath)
         {
-            string parentDirectoryPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "ThaumielMapEditor");
+            string parentDirectoryPath = Directory.Exists(config.ExportPath) ? config.ExportPath : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "ThaumielMapEditor");
             directoryPath = Path.Combine(parentDirectoryPath, name);
 
             if (!Directory.Exists(parentDirectoryPath))

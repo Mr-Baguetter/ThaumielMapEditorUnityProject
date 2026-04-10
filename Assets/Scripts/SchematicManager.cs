@@ -1,6 +1,8 @@
+using System.Diagnostics;
+using System.IO;
 using Assets.Scripts;
 using UnityEditor;
-using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 [InitializeOnLoad]
 public class SchematicManager : EditorWindow
@@ -13,6 +15,17 @@ public class SchematicManager : EditorWindow
         {
             schematic.CompileData();
         }
+    }
+
+    [MenuItem("SchematicManager/Open Directory")]
+    private static void OpenDirectory()
+    {
+        Config config = ConfigBuilder.LoadConfig();
+
+        if (!Directory.Exists(config.ExportPath))
+            Directory.CreateDirectory(config.ExportPath);
+
+        Process.Start(config.ExportPath);
     }
 
     [MenuItem("SchematicManager/Decompile Schematic %#e")]
