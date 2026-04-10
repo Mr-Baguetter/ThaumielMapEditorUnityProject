@@ -20,7 +20,7 @@ namespace Assets.Scripts.Editor
         public static void ShowWindow()
         {
             ConfigEditorWindow window = GetWindow<ConfigEditorWindow>("Builder Config");
-            window.minSize = new Vector2(400, 150);
+            window.minSize = new Vector2(400, 250);
             window.Show();
         }
 
@@ -34,12 +34,16 @@ namespace Assets.Scripts.Editor
             current ??= ConfigBuilder.LoadConfig();
 
             GUILayout.Space(10);
-            GUILayout.Label("Builder Settings", EditorStyles.boldLabel);
+            GUILayout.Label("Builder Configuration", EditorStyles.boldLabel);
+            EditorGUILayout.HelpBox("Configure export settings and post-build actions for the Schematic Builder.", MessageType.Info);
             GUILayout.Space(5);
             EditorGUI.BeginChangeCheck();
-            GUILayout.BeginHorizontal();
 
-            current.ExportPath = EditorGUILayout.TextField("Export Path", current.ExportPath);
+            EditorGUILayout.BeginVertical("box");
+            GUILayout.BeginHorizontal();
+            GUIContent pathLabel = new("Export Path", "The directory where compiled schematics will be saved.");
+            current.ExportPath = EditorGUILayout.TextField(pathLabel, current.ExportPath);
+            
             if (GUILayout.Button("Browse", GUILayout.Width(75)))
             {
                 string defaultPath = string.IsNullOrEmpty(current.ExportPath) ? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "ThaumielMapEditor") : current.ExportPath;
@@ -52,25 +56,36 @@ namespace Assets.Scripts.Editor
                 }
             }
 
-            if (GUILayout.Button("Convert PMER Settings", GUILayout.Height(30)))
-            {
-                ConvertPMERSettings();
-            }
-
             GUILayout.EndHorizontal();
-            current.CompressExport = EditorGUILayout.Toggle("Compress Export", current.CompressExport);
-            current.OpenExportAfterCompiling = EditorGUILayout.Toggle("Open Export", current.OpenExportAfterCompiling);
+            GUILayout.Space(5);
 
+            GUIContent compressLabel = new("Compress Export", "Zip the compiled schematics after building.");
+            current.CompressExport = EditorGUILayout.Toggle(compressLabel, current.CompressExport);
+
+            GUIContent openExportLabel = new("Open Export", "Automatically open the directory in File Explorer after compiling.");
+            current.OpenExportAfterCompiling = EditorGUILayout.Toggle(openExportLabel, current.OpenExportAfterCompiling);
+            
+            EditorGUILayout.EndVertical();
+            GUILayout.Space(10);
+            GUILayout.Label("Legacy Tools", EditorStyles.boldLabel);            
+            EditorGUILayout.BeginVertical("box");
+            GUIContent convertLabel = new("Import PMER Settings", "Converts and applies an old PMER JSON configuration file to the new builder.");
+            if (GUILayout.Button(convertLabel, GUILayout.Height(30)))
+                ConvertPMERSettings();
+
+            EditorGUILayout.EndVertical();
             if (EditorGUI.EndChangeCheck())
                 ConfigBuilder.SaveConfig(current);
 
-            GUILayout.FlexibleSpace();
-            if (GUILayout.Button("Force Save Config", GUILayout.Height(30)))
+            GUILayout.FlexibleSpace();            
+            GUI.backgroundColor = new Color(0.8f, 1f, 0.8f);
+            if (GUILayout.Button("Save Config", GUILayout.Height(30)))
             {
                 ConfigBuilder.SaveConfig(current);
                 Debug.Log("Builder Config saved successfully!");
             }
-            
+
+            GUI.backgroundColor = Color.white;
             GUILayout.Space(10);
         }
 

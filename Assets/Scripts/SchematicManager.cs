@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using Assets.Scripts;
@@ -11,9 +12,17 @@ public class SchematicManager : EditorWindow
     public static void Compile()
     {
         Debug.ClearDeveloperConsole();
-        foreach (Builder schematic in FindObjectsByType<Builder>())
+        Builder[] builders = FindObjectsByType<Builder>();
+        if (builders.Length > 0)
         {
-            schematic.CompileData();
+            foreach (Builder schematic in builders)
+            {
+                schematic.CompileData();
+            }
+        }
+        else
+        {
+            Debug.LogError("Compilation failed: No Builder script found in the scene. \n Please add the Builder script to a GameObject to compile your schematic.");
         }
     }
 

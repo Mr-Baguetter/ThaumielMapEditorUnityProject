@@ -16,7 +16,7 @@ namespace Assets.Scripts.Components
         public PrimitiveType PrimitiveType;
 
         [Tooltip("Flags that control visibility and collision.")]
-        public PrimitiveFlags PrimitiveFlags;
+        public PrimitiveFlags PrimitiveFlags = PrimitiveFlags.Visible | PrimitiveFlags.Collidable;
 
         public override ObjectType ObjectType => ObjectType.Primitive;
 

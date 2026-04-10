@@ -130,6 +130,12 @@ namespace Assets.Scripts
                                 physics.Properties = tool.Properties;
                                 physics.Decompile();
                                 break;
+
+                            case ToolType.Doorlink:
+                                DoorLink doorlink = block.AddComponent<DoorLink>();
+                                doorlink.Properties = tool.Properties;
+                                doorlink.Decompile();
+                                break;
                         }
                     }
                 }
