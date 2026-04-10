@@ -14,11 +14,11 @@ namespace Assets.Scripts.Components
         public Guid Id;
 
         [Tooltip("The teleporter that this object will send players to.")]
-        public List<TeleporterObject> Targets;
+        public List<TeleporterObject> Targets = new();
 
-        internal List<Guid> TargetIds;
+        internal List<Guid> TargetIds = new();
 
-        private List<string> RawIds;
+        private List<string> RawIds = new();
 
         [Tooltip("The cooldown in seconds before this teleporter can be used again.")]
         public float CoolDown;
@@ -36,11 +36,13 @@ namespace Assets.Scripts.Components
 
         private void OnValidate()
         {
-            TargetIds.Clear();
+            List<Guid> ids = new();
             foreach (TeleporterObject target in Targets)
             {
-                TargetIds.Add(target.Id);
+                ids.Add(target.Id);
             }
+
+            TargetIds = ids;
         }
 
         public void GetTargetById()
