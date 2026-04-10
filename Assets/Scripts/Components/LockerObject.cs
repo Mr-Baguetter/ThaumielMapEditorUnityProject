@@ -10,12 +10,12 @@ namespace Assets.Scripts.Components
 {
     public class LockerObject : ObjectBase
     {
-        [field: SerializeField]
+        [Header("Locker Settings")]
         [HideInInspector]
-        public LockerType LockerType { get; set; }
+        public LockerType LockerType;
 
-        [field: SerializeField]
-        public List<LockerChamber> Chambers { get; set; }
+        [Tooltip("The list of chambers contained within this locker.")]
+        public List<LockerChamber> Chambers = new();
 
         public override ObjectType ObjectType => ObjectType.Locker;
 
@@ -36,7 +36,8 @@ namespace Assets.Scripts.Components
         public override void Compile(Transform root)
         {
             base.Compile(root);
-            base.Properties = new()
+
+            Properties = new()
             {
                 ["LockerType"] = LockerType,
                 ["Chambers"] = Chambers

@@ -7,8 +7,7 @@ namespace Assets.Scripts.Components
     public class TargetObject : ObjectBase
     {
         [HideInInspector]
-        [field: SerializeField]
-        public TargetType TargetType { get; set; }
+        public TargetType TargetType;
 
         public override ObjectType ObjectType => ObjectType.Target;
 

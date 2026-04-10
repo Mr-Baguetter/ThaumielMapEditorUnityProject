@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Assets.Scripts.Enums;
 using Assets.Scripts.Yaml;
+using UnityEngine;
 
 namespace Assets.Scripts.Components.Tools
 {
@@ -16,14 +17,20 @@ namespace Assets.Scripts.Components.Tools
 
         public override ToolType ToolType => ToolType.Health;
 
+        [Header("Health Settings")]
+        [Tooltip("What happens to the object when its health reaches zero. Animate plays the specified animation, ApplyPhysics enables physics on the object, and Destroy removes it immediately.")]
         public DestroyState State;
 
+        [Tooltip("The maximum health of the object.")]
         public float MaxHealth;
 
+        [Tooltip("How long in seconds the object waits before despawning after its health reaches zero.")]
         public float DespawnTime;
 
+        [Tooltip("The damage types that can damage this object. Any damage type not in this list will be ignored.")]
         public List<DamageType> AllowedDamage;
 
+        [Tooltip("The name of the animation to play when the object's health reaches zero. Only used when State is set to Animate.")]
         public string AnimationName;
 
         public override void Compile()

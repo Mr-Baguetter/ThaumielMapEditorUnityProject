@@ -8,14 +8,15 @@ namespace Assets.Scripts.Components
     [ExecuteInEditMode]
     public class PrimitiveObject : ObjectBase
     {
-        [field: SerializeField]
-        public Color Color { get; set; }
+        [Header("Primitive Settings")]
+        [Tooltip("The color of the primitive.")]
+        public Color Color;
 
-        [field: SerializeField]
-        public PrimitiveType PrimitiveType { get; set; }
+        [Tooltip("The type of primitive mesh to use.")]
+        public PrimitiveType PrimitiveType;
 
-        [field: SerializeField]
-        public PrimitiveFlags PrimitiveFlags { get; set; }
+        [Tooltip("Flags that control visibility and collision.")]
+        public PrimitiveFlags PrimitiveFlags;
 
         public override ObjectType ObjectType => ObjectType.Primitive;
 
@@ -48,22 +49,24 @@ namespace Assets.Scripts.Components
             _meshRenderer.enabled = PrimitiveFlags.HasFlag(PrimitiveFlags.Visible);
         }
 
+        private void Start()
+        {
+            TryGetComponent(out _meshFilter);
+            TryGetComponent(out _meshRenderer);
+
+            _sharedRegular = new Material((Material)Resources.Load("Materials/Regular"));
+        }
+
         public override void Compile(Transform root)
         {
             base.Compile(root);
-            base.Properties = new()
+
+            Properties = new()
             {
                 ["Color"] = Color,
                 ["PrimitiveType"] = PrimitiveType,
                 ["PrimitiveFlags"] = (PrimitiveFlags & (PrimitiveFlags.Collidable | PrimitiveFlags.Visible)).ToString()
             };
-        }
-
-        private void Start()
-        {
-            TryGetComponent(out _meshFilter);
-            TryGetComponent(out _meshRenderer);
-            _sharedRegular = new Material((Material)Resources.Load("Materials/Regular"));
         }
 
         public override void Decompile(Transform root)
@@ -74,7 +77,6 @@ namespace Assets.Scripts.Components
             PrimitiveType = Properties.TryGetValue("PrimitiveType", out object primitiveType) ? YamlHelpers.ParseEnum<PrimitiveType>(primitiveType) : default;
             PrimitiveFlags = Properties.TryGetValue("PrimitiveFlags", out object primitiveFlags) ? YamlHelpers.ParseEnum<PrimitiveFlags>(primitiveFlags) : default;
         }
-
 
         private void OnDrawGizmos()
         {

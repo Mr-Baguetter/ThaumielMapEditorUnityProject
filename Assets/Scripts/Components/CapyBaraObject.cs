@@ -6,8 +6,7 @@ namespace Assets.Scripts.Components
 {
     public class CapyBaraObject : ObjectBase
     {
-        [field: SerializeField]
-        public bool Collisions { get; set; }
+        public bool Collisions;
 
         public override ObjectType ObjectType => ObjectType.Capybara;
 

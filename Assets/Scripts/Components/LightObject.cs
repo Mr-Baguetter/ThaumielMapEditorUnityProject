@@ -2,175 +2,86 @@ using System;
 using Assets.Scripts.Enums;
 using Assets.Scripts.Yaml;
 using UnityEngine;
+
 namespace Assets.Scripts.Components
 {
     public class LightObject : ObjectBase
     {
-        private Light _light { get; set; }
+        private Light _light;
 
-        [field: SerializeField]
-        private float _intensity { get; set; }
+        [Header("Light Settings")]
+        [Tooltip("The brightness of the light.")]
+        public float Intensity = 1f;
 
-        [field: SerializeField]
-        private float _range { get; set; }
+        [Tooltip("The maximum distance the light reaches.")]
+        public float Range = 10f;
 
-        [field: SerializeField]
-        private Color _color { get; set; }
+        [Tooltip("The color emitted by the light.")]
+        public Color Color = Color.white;
 
-        [field: SerializeField]
-        private LightShadows _shadowType { get; set; }
+        [Tooltip("The type of shadows cast by the light.")]
+        public LightShadows ShadowType = LightShadows.None;
 
-        [field: SerializeField]
-        private float _shadowStrength { get; set; }
+        [Tooltip("How dark the shadows appear. A value of 0 means no visible shadows.")]
+        public float ShadowStrength = 1f;
 
-        [field: SerializeField]
-        [HideInInspector]
-        private LightType _lightType { get; set; }
+        [Tooltip("The type of light being emitted (Point, Spot, Directional, etc).")]
+        public LightType LightType = LightType.Point;
 
-        [field: SerializeField]
-        private LightShape _lightShape { get; set; }
-        
-        [field: SerializeField]
-        private float _spotAngle { get; set; }
+        [Tooltip("The shape of the light emission when using area lights.")]
+        public LightShape LightShape = LightShape.Cone;
 
-        [field: SerializeField]
-        private float _innerSpotAngle { get; set; }
+        [Tooltip("The outer angle of the light cone when using a spot light.")]
+        public float SpotAngle = 30f;
 
-        public float Intensity
-        { 
-            get => _intensity;
-            set
-            {
-                _intensity = value; 
-                if (_light != null) 
-                    _light.intensity = value;
-            } 
-        }
-
-        public float Range
-        {
-            get => _range;
-            set
-            {
-                _range = value;
-                if (_light != null)
-                    _light.range = value;
-            }
-        }
-
-        public Color Color
-        {
-            get => _color;
-            set
-            {
-                _color = value;
-                if (_light != null)
-                    _light.color = value;
-            }
-        }
-
-        public LightShadows ShadowType
-        {
-            get => _shadowType;
-            set
-            {
-                _shadowType = value;
-                if (_light != null)
-                    _light.shadows = value;
-            }
-        }
-
-        public float ShadowStrength
-        {
-            get => _shadowStrength;
-            set
-            {
-                _shadowStrength = value;
-                if (_light != null)
-                    _light.shadowStrength = value;
-            }
-        }
-
-        public LightType LightType
-        {
-            get => _lightType;
-            set
-            {
-                _lightType = value;
-                if (_light != null)
-                    _light.type = value;
-            }
-        }
-
-        public LightShape LightShape
-        {
-            get => _lightShape;
-            set
-            {
-                _lightShape = value;
-                if (_light != null)
-                    _light.shape = value;
-            }
-        }
-
-        public float SpotAngle
-        {
-            get => _spotAngle;
-            set
-            {
-                _spotAngle = value;
-                if (_light != null)
-                    _light.spotAngle = value;
-            }
-        }
-
-        public float InnerSpotAngle
-        {
-            get => _innerSpotAngle;
-            set
-            {
-                _innerSpotAngle = value;
-                if (_light != null)
-                    _light.innerSpotAngle = value;
-            }
-        }
+        [Tooltip("The inner angle of the light cone when using a spot light.")]
+        public float InnerSpotAngle = 20f;
 
         public override ObjectType ObjectType => ObjectType.Light;
 
         private void Awake()
         {
-            _light = gameObject.GetComponent<Light>() ?? gameObject.AddComponent<Light>();
-            ApplyLight();
+            EnsureLight();
+            SyncLight();
         }
 
         private void OnValidate()
         {
-            if (_light == null)
-                _light = gameObject.GetComponent<Light>() ?? gameObject.AddComponent<Light>();
-
-            ApplyLight();
+            EnsureLight();
+            SyncLight();
         }
 
-        private void ApplyLight()
+        private void EnsureLight()
         {
-            _light.type = _lightType;
-            _light.color = _color;
-            _light.intensity = _intensity;
-            _light.range = _range;
-            _light.shadows = _shadowType;
-            _light.shadowStrength = _shadowStrength;
-            _light.shape = _lightShape;
+            if (_light == null)
+                _light = gameObject.GetComponent<Light>() ?? gameObject.AddComponent<Light>();
+        }
 
-            switch (_lightType)
+        private void SyncLight()
+        {
+            if (_light == null)
+                return;
+
+            _light.type = LightType;
+            _light.color = Color;
+            _light.intensity = Intensity;
+            _light.range = Range;
+
+            _light.shadows = ShadowType;
+            _light.shadowStrength = ShadowStrength;
+
+            _light.shape = LightShape;
+
+            switch (LightType)
             {
                 case LightType.Spot:
-                    _light.spotAngle = _spotAngle;
-                    _light.innerSpotAngle = _innerSpotAngle;
+                    _light.spotAngle = SpotAngle;
+                    _light.innerSpotAngle = InnerSpotAngle;
                     break;
 
                 case LightType.Rectangle:
                 case LightType.Disc:
-                    _light.areaSize = new Vector2(_range, _range);
+                    _light.areaSize = new Vector2(Range, Range);
                     break;
             }
         }
@@ -178,17 +89,18 @@ namespace Assets.Scripts.Components
         public override void Compile(Transform root)
         {
             base.Compile(root);
-            base.Properties = new()
+
+            Properties = new()
             {
-                ["LightIntensity"] = _intensity,
-                ["LightRange"] = _range,
-                ["LightColor"] = _color,
-                ["ShadowType"] = _shadowType,
-                ["ShadowStrength"] = _shadowStrength,
-                ["LightType"] = _lightType,
-                ["LightShape"] = _lightShape,
-                ["SpotAngle"] = _spotAngle,
-                ["InnerSpotAngle"] = _innerSpotAngle
+                ["LightIntensity"] = Intensity,
+                ["LightRange"] = Range,
+                ["LightColor"] = Color,
+                ["ShadowType"] = ShadowType,
+                ["ShadowStrength"] = ShadowStrength,
+                ["LightType"] = LightType,
+                ["LightShape"] = LightShape,
+                ["SpotAngle"] = SpotAngle,
+                ["InnerSpotAngle"] = InnerSpotAngle
             };
         }
 
@@ -196,16 +108,17 @@ namespace Assets.Scripts.Components
         {
             base.Decompile(root);
 
-            Intensity = Properties.TryGetValue("LightIntensity", out object intensity) ? Convert.ToSingle(intensity) : default;
-            Range = Properties.TryGetValue("LightRange", out object range) ? Convert.ToSingle(range) : default;
-            Color = Properties.TryGetValue("LightColor", out object color) ? YamlHelpers.ParseColor(color) : Color.white;
-            ShadowType = Properties.TryGetValue("ShadowType", out object shadowType) ? YamlHelpers.ParseEnum<LightShadows>(shadowType) : default;
-            ShadowStrength = Properties.TryGetValue("ShadowStrength", out object shadowStrength) ? Convert.ToSingle(shadowStrength) : default;
-            LightType = Properties.TryGetValue("LightType", out object lightType) ? YamlHelpers.ParseEnum<LightType>(lightType) : default;
-            LightShape = Properties.TryGetValue("LightShape", out object lightShape) ? YamlHelpers.ParseEnum<LightShape>(lightShape) : default;
-            SpotAngle = Properties.TryGetValue("SpotAngle", out object spotAngle) ? Convert.ToSingle(spotAngle) : default;
-            InnerSpotAngle = Properties.TryGetValue("InnerSpotAngle", out object innerSpotAngle) ? Convert.ToSingle(innerSpotAngle) : default;
-        }
+            Intensity = Properties.TryGetValue("LightIntensity", out object intensity) ? Convert.ToSingle(intensity) : 1f;
+            Range = Properties.TryGetValue("LightRange", out object range) ? Convert.ToSingle(range) : 10f;
+            Color = Properties.TryGetValue("LightColor", out object color) ? YamlHelpers.ParseColor(color) : UnityEngine.Color.white;
+            ShadowType = Properties.TryGetValue("ShadowType", out object shadowType) ? YamlHelpers.ParseEnum<LightShadows>(shadowType) : LightShadows.None;
+            ShadowStrength = Properties.TryGetValue("ShadowStrength", out object shadowStrength) ? Convert.ToSingle(shadowStrength) : 1f;
+            LightType = Properties.TryGetValue("LightType", out object lightType) ? YamlHelpers.ParseEnum<LightType>(lightType) : LightType.Point;
+            LightShape = Properties.TryGetValue("LightShape", out object lightShape) ? YamlHelpers.ParseEnum<LightShape>(lightShape) : LightShape.Cone;
+            SpotAngle = Properties.TryGetValue("SpotAngle", out object spotAngle) ? Convert.ToSingle(spotAngle) : 30f;
+            InnerSpotAngle = Properties.TryGetValue("InnerSpotAngle", out object innerSpotAngle) ? Convert.ToSingle(innerSpotAngle) : 20f;
 
+            SyncLight();
+        }
     }
 }

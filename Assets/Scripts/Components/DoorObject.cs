@@ -7,30 +7,30 @@ namespace Assets.Scripts.Components
 {
     public class DoorObject : ObjectBase
     {
-        [field: SerializeField]
         [HideInInspector]
-        public DoorType DoorType { get; set; }
+        public DoorType DoorType;
 
-        [field: SerializeField]
-        public DoorPermissionFlags Permissions { get; set; }
-        
-        [field: SerializeField]
-        public bool RequireAllPermissions { get; set; }
+        [Header("Door Settings")]
+        [Tooltip("The keycard permission flags required to open this door. Multiple flags can be combined.")]
+        public DoorPermissionFlags Permissions;
 
-        [field: SerializeField]
-        public bool Bypass2176 { get; set; }
+        [Tooltip("If enabled, the player must hold all of the listed permissions rather than just one.")]
+        public bool RequireAllPermissions;
 
-        [field: SerializeField]
-        public float MaxHealth { get; set; }
+        [Tooltip("If enabled, SCP-2176 can bypass this door's permissions.")]
+        public bool Bypass2176;
 
-        [field: SerializeField]
-        public float Health { get; set; }
+        [Tooltip("The maximum health of this door. Only applies to breakable door types such as LCZ and HCZ doors.")]
+        public float MaxHealth;
 
-        [field: SerializeField]
-        public bool IsOpen { get; set; }
+        [Tooltip("The starting health of this door. Only applies to breakable door types such as LCZ and HCZ doors.")]
+        public float Health;
 
-        [field: SerializeField]
-        public bool IsLocked { get; set; }
+        [Tooltip("Whether the door starts open when spawned.")]
+        public bool IsOpen;
+
+        [Tooltip("Whether the door starts locked when spawned. A locked door cannot be opened by players regardless of their permissions.")]
+        public bool IsLocked;
 
         public override ObjectType ObjectType => ObjectType.Door;
 

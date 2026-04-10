@@ -8,24 +8,23 @@ namespace Assets.Scripts.Components
 {
     public class CameraObject : ObjectBase
     {
-        [field: SerializeField]
         [HideInInspector]
-        public CameraType CameraType { get; set; }
+        public CameraType CameraType;
 
-        [field: SerializeField]
-        public string Label { get; set; }
+        [Tooltip("The name displayed on the camera feed in the SCP-079 interface.")]
+        public string Label;
 
-        [field: SerializeField]
-        public RoomName Room { get; set; }
+        [Tooltip("The room this camera is associated with. Used by SCP-079 to locate and switch to this camera.")]
+        public RoomName Room;
 
-        [field: SerializeField]
-        public Vector2 VerticalConstraint { get; set; }
+        [Tooltip("The minimum and maximum vertical angle the camera can look. X is the lower bound, Y is the upper bound.")]
+        public Vector2 VerticalConstraint;
 
-        [field: SerializeField]
-        public Vector2 HorizontalConstraint { get; set; }
+        [Tooltip("The minimum and maximum horizontal angle the camera can pan. X is the lower bound, Y is the upper bound.")]
+        public Vector2 HorizontalConstraint;
 
-        [field: SerializeField]
-        public Vector2 ZoomConstraint { get; set; }
+        [Tooltip("The minimum and maximum zoom level of the camera. X is the minimum zoom, Y is the maximum zoom.")]
+        public Vector2 ZoomConstraint;
 
         public override ObjectType ObjectType => ObjectType.Camera;
 

@@ -8,41 +8,115 @@ namespace Assets.Scripts.Components
 {
     public class TeleporterObject : ObjectBase
     {
-        public Guid Id { get; set; }
+        [Header("Teleporter Settings")]
+        [Tooltip("The unique identifier for this teleporter.")]
+        [HideInInspector]
+        public Guid Id;
 
-        [field: SerializeField]
-        public TeleporterObject Target { get; set; }
+        [Tooltip("The teleporter that this object will send players to.")]
+        public List<TeleporterObject> Targets;
 
-        internal Guid TargetId { get; set; }
+        internal List<Guid> TargetIds;
 
-        [field: SerializeField]
-        public float CoolDown { get; set; }
+        private List<string> RawIds;
 
-        [field: SerializeField]
-        public List<RoleTypeId> AllowedRoles { get; set; } = new();
+        [Tooltip("The cooldown in seconds before this teleporter can be used again.")]
+        public float CoolDown;
 
-        [field: SerializeField]
-        public bool PerPlayerCooldown { get; set; }
+        [Tooltip("The roles that are allowed to use this teleporter.")]
+        public List<RoleTypeId> AllowedRoles = new();
 
-        [field: SerializeField]
-        public TeleporterFlags Flags { get; set; }
+        [Tooltip("If enabled, each player has their own separate cooldown.")]
+        public bool PerPlayerCooldown;
+
+        [Tooltip("Additional behavior flags that modify how this teleporter works.")]
+        public TeleporterFlags Flags;
 
         public override ObjectType ObjectType => ObjectType.Teleporter;
 
-        public override void Compile(Transform root)
+        private void OnValidate()
         {
-            if (Target == null)
+            TargetIds.Clear();
+            foreach (TeleporterObject target in Targets)
             {
-                Debug.LogWarning($"TeleporterObject '{name}' has no Target assigned. Skipping compile.", this);
+                TargetIds.Add(target.Id);
+            }
+        }
+
+        public void GetTargetById()
+        {
+            if (TargetIds == null || TargetIds.Count == 0)
+                return;
+
+            if (Targets == null)
+            {
+                Targets = new();
+            }
+            else
+                Targets.Clear();
+
+            Builder builder = GetComponentInParent<Builder>();
+            if (builder == null)
+            {
+                Debug.LogWarning($"No Builder found for TeleporterObject '{name}'");
                 return;
             }
 
-            TargetId = Target.Id;
+            HashSet<Guid> idSet = new(TargetIds);
+            foreach (TeleporterObject child in builder.GetComponentsInChildren<TeleporterObject>())
+            {
+                if (child == this)
+                    continue;
+
+                if (child.Id == Guid.Empty)
+                {
+                    Debug.LogWarning($"TeleporterObject '{child.name}' has empty Guid");
+                    continue;
+                }
+
+                if (idSet.Contains(child.Id))
+                    Targets.Add(child);
+            }
+        }
+
+        public void ParseIds()
+        {
+            List<Guid> ids = new();
+            foreach (string rawid in RawIds)
+            {
+                if (!Guid.TryParse(rawid, out var result))
+                {
+                    Debug.LogWarning($"Failed to parse id {rawid} into Guid for TeleporterObject '{name}'.");
+                    continue;
+                }
+
+                ids.Add(result);
+            }
+
+            TargetIds = ids;
+            RawIds.Clear();
+        }
+
+        public void CheckId()
+        {
+            if (Id == Guid.Empty)
+                Id = Guid.NewGuid();
+        }
+
+        public override void Compile(Transform root)
+        {
+            if (Targets.Count == 0)
+            {
+                Debug.LogWarning($"TeleporterObject '{name}' has no Targets assigned. Skipping compile.", this);
+                return;
+            }
+
             base.Compile(root);
-            base.Properties = new()
+
+            Properties = new()
             {
                 ["Id"] = Id,
-                ["Target"] = TargetId,
+                ["Target"] = TargetIds,
                 ["CoolDown"] = CoolDown,
                 ["AllowedRoles"] = AllowedRoles,
                 ["PerPlayerCooldown"] = PerPlayerCooldown,
@@ -54,17 +128,22 @@ namespace Assets.Scripts.Components
         {
             base.Decompile(root);
 
-            Id = Properties.TryGetValue("Id", out object id) ? Guid.Parse(Convert.ToString(id)) : Guid.NewGuid();
-            TargetId = Properties.TryGetValue("Target", out object targetid) ? Guid.Parse(Convert.ToString(targetid)) : Guid.NewGuid();
+            if (Properties == null || Properties.Count == 0)
+            {
+                Debug.LogWarning($"TeleporterObject '{name}' has no properties to decompile.", this);
+                Id = Guid.NewGuid();
+                return;
+            }
+
+            Id = Properties.TryGetValue("Id", out object id) ? Guid.Parse(Convert.ToString(id)) : default;
+            RawIds = Properties.TryGetValue("Target", out object targetid) ? YamlHelpers.ParseList<string>(targetid) : default;
             CoolDown = Properties.TryGetValue("CoolDown", out object cooldown) ? Convert.ToSingle(cooldown) : default;
-            AllowedRoles = Properties.TryGetValue("AllowedRoles", out object allowed) ? YamlHelpers.ParseEnumList<RoleTypeId>(allowed) : default;
+            AllowedRoles = Properties.TryGetValue("AllowedRoles", out object allowed) ? YamlHelpers.ParseEnumList<RoleTypeId>(allowed) : new();
             PerPlayerCooldown = Properties.TryGetValue("PerPlayerCooldown", out object perplayer) && Convert.ToBoolean(perplayer);
             Flags = Properties.TryGetValue("Flags", out object teleporterFlags) ? YamlHelpers.ParseEnum<TeleporterFlags>(teleporterFlags) : default;
-        }
 
-        private void Start()
-        {
-            Id = Guid.NewGuid();
+            CheckId();
+            ParseIds();
         }
     }
 }

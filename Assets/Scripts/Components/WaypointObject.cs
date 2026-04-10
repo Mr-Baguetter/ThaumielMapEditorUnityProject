@@ -7,18 +7,20 @@ namespace Assets.Scripts.Components
 {
     public class WaypointObject : ObjectBase
     {
-        [field: SerializeField]
-        public float Priority { get; set; }
+        [Header("Waypoint Settings")]
+        [Tooltip("The priority of this waypoint.")]
+        public float Priority;
 
-        [field: SerializeField]
-        public bool VisualizeBounds { get; set; }
+        [Tooltip("If enabled, the bounds of this waypoint will be visible on the server.")]
+        public bool VisualizeBounds;
 
         public override ObjectType ObjectType => ObjectType.Waypoint;
 
         public override void Compile(Transform root)
         {
             base.Compile(root);
-            base.Properties = new()
+
+            Properties = new()
             {
                 ["Priority"] = Priority,
                 ["VisualizeBounds"] = VisualizeBounds,

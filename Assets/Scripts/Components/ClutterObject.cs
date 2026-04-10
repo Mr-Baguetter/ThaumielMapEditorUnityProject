@@ -8,8 +8,7 @@ namespace Assets.Scripts.Components
     public class ClutterObject : ObjectBase
     {
         [HideInInspector]
-        [field: SerializeField]
-        public ClutterType ClutterType { get; set; }
+        public ClutterType ClutterType;
 
         public override ObjectType ObjectType => ObjectType.Clutter;
 

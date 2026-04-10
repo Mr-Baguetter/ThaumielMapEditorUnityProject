@@ -10,14 +10,20 @@ namespace Assets.Scripts.Components.Tools
     {
         public override ToolType ToolType => ToolType.Physics;
 
+        [Header("Physics Settings")]
+        [Tooltip("The mass of the object in kilograms. Higher values make the object harder to move and more resistant to forces.")]
         public float Weight;
 
+        [Tooltip("How much air resistance is applied to the object, slowing down linear movement over time. 0 means no drag.")]
         public float Drag;
 
+        [Tooltip("How much air resistance is applied to the object's rotation, slowing it down over time. 0 means no angular drag.")]
         public float AngularDrag;
 
+        [Tooltip("How collisions are detected on this object. Discrete is cheapest but may miss fast moving collisions. Use Continuous or ContinuousDynamic for fast moving objects to prevent tunnelling.")]
         public CollisionDetectionMode CollisionMode;
 
+        [Tooltip("Whether physics are active on this object at spawn. If disabled, the object will remain static until enabled at runtime.")]
         public bool Enabled;
 
         public override void Compile()

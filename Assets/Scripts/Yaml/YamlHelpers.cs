@@ -86,6 +86,23 @@ namespace Assets.Scripts.Yaml
             };
         }
 
+        public static List<T> ParseList<T>(object value, Func<object, T> parser)
+        {
+            if (value is not List<object> list)
+                return new List<T>();
+
+            return list.Select(parser).ToList();
+        }
+
+        public static List<T> ParseList<T>(object value)
+        {
+            if (value is not List<object> list)
+                return new List<T>();
+
+            return list.OfType<T>().ToList();
+        }
+
+
         public static T ParseEnum<T>(object value) where T : struct, Enum
         {
             if (value is T direct)
@@ -93,16 +110,11 @@ namespace Assets.Scripts.Yaml
 
             if (Enum.TryParse(value.ToString(), ignoreCase: true, out T result))
                 return result;
-                
+
             return default;
         }
 
         public static List<T> ParseEnumList<T>(object value) where T : struct, Enum
-        {
-            if (value is not List<object> list)
-                return new List<T>();
-
-            return list.Select(item => ParseEnum<T>(item)).ToList();
-        }
+            => ParseList(value, ParseEnum<T>);
     }
 }

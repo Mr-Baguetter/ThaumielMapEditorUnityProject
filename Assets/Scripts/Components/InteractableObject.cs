@@ -7,17 +7,18 @@ namespace Assets.Scripts.Components
 {
     public class InteractableObject : ObjectBase
     {
-        [field: SerializeField]
-        public ColliderShape Shape { get; set; }
+        [Header("Interactable Settings")]
+        [Tooltip("The shape of the collider used to detect when a player is interacting with this object.")]
+        public ColliderShape Shape;
 
-        [field: SerializeField]
-        public float Duration { get; set; }
+        [Tooltip("How long in seconds the player must hold the interact key to trigger this object. Set to 0 for an instant interaction.")]
+        public float Duration;
 
-        [field: SerializeField]
-        public bool Locked { get; set; }
+        [Tooltip("If enabled, players cannot interact with this object regardless of their permissions.")]
+        public bool Locked;
 
-        [field: SerializeField]
-        public DoorPermissionFlags Permissions { get; set; }
+        [Tooltip("The keycard permission flags required to interact with this object. Multiple flags can be combined.")]
+        public DoorPermissionFlags Permissions;
 
         public override ObjectType ObjectType => ObjectType.Interactable;
 

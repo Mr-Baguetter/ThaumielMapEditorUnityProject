@@ -2,28 +2,31 @@ using System;
 using Assets.Scripts.Enums;
 using Assets.Scripts.Yaml;
 using UnityEngine;
+
 namespace Assets.Scripts.Components
 {
     public class PickupObject : ObjectBase
     {
-        [field: SerializeField]
-        public ItemType ItemToSpawn { get; set; }
+        [Header("Pickup Settings")]
+        [Tooltip("The item that will be spawned.")]
+        public ItemType ItemToSpawn;
 
-        [field: SerializeField]
-        public float SpawnPercentage { get; set; }
+        [Tooltip("The chance for this pickup to spawn, from 0 to 100.")]
+        public float SpawnPercentage;
 
-        [field: SerializeField]
-        public uint MaxAmount { get; set; }
+        [Tooltip("The maximum number of items that can spawn.")]
+        public uint MaxAmount;
 
-        [field: SerializeField]
-        public bool IsInfinite { get; set; }
+        [Tooltip("If enabled, this pickup will spawn infinitely.")]
+        public bool IsInfinite;
 
         public override ObjectType ObjectType => ObjectType.Pickup;
 
         public override void Compile(Transform root)
         {
             base.Compile(root);
-            base.Properties = new()
+
+            Properties = new()
             {
                 ["ItemToSpawn"] = ItemToSpawn,
                 ["SpawnPercentage"] = SpawnPercentage,
@@ -43,4 +46,3 @@ namespace Assets.Scripts.Components
         }
     }
 }
-

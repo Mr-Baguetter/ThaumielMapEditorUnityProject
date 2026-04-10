@@ -10,10 +10,12 @@ namespace Assets.Scripts.Components
     [RequireComponent(typeof(TextMeshPro))]
     public class TextToyObject : ObjectBase
     {
-        public Vector2 DisplaySize { get; set; }
+        [Header("Text Settings")]
+        [Tooltip("The size of the text display area.")]
+        public Vector2 DisplaySize;
 
-        [field: SerializeField]
-        public string Text { get; set; }
+        [Tooltip("The text that will be displayed.")]
+        public string Text;
 
         public override ObjectType ObjectType => ObjectType.TextToy;
 
@@ -35,22 +37,23 @@ namespace Assets.Scripts.Components
             }
         }
 
-        public override void Compile(Transform root)
-        {
-            base.Compile(root);
-            base.Properties = new()
-            {
-                ["DisplaySize"] = DisplaySize,
-                ["Text"] = Text
-            };
-        }
-
         private void RefreshText()
         {
             if (_textMesh == null || string.IsNullOrEmpty(Text))
                 return;
 
             _textMesh.SetText(Text);
+        }
+
+        public override void Compile(Transform root)
+        {
+            base.Compile(root);
+
+            Properties = new()
+            {
+                ["DisplaySize"] = DisplaySize,
+                ["Text"] = Text
+            };
         }
 
         public override void Decompile(Transform root)
