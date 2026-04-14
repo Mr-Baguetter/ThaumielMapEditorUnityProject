@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Assets.Scripts.Enums;
+using Assets.Scripts.Yaml;
 using UnityEngine;
 using YamlDotNet.Serialization;
 
@@ -24,6 +25,8 @@ namespace Assets.Scripts.Components
         [field: SerializeField]
         public float MovementSmoothing { get; set; }
 
+        public YamlCullingSettings CullingSettings;
+
         public Dictionary<string, object> Properties { get; set; }
 
         public bool ServerSide { get; set; }
@@ -43,6 +46,7 @@ namespace Assets.Scripts.Components
             }
             else
                 ParentId = transform.parent?.gameObject.GetInstanceID() ?? 0;
+
             Position = t.localPosition;
             Rotation = t.localEulerAngles;
             Scale = t.localScale;

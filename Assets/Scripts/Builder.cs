@@ -190,6 +190,7 @@ namespace Assets.Scripts
                     ObjectType = block.ObjectType,
                     AnimatorName = block.AnimatorName ?? string.Empty,
                     Values = block.Properties,
+                    CullingSettings = block.CullingSettings,
                     Tools = CompileTools(block)
                 };
 

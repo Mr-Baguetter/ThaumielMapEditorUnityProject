@@ -17,6 +17,7 @@ namespace Assets.Scripts.Yaml
         public ObjectType ObjectType { get; set; }
         public Dictionary<string, object> Values { get; set; }
         public List<YamlTool> Tools { get; set; }
+        public YamlCullingSettings CullingSettings { get; set; }
         public string AnimatorName { get; set; }
     }
 }

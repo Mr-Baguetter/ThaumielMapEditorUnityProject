@@ -34,7 +34,7 @@ namespace Assets.Scripts.Editor
                     if (go.GetComponent<ObjectBase>() == null && go.GetComponent<Builder>() == null)
                     {
                         go.AddComponent<EmptyGameObject>();
-                        Debug.Log($"Automatically added YourScript to {go.name}");
+                        Debug.Log($"Automatically added EmptyGameObject to {go.name}");
                     }
                 }
             }
