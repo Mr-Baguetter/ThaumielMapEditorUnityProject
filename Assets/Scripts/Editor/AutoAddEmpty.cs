@@ -31,7 +31,7 @@ namespace Assets.Scripts.Editor
                 if (!existingObjects.Contains(go.GetInstanceID()))
                 {
                     existingObjects.Add(go.GetInstanceID());
-                    if (go.GetComponent<ObjectBase>() == null)
+                    if (go.GetComponent<ObjectBase>() == null && go.GetComponent<Builder>() == null)
                     {
                         go.AddComponent<EmptyGameObject>();
                         Debug.Log($"Automatically added YourScript to {go.name}");
