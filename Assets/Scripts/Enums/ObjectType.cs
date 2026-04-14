@@ -19,5 +19,6 @@ namespace Assets.Scripts.Enums
         Schematic = 14,
         Teleporter = 15,
         GameObject = 16,
+        Speaker = 17,
     }
 }
