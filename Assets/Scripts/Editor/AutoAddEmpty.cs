@@ -31,7 +31,7 @@ namespace Assets.Scripts
                 if (!existingObjects.Contains(go.GetInstanceID()))
                 {
                     existingObjects.Add(go.GetInstanceID());
-                    if (go.GetComponent<ObjectBase>() == null && go.GetComponent<Builder>() == null)
+                    if (go.GetComponent<ObjectBase>() == null && go.GetComponent<Builder>() == null && go.GetComponentInParent<ObjectBase>() == null && go.GetComponent<ServerSide>() == null)
                     {
                         go.AddComponent<EmptyGameObject>();
                         Debug.Log($"Automatically added EmptyGameObject to {go.name}");

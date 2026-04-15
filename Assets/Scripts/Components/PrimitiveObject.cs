@@ -1,5 +1,6 @@
 using Assets.Scripts.Enums;
 using Assets.Scripts.Yaml;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -38,6 +39,9 @@ namespace Assets.Scripts.Components
                 _sharedTransparent = new Material((Material)Resources.Load("Materials/Transparent"));
 
             if (_sharedRegular == null || _sharedTransparent == null)
+                return;
+
+            if (EditorUtility.IsPersistent(gameObject))
                 return;
 
             _sharedRegular.color = Color;

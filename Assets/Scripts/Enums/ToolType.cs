@@ -6,5 +6,7 @@ namespace Assets.Scripts.Enums
         Health = 1,
         Physics = 2,
         Doorlink = 3,
+        ColliderTrigger = 4,
+        InteractableTrigger = 5,
     }
 }

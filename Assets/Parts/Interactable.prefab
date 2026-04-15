@@ -105,7 +105,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Components.InteractableObject
   <Static>k__BackingField: 0
   <MovementSmoothing>k__BackingField: 0
-  <Shape>k__BackingField: 0
-  <Duration>k__BackingField: 0
-  <Locked>k__BackingField: 0
-  <Permissions>k__BackingField: 0
+  Shape: 0
+  Duration: 0
+  Locked: 0
+  Permissions: 0
