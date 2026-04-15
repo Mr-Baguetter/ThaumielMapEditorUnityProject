@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Assets.Scripts.Editor
+namespace Assets.Scripts
 {
     public class DecompilerWindow : EditorWindow
     {

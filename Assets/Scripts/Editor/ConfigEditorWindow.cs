@@ -3,7 +3,7 @@ using UnityEngine;
 using System.IO;
 using System;
 
-namespace Assets.Scripts.Editor
+namespace Assets.Scripts
 {
     public class ConfigEditorWindow : EditorWindow
     {

@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using Assets.Scripts.Components;
 
-namespace Assets.Scripts.Editor
+namespace Assets.Scripts
 {
     // Todo: Test
     [InitializeOnLoad]

@@ -1,9 +1,11 @@
 using UnityEditor;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class RemoveMissingScripts : EditorWindow
 {
-    private GameObject _prefab;
+    private List<GameObject> _prefabs = new();
+    private Vector2 _scrollPos;
 
     [MenuItem("Thaumiel/Tools/Remove Missing Scripts")]
     public static void Open()
@@ -13,42 +15,114 @@ public class RemoveMissingScripts : EditorWindow
 
     private void OnGUI()
     {
-        GUILayout.Label("Drag & drop a prefab to remove missing scripts from it.", EditorStyles.wordWrappedLabel);
+        GUILayout.Label("Drag & drop prefabs below to remove missing scripts.", EditorStyles.wordWrappedLabel);
         EditorGUILayout.Space();
 
-        _prefab = (GameObject)EditorGUILayout.ObjectField("Prefab", _prefab, typeof(GameObject), false);
+        Rect dropArea = GUILayoutUtility.GetRect(0, 50, GUILayout.ExpandWidth(true));
+        GUI.Box(dropArea, "Drop Prefabs Here");
+        HandleDrop(dropArea);
 
         EditorGUILayout.Space();
 
-        EditorGUI.BeginDisabledGroup(_prefab == null);
+        if (_prefabs.Count > 0)
+        {
+            _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
+            for (int i = 0; i < _prefabs.Count; i++)
+            {
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.ObjectField(_prefabs[i], typeof(GameObject), false);
+                if (GUILayout.Button("-", GUILayout.Width(25)))
+                {
+                    _prefabs.RemoveAt(i);
+                    i--;
+                }
+
+                EditorGUILayout.EndHorizontal();
+            }
+
+            EditorGUILayout.EndScrollView();
+        }
+
+        EditorGUILayout.Space();
+        EditorGUILayout.BeginHorizontal();
+
+        EditorGUI.BeginDisabledGroup(_prefabs.Count == 0);
         if (GUILayout.Button("Remove Missing Scripts"))
-            RemoveMissing();
-            
+            RemoveAllMissing();
+
         EditorGUI.EndDisabledGroup();
+
+        if (GUILayout.Button("Clear List", GUILayout.Width(80)))
+            _prefabs.Clear();
+
+        EditorGUILayout.EndHorizontal();
     }
 
-    private void RemoveMissing()
+    private void HandleDrop(Rect dropArea)
     {
-        string path = AssetDatabase.GetAssetPath(_prefab);
-        if (string.IsNullOrEmpty(path))
-        {
-            Debug.LogWarning($"{_prefab.name} is not a project asset.");
+        Event e = Event.current;
+
+        if (!dropArea.Contains(e.mousePosition))
             return;
-        }
 
+        if (e.type == EventType.DragUpdated)
+        {
+            DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
+            e.Use();
+        }
+        else if (e.type == EventType.DragPerform)
+        {
+            DragAndDrop.AcceptDrag();
+
+            foreach (Object obj in DragAndDrop.objectReferences)
+            {
+                if (obj is GameObject go && !_prefabs.Contains(go))
+                    _prefabs.Add(go);
+            }
+
+            e.Use();
+        }
+    }
+
+    private void RemoveAllMissing()
+    {
         int totalRemoved = 0;
-        foreach (Transform t in _prefab.GetComponentsInChildren<Transform>(true))
+        int totalPrefabsProcessed = 0;
+
+        foreach (GameObject prefab in _prefabs)
         {
-            totalRemoved += GameObjectUtility.RemoveMonoBehavioursWithMissingScript(t.gameObject);
+            if (prefab == null)
+                continue;
+
+            string path = AssetDatabase.GetAssetPath(prefab);
+            if (string.IsNullOrEmpty(path))
+            {
+                Debug.LogWarning($"{prefab.name} is not a project asset, skipping.");
+                continue;
+            }
+
+            int removed = 0;
+            foreach (Transform t in prefab.GetComponentsInChildren<Transform>(true))
+            {
+                removed += GameObjectUtility.RemoveMonoBehavioursWithMissingScript(t.gameObject);
+            }
+
+            if (removed > 0)
+            {
+                PrefabUtility.SavePrefabAsset(prefab);
+                Debug.Log($"Removed {removed} missing scripts from {path}");
+                totalRemoved += removed;
+            }
+            else
+                Debug.Log($"No missing scripts found on {prefab.name}");
+
+            totalPrefabsProcessed++;
         }
 
-        if (totalRemoved > 0)
+        if (totalPrefabsProcessed > 0)
         {
-            PrefabUtility.SavePrefabAsset(_prefab);
             AssetDatabase.SaveAssets();
-            Debug.Log($"Removed {totalRemoved} missing scripts from {path}");
+            Debug.Log($"Done! Removed {totalRemoved} missing scripts across {totalPrefabsProcessed} prefabs.");
         }
-        else
-            Debug.Log($"No missing scripts found on {_prefab.name}");
     }
 }
