@@ -67,7 +67,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 46b444ba15051e9438e53275470a52b5, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -105,6 +105,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Components.PrimitiveObject
   <Static>k__BackingField: 1
   <MovementSmoothing>k__BackingField: 0
-  <Color>k__BackingField: {r: 1, g: 1, b: 1, a: 1}
-  <PrimitiveType>k__BackingField: 4
-  <PrimitiveFlags>k__BackingField: -1
+  Color: {r: 1, g: 1, b: 1, a: 1}
+  PrimitiveType: 4
+  PrimitiveFlags: -1
