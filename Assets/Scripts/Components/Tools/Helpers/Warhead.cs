@@ -6,7 +6,7 @@ namespace Assets.Scripts.Components.Tools.Helpers
     [Serializable]
     public class Warhead
     {
-        public WarheadAction Action { get; set; }
-        public bool SuppressSubtitles { get; set; }
+        public WarheadAction Action;
+        public bool SuppressSubtitles;
     }
 }

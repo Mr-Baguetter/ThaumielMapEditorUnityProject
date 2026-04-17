@@ -7,10 +7,10 @@ namespace Assets.Scripts.Components.Tools.Helpers
     [Serializable]
     public class SendCassieMessage
     {
-        public string Message { get; set; } = string.Empty;
-        public string CustomSubtitles { get; set; } = string.Empty;
-        public bool PlayBackground { get; set; }
-        public float Priority { get; set; }
-        public float GlitchScale { get; set; }
+        public string Message;
+        public string CustomSubtitles;
+        public bool PlayBackground;
+        public float Priority;
+        public float GlitchScale;
     }
 }
