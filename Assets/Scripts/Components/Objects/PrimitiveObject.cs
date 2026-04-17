@@ -13,6 +13,7 @@ namespace Assets.Scripts.Components
         [Tooltip("The color of the primitive.")]
         public Color Color;
 
+        [HideInInspector]
         [Tooltip("The type of primitive mesh to use.")]
         public PrimitiveType PrimitiveType;
 

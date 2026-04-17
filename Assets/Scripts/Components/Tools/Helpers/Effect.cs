@@ -1,4 +1,5 @@
 using System;
+using Assets.Scripts.Enums;
 
 namespace Assets.Scripts.Components.Tools.Helpers
 {
@@ -7,13 +8,13 @@ namespace Assets.Scripts.Components.Tools.Helpers
     {
         public int Intensity;
         public float Duration;
-        public string EffectName;
+        public EffectType Effect;
     }
 
     [Serializable]
     public class RemoveEffect
     {
         public int Intensity;
-        public string EffectName;
+        public EffectType Effect;
     }
 }

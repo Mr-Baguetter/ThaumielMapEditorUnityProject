@@ -317,7 +317,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Components.ClutterObject
   <Static>k__BackingField: 0
   <MovementSmoothing>k__BackingField: 0
-  <ClutterType>k__BackingField: 7
+  ClutterType: 7
 --- !u!1 &1252387320104069
 GameObject:
   m_ObjectHideFlags: 0
@@ -908,7 +908,7 @@ LODGroup:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1616817470845062}
-  serializedVersion: 2
+  serializedVersion: 3
   m_LocalReferencePoint: {x: -0.00000047683716, y: 1.670479, z: 0.09109306}
   m_Size: 25.635021
   m_FadeMode: 0
@@ -924,6 +924,7 @@ LODGroup:
     renderers:
     - renderer: {fileID: 23415860775928470}
   m_Enabled: 1
+  m_GlobalIlluminationLOD: 0
 --- !u!1 &1635980211594796
 GameObject:
   m_ObjectHideFlags: 0
@@ -1055,7 +1056,7 @@ LODGroup:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1714708901072756}
-  serializedVersion: 2
+  serializedVersion: 3
   m_LocalReferencePoint: {x: 0.00000047683716, y: 2.835091, z: 1.1754265}
   m_Size: 36.21314
   m_FadeMode: 0
@@ -1071,6 +1072,7 @@ LODGroup:
     renderers:
     - renderer: {fileID: 23295056342434151}
   m_Enabled: 1
+  m_GlobalIlluminationLOD: 0
 --- !u!1 &1811671001280684
 GameObject:
   m_ObjectHideFlags: 0
@@ -1476,7 +1478,7 @@ LODGroup:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1915670832859291}
-  serializedVersion: 2
+  serializedVersion: 3
   m_LocalReferencePoint: {x: 0.20649952, y: 0.020719856, z: 0.01616627}
   m_Size: 0.78970295
   m_FadeMode: 0
@@ -1498,6 +1500,7 @@ LODGroup:
     - renderer: {fileID: 23502762564448984}
     - renderer: {fileID: 23558248962589528}
   m_Enabled: 1
+  m_GlobalIlluminationLOD: 0
 --- !u!1 &1916012063035418
 GameObject:
   m_ObjectHideFlags: 0

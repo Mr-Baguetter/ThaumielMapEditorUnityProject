@@ -1183,7 +1183,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Components.TargetObject
   <Static>k__BackingField: 0
   <MovementSmoothing>k__BackingField: 0
-  <TargetType>k__BackingField: 1
+  TargetType: 1
 --- !u!1 &1825363747835631
 GameObject:
   m_ObjectHideFlags: 0
