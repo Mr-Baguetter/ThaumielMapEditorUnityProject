@@ -11,5 +11,9 @@ namespace Assets.Scripts.Components.Tools.Helpers
         public List<GiveEffect> GiveEffect;
         public List<RemoveEffect> RemoveEffect;
         public List<PlayAnimation> PlayAnimation;
+        public List<GiveItem> GiveItem;
+        public List<RemoveItem> RemoveItem;
+        public List<Warhead> Warhead;
+        public List<SendCassieMessage> SendCassieMessage;
     }
 }

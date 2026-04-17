@@ -324,11 +324,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Components.DoorObject
   <Static>k__BackingField: 0
   <MovementSmoothing>k__BackingField: 0
-  <DoorType>k__BackingField: 4
-  <Permissions>k__BackingField: 0
-  <RequireAllPermissions>k__BackingField: 0
-  <Bypass2176>k__BackingField: 0
-  <MaxHealth>k__BackingField: 0
-  <Health>k__BackingField: 0
-  <IsOpen>k__BackingField: 0
-  <IsLocked>k__BackingField: 0
+  DoorType: 4
+  Permissions: 0
+  RequireAllPermissions: 0
+  Bypass2176: 0
+  MaxHealth: 0
+  Health: 0
+  IsOpen: 0
+  IsLocked: 0

@@ -234,14 +234,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Components.LockerObject
   <Static>k__BackingField: 0
   <MovementSmoothing>k__BackingField: 0
-  <LockerType>k__BackingField: 6
-  <Chambers>k__BackingField:
-  - Index: 0
-    Permissions: 0
-    Data: []
-  - Index: 0
-    Permissions: 0
-    Data: []
+  LockerType: 6
+  Chambers: []
 --- !u!1 &8151063157668880859
 GameObject:
   m_ObjectHideFlags: 0

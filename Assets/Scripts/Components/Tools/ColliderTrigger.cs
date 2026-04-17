@@ -14,6 +14,8 @@ namespace Assets.Scripts.Components.Tools
 
         public ColliderClasses OnExited;
 
+        public Permission Permissions;
+
         public override ToolType ToolType => ToolType.ColliderTrigger;
 
         private void OnDrawGizmosSelected()
@@ -29,28 +31,24 @@ namespace Assets.Scripts.Components.Tools
             {
                 ["Bounds"] = Bounds,
                 ["OnEntered"] = OnEntered,
-                ["OnExited"] = OnExited
+                ["OnExited"] = OnExited,
+                ["Permission"] = Permissions
             };
         }
 
         public override void Decompile()
         {
             if (Properties.TryGetValue("OnEntered", out var entered))
-                OnEntered = MapToObject<ColliderClasses>(entered);
+                OnEntered = YamlHelpers.ParseObject<ColliderClasses>(entered);
 
             if (Properties.TryGetValue("OnExited", out var exited))
-                OnExited = MapToObject<ColliderClasses>(exited);
+                OnExited = YamlHelpers.ParseObject<ColliderClasses>(exited);
 
             if (Properties.TryGetValue("Bounds", out var bounds))
-                Bounds = YamlHelpers.ParseVector3(bounds); 
-        }
+                Bounds = YamlHelpers.ParseVector3(bounds);
 
-        private T MapToObject<T>(object data)
-        {
-            if (data is T alreadyType)
-                return alreadyType;
-
-            return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(data));
+            if (Properties.TryGetValue("Permission", out var perms))
+                Permissions = YamlHelpers.ParseObject<Permission>(perms);
         }
     }
 }

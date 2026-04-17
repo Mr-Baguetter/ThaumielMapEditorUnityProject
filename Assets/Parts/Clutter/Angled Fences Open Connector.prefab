@@ -7818,7 +7818,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Components.ClutterObject
   <Static>k__BackingField: 0
   <MovementSmoothing>k__BackingField: 0
-  <ClutterType>k__BackingField: 4
+  ClutterType: 4
 --- !u!1 &1952029446432829
 GameObject:
   m_ObjectHideFlags: 0

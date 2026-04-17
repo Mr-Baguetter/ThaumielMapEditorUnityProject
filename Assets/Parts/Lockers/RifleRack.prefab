@@ -329,23 +329,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Components.LockerObject
   <Static>k__BackingField: 0
   <MovementSmoothing>k__BackingField: 0
-  <LockerType>k__BackingField: 3
-  <Chambers>k__BackingField:
-  - Index: 0
-    Permissions: 256
-    Data:
-    - ItemType: 0
-      SpawnPercent: 0
-      AmountToSpawn: 0
-    - ItemType: 0
-      SpawnPercent: 0
-      AmountToSpawn: 0
-    - ItemType: 0
-      SpawnPercent: 0
-      AmountToSpawn: 0
-    - ItemType: 0
-      SpawnPercent: 0
-      AmountToSpawn: 0
+  LockerType: 3
+  Chambers: []
 --- !u!1 &7605524787538248659
 GameObject:
   m_ObjectHideFlags: 0

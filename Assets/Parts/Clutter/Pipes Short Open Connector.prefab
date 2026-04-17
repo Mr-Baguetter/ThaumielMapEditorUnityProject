@@ -224,7 +224,7 @@ LODGroup:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1113378059965239}
-  serializedVersion: 2
+  serializedVersion: 3
   m_LocalReferencePoint: {x: 0, y: 0, z: 0.5}
   m_Size: 1
   m_FadeMode: 0
@@ -244,6 +244,7 @@ LODGroup:
     renderers:
     - renderer: {fileID: 23541172567889432}
   m_Enabled: 1
+  m_GlobalIlluminationLOD: 0
 --- !u!64 &64081431149634102
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -490,7 +491,7 @@ LODGroup:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1162940098844575}
-  serializedVersion: 2
+  serializedVersion: 3
   m_LocalReferencePoint: {x: 0, y: 0.000000059604645, z: 1.5}
   m_Size: 3
   m_FadeMode: 0
@@ -510,6 +511,7 @@ LODGroup:
     renderers:
     - renderer: {fileID: 23653890484436710}
   m_Enabled: 1
+  m_GlobalIlluminationLOD: 0
 --- !u!64 &64199333427375727
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -665,7 +667,7 @@ LODGroup:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1198314334317653}
-  serializedVersion: 2
+  serializedVersion: 3
   m_LocalReferencePoint: {x: 0, y: 0.000000059604645, z: 1.5}
   m_Size: 3
   m_FadeMode: 0
@@ -685,6 +687,7 @@ LODGroup:
     renderers:
     - renderer: {fileID: 23954518515124824}
   m_Enabled: 1
+  m_GlobalIlluminationLOD: 0
 --- !u!64 &64514350410782484
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1111,7 +1114,7 @@ LODGroup:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1336118624150111}
-  serializedVersion: 2
+  serializedVersion: 3
   m_LocalReferencePoint: {x: 0, y: 0.000000059604645, z: 1.5}
   m_Size: 3
   m_FadeMode: 0
@@ -1131,6 +1134,7 @@ LODGroup:
     renderers:
     - renderer: {fileID: 23884153218381168}
   m_Enabled: 1
+  m_GlobalIlluminationLOD: 0
 --- !u!64 &64887064477144781
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1196,7 +1200,7 @@ LODGroup:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1345078053341163}
-  serializedVersion: 2
+  serializedVersion: 3
   m_LocalReferencePoint: {x: 0.069880456, y: 0.000000029802322, z: 0.069880456}
   m_Size: 0.77355766
   m_FadeMode: 0
@@ -1216,6 +1220,7 @@ LODGroup:
     renderers:
     - renderer: {fileID: 23421145515297401}
   m_Enabled: 1
+  m_GlobalIlluminationLOD: 0
 --- !u!64 &64969552990158458
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1377,7 +1382,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Components.ClutterObject
   <Static>k__BackingField: 0
   <MovementSmoothing>k__BackingField: 0
-  <ClutterType>k__BackingField: 1
+  ClutterType: 1
 --- !u!1 &1371909632919553
 GameObject:
   m_ObjectHideFlags: 0
@@ -1601,7 +1606,7 @@ LODGroup:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1397841099379149}
-  serializedVersion: 2
+  serializedVersion: 3
   m_LocalReferencePoint: {x: 0.15327454, y: -15.490305, z: 0}
   m_Size: 272.34042
   m_FadeMode: 0
@@ -1617,6 +1622,7 @@ LODGroup:
     renderers:
     - renderer: {fileID: 23712580781392995}
   m_Enabled: 1
+  m_GlobalIlluminationLOD: 0
 --- !u!65 &65271112678682384
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1861,7 +1867,7 @@ LODGroup:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1425826075971803}
-  serializedVersion: 2
+  serializedVersion: 3
   m_LocalReferencePoint: {x: 0, y: 0, z: 0.5}
   m_Size: 1
   m_FadeMode: 0
@@ -1881,6 +1887,7 @@ LODGroup:
     renderers:
     - renderer: {fileID: 23715268559135850}
   m_Enabled: 1
+  m_GlobalIlluminationLOD: 0
 --- !u!64 &64118616154644267
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1945,7 +1952,7 @@ LODGroup:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1437529741813609}
-  serializedVersion: 2
+  serializedVersion: 3
   m_LocalReferencePoint: {x: 0.15327454, y: -15.490305, z: 0}
   m_Size: 272.34042
   m_FadeMode: 0
@@ -1961,6 +1968,7 @@ LODGroup:
     renderers:
     - renderer: {fileID: 23645590889717929}
   m_Enabled: 1
+  m_GlobalIlluminationLOD: 0
 --- !u!65 &65535555088950363
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2025,7 +2033,7 @@ LODGroup:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1438105201350817}
-  serializedVersion: 2
+  serializedVersion: 3
   m_LocalReferencePoint: {x: 0.069880456, y: 0.000000029802322, z: 0.069880456}
   m_Size: 0.77355766
   m_FadeMode: 0
@@ -2045,6 +2053,7 @@ LODGroup:
     renderers:
     - renderer: {fileID: 23307523375435540}
   m_Enabled: 1
+  m_GlobalIlluminationLOD: 0
 --- !u!64 &64064935810181646
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2110,7 +2119,7 @@ LODGroup:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1454467282702326}
-  serializedVersion: 2
+  serializedVersion: 3
   m_LocalReferencePoint: {x: 0.069880456, y: 0.000000029802322, z: 0.069880456}
   m_Size: 0.77355766
   m_FadeMode: 0
@@ -2130,6 +2139,7 @@ LODGroup:
     renderers:
     - renderer: {fileID: 23933663692024913}
   m_Enabled: 1
+  m_GlobalIlluminationLOD: 0
 --- !u!64 &64415396409834484
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2465,7 +2475,7 @@ LODGroup:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1515461540519182}
-  serializedVersion: 2
+  serializedVersion: 3
   m_LocalReferencePoint: {x: 0.069880456, y: 0.000000029802322, z: 0.069880456}
   m_Size: 0.77355766
   m_FadeMode: 0
@@ -2485,6 +2495,7 @@ LODGroup:
     renderers:
     - renderer: {fileID: 23635583316441283}
   m_Enabled: 1
+  m_GlobalIlluminationLOD: 0
 --- !u!64 &64758038729532746
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -3041,7 +3052,7 @@ LODGroup:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1668277866009983}
-  serializedVersion: 2
+  serializedVersion: 3
   m_LocalReferencePoint: {x: 0, y: 0.000000059604645, z: 1.5}
   m_Size: 3
   m_FadeMode: 0
@@ -3061,6 +3072,7 @@ LODGroup:
     renderers:
     - renderer: {fileID: 23082947340405600}
   m_Enabled: 1
+  m_GlobalIlluminationLOD: 0
 --- !u!64 &64610096069385222
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -3486,7 +3498,7 @@ LODGroup:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1731253567356404}
-  serializedVersion: 2
+  serializedVersion: 3
   m_LocalReferencePoint: {x: 0.15327454, y: -15.490305, z: 0}
   m_Size: 272.34042
   m_FadeMode: 0
@@ -3502,6 +3514,7 @@ LODGroup:
     renderers:
     - renderer: {fileID: 23511778886077770}
   m_Enabled: 1
+  m_GlobalIlluminationLOD: 0
 --- !u!65 &65310122424629826
 BoxCollider:
   m_ObjectHideFlags: 0

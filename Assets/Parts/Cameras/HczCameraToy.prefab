@@ -292,12 +292,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Components.CameraObject
   <Static>k__BackingField: 0
   <MovementSmoothing>k__BackingField: 0
-  <CameraType>k__BackingField: 1
-  <Label>k__BackingField: 
-  <Room>k__BackingField: 0
-  <VerticalConstraint>k__BackingField: {x: 0, y: 0}
-  <HorizontalConstraint>k__BackingField: {x: 0, y: 0}
-  <ZoomConstraint>k__BackingField: {x: 0, y: 0}
+  CameraType: 1
+  Label: 
+  Room: 0
+  VerticalConstraint: {x: 0, y: 0}
+  HorizontalConstraint: {x: 0, y: 0}
+  ZoomConstraint: {x: 0, y: 0}
 --- !u!1 &1416564590848263
 GameObject:
   m_ObjectHideFlags: 0

@@ -324,14 +324,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Components.LockerObject
   <Static>k__BackingField: 0
   <MovementSmoothing>k__BackingField: 0
-  <LockerType>k__BackingField: 5
-  <Chambers>k__BackingField:
-  - Index: 0
-    Permissions: 0
-    Data: []
-  - Index: 0
-    Permissions: 0
-    Data: []
-  - Index: 0
-    Permissions: 0
-    Data: []
+  LockerType: 5
+  Chambers: []

@@ -1,6 +1,8 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Assets.Scripts.Enums;
 using Assets.Scripts.Lockers;
 using UnityEngine;
@@ -9,6 +11,114 @@ namespace Assets.Scripts.Yaml
 {
     public class YamlHelpers
     {
+        public static T ParseObject<T>(object value) where T : new()
+        {
+            if (value is not Dictionary<string, object> dict)
+            {
+                Debug.LogWarning($"[YamlHelpers] ParseObject<{typeof(T).Name}>: expected Dictionary<string, object>, got {value?.GetType().Name ?? "null"}");
+                return new T();
+            }
+
+            T instance = new();
+            PropertyInfo[] properties = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+            foreach (PropertyInfo property in properties)
+            {
+                if (!property.CanWrite)
+                    continue;
+
+                if (!dict.TryGetValue(property.Name, out object rawValue))
+                    continue;
+
+                try
+                {
+                    object parsed = ParseValueForType(property.PropertyType, rawValue);
+                    property.SetValue(instance, parsed);
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError($"[YamlHelpers] Failed to parse property '{property.Name}' on {typeof(T).Name}: {ex.Message}");
+                }
+            }
+
+            Debug.Log($"[YamlHelpers] ParseObject<{typeof(T).Name}> completed.");
+            return instance;
+        }
+
+        private static object ParseValueForType(Type targetType, object rawValue)
+        {
+            if (targetType == typeof(Vector2))
+                return ParseVector2(rawValue);
+
+            if (targetType == typeof(Vector3))
+                return ParseVector3(rawValue);
+
+            if (targetType == typeof(Color))
+                return ParseColor(rawValue);
+
+            if (targetType.IsEnum)
+                return ParseEnumByType(targetType, rawValue);
+
+            if (IsGenericList(targetType))
+                return ParseListByElementType(targetType, rawValue);
+
+            if (targetType == typeof(string))
+                return rawValue?.ToString();
+
+            if (targetType.IsValueType || targetType.IsPrimitive)
+                return Convert.ChangeType(rawValue, targetType);
+
+            if (targetType.IsClass)
+                return ParseNestedObject(targetType, rawValue);
+
+            return rawValue;
+        }
+
+        private static bool IsGenericList(Type type)
+            => type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>);
+            
+        private static object ParseListByElementType(Type listType, object rawValue)
+        {
+            if (rawValue is not List<object> rawList)
+                return Activator.CreateInstance(listType);
+
+            Type elementType = listType.GetGenericArguments()[0];
+            IList resultList = (IList)Activator.CreateInstance(listType);
+
+            foreach (object item in rawList)
+            {
+                object parsed = ParseValueForType(elementType, item);
+                resultList.Add(parsed);
+            }
+
+            return resultList;
+        }
+
+        private static object ParseEnumByType(Type enumType, object rawValue)
+        {
+            if (rawValue == null)
+                return Enum.ToObject(enumType, 0);
+
+            if (Enum.TryParse(enumType, rawValue.ToString(), ignoreCase: true, out object result))
+                return result;
+
+            Debug.LogWarning($"[YamlHelpers] Could not parse '{rawValue}' as enum {enumType.Name}. Using default.");
+            return Enum.ToObject(enumType, 0);
+        }
+
+        private static object ParseNestedObject(Type targetType, object rawValue)
+        {
+            MethodInfo genericMethod = typeof(YamlHelpers).GetMethod(nameof(ParseObject), BindingFlags.Public | BindingFlags.Static)?.MakeGenericMethod(targetType);
+
+            if (genericMethod == null)
+            {
+                Debug.LogWarning($"[YamlHelpers] Could not find ParseObject method for type {targetType.Name}.");
+                return Activator.CreateInstance(targetType);
+            }
+
+            return genericMethod.Invoke(null, new object[] { rawValue });
+        }
+
         public static Vector2 ParseVector2(object value)
         {
             if (value is Vector2 v)
@@ -101,7 +211,6 @@ namespace Assets.Scripts.Yaml
 
             return list.OfType<T>().ToList();
         }
-
 
         public static T ParseEnum<T>(object value) where T : struct, Enum
         {

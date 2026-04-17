@@ -20,5 +20,6 @@ namespace Assets.Scripts.Enums
         Teleporter = 15,
         GameObject = 16,
         Speaker = 17,
+        PlayerSpawnPoint = 18,
     }
 }

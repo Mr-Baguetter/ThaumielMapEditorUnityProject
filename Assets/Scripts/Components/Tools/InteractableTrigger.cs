@@ -15,7 +15,7 @@ namespace Assets.Scripts.Components.Tools
 
         public float InteractionTime;
 
-        public DoorPermissionFlags Permission;
+        public Permission Permissions;
 
         public InteractableClasses OnInteracted;
 
@@ -63,7 +63,7 @@ namespace Assets.Scripts.Components.Tools
             {
                 ["Bounds"] = Bounds,
                 ["Shape"] = Shape,
-                ["Permission"] = Permission,
+                ["Permission"] = Permissions,
                 ["InteractionTime"] = InteractionTime,
                 ["OnInteracted"] = OnInteracted,
                 ["OnInteractionDenied"] = OnInteractionDenied
@@ -73,10 +73,10 @@ namespace Assets.Scripts.Components.Tools
         public override void Decompile()
         {
             if (Properties.TryGetValue("OnInteracted", out var interacted))
-                OnInteracted = MapToObject<InteractableClasses>(interacted);
+                OnInteracted = YamlHelpers.ParseObject<InteractableClasses>(interacted);
 
             if (Properties.TryGetValue("OnInteractionDenied", out var denied))
-                OnInteractionDenied = MapToObject<InteractableClasses>(denied);      
+                OnInteractionDenied = YamlHelpers.ParseObject<InteractableClasses>(denied);      
 
             if (Properties.TryGetValue("InteractionTime", out var time))
                 InteractionTime = Convert.ToSingle(time);
@@ -88,15 +88,7 @@ namespace Assets.Scripts.Components.Tools
                 Bounds = YamlHelpers.ParseVector3(bounds);
 
             if (Properties.TryGetValue("Permission", out var permission))
-                Permission = YamlHelpers.ParseEnum<DoorPermissionFlags>(permission);
-        }
-
-        private T MapToObject<T>(object data)
-        {
-            if (data is T alreadyType)
-                return alreadyType;
-
-            return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(data));
+                Permissions = YamlHelpers.ParseObject<Permission>(permission);
         }
     }
 }
