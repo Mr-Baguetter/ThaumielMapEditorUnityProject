@@ -5,7 +5,6 @@ using Assets.Scripts.Components;
 
 namespace Assets.Scripts
 {
-    // Todo: Test
     [InitializeOnLoad]
     public class AutoAddEmpty
     {
@@ -28,6 +27,29 @@ namespace Assets.Scripts
 
             foreach (GameObject go in allObjects)
             {
+                EmptyGameObject empty = go.GetComponent<EmptyGameObject>();
+                if (empty != null)
+                {
+                    Component[] components = go.GetComponents<Component>();
+                    bool hasOtherComponent = false;
+
+                    foreach (Component c in components)
+                    {
+                        if (c is Transform || c is EmptyGameObject)
+                            continue;
+
+                        hasOtherComponent = true;
+                        break;
+                    }
+
+                    if (hasOtherComponent)
+                    {
+                        Object.DestroyImmediate(empty);
+                        Debug.Log($"Removed EmptyGameObject from {go.name} because another component was added.");
+                        continue;
+                    }
+                }
+
                 if (!existingObjects.Contains(go.GetInstanceID()))
                 {
                     existingObjects.Add(go.GetInstanceID());

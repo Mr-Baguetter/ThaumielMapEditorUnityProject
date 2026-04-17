@@ -3119,6 +3119,7 @@ GameObject:
   - component: {fileID: 1081293068}
   - component: {fileID: 1081293067}
   - component: {fileID: 1081293066}
+  - component: {fileID: 1081293069}
   m_Layer: 0
   m_Name: Cube (3)
   m_TagString: Cube
@@ -3215,6 +3216,53 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1081293064}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1081293069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1081293064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d810e0c8ba82fe54098d08fbf05cd23b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Components.Tools.InteractableTrigger
+  Bounds: {x: 0, y: 0, z: 0}
+  Shape: 0
+  InteractionTime: 0
+  Permissions:
+    AllowedRoles: 
+    KeycardPermissions: 0
+  OnInteracted:
+    PlayAudio: []
+    RunCommand: []
+    GiveEffect: []
+    RemoveEffect: []
+    PlayAnimation: []
+    GiveItem: []
+    RemoveItem:
+    - Item: 0
+      Count: 0
+    Warhead:
+    - Action: 0
+      SuppressSubtitles: 0
+    SendCassieMessage:
+    - Message: 
+      CustomSubtitles: 
+      PlayBackground: 0
+      Priority: 0
+      GlitchScale: 0
+  OnInteractionDenied:
+    PlayAudio: []
+    RunCommand: []
+    GiveEffect: []
+    RemoveEffect: []
+    PlayAnimation: []
+    GiveItem: []
+    RemoveItem: []
+    Warhead: []
+    SendCassieMessage: []
 --- !u!1 &1111300129
 GameObject:
   m_ObjectHideFlags: 0
