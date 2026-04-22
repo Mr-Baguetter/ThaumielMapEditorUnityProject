@@ -18,12 +18,14 @@ namespace Assets.Scripts.Networking.Blocky.Definitions
                 Id = "timing_wait_for_frames",
                 Category = "Timing",
                 Color = "#1f38f5",
-                Tooltip = "Waits for the specified time (in frames) before continuing the execution.",
-                Message = "Wait → %1 frames",
+                Tooltip = "Waits for the specified number of frames, then runs the body.",
+                Message = "Wait → %1 frames { %2 %3 }",
                 Connections = new List<BlockConnectionType> { BlockConnectionType.Next, BlockConnectionType.Previous },
                 Args = new List<Dictionary<string, object>>
                 {
-                    BlockArg.NumberField("WaitTime", 5)
+                    BlockArg.NumberField("WaitTime", 5),
+                    BlockArg.Dummy(),
+                    BlockArg.Statement("DO")
                 }
             });
 
@@ -32,12 +34,14 @@ namespace Assets.Scripts.Networking.Blocky.Definitions
                 Id = "timing_wait_for_seconds",
                 Category = "Timing",
                 Color = "#1f38f5",
-                Tooltip = "Waits for the specified time (in seconds) before continuing the execution.",
-                Message = "Wait → %1 seconds",
+                Tooltip = "Waits for the specified number of seconds, then runs the body.",
+                Message = "Wait → %1 seconds { %2 %3 }",
                 Connections = new List<BlockConnectionType> { BlockConnectionType.Next, BlockConnectionType.Previous },
                 Args = new List<Dictionary<string, object>>
                 {
-                    BlockArg.NumberField("WaitTime", 5)
+                    BlockArg.NumberField("WaitTime", 5),
+                    BlockArg.Dummy(),
+                    BlockArg.Statement("DO")
                 }
             });
 
@@ -46,12 +50,14 @@ namespace Assets.Scripts.Networking.Blocky.Definitions
                 Id = "timing_wait_until_true",
                 Category = "Timing",
                 Color = "#1f38f5",
-                Tooltip = "Waits until the specified input is true before continuing execution.",
-                Message = "Wait Until → %1",
+                Tooltip = "Waits until the input is true, then runs the body.",
+                Message = "Wait Until → %1 { %2 %3 }",
                 Connections = new List<BlockConnectionType> { BlockConnectionType.Next, BlockConnectionType.Previous },
                 Args = new List<Dictionary<string, object>>
                 {
-                    BlockArg.Value("Waiting Input")
+                    BlockArg.Value("WaitingInput"),
+                    BlockArg.Dummy(),
+                    BlockArg.Statement("DO")
                 }
             });
         }
