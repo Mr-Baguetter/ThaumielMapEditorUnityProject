@@ -137,6 +137,23 @@ namespace Assets.Scripts.Networking.Blocky.Definitions
                     BlockArg.NumberField("z", 0)
                 }
             });
+
+            BlocklyServer.RegisterBlock(new BlockDefinition
+            {
+                Id = "set_player_scale",
+                Category = "Player",
+                Color = "#df6717",
+                Tooltip = "Sets the players scale.",
+                Message = "Set Scale of Player: %1 → x: %2  y: %3  z: %4",
+                Connections = new List<BlockConnectionType> { BlockConnectionType.Previous, BlockConnectionType.Next },
+                Args = new List<Dictionary<string, object>>
+                {
+                    BlockArg.Value("Player"),
+                    BlockArg.NumberField("x", 1),
+                    BlockArg.NumberField("y", 1),
+                    BlockArg.NumberField("z", 1)
+                }
+            });
         }
 
         private void RegisterGetPlayer()
@@ -415,12 +432,13 @@ namespace Assets.Scripts.Networking.Blocky.Definitions
                 Category = "Player",
                 Color = "#df6717",
                 Tooltip = "Sends a broadcast message to the player.",
-                Message = "Send Broadcast to Player: %1 → %2",
+                Message = "Send Broadcast to Player: %1 → Broadcast Message: %2 Duration: %3",
                 Connections = new List<BlockConnectionType> { BlockConnectionType.Previous, BlockConnectionType.Next },
                 Args = new List<Dictionary<string, object>>
                 {
                     BlockArg.Value("Player"),
-                    BlockArg.TextField("Broadcast Message")
+                    BlockArg.TextField("Broadcast Message"),
+                    BlockArg.NumberField("Duration", 5)
                 }
             });
 
@@ -430,12 +448,13 @@ namespace Assets.Scripts.Networking.Blocky.Definitions
                 Category = "Player",
                 Color = "#df6717",
                 Tooltip = "Sends a hint message to the player.",
-                Message = "Send Hint to Player: %1 → %2",
+                Message = "Send Hint to Player: %1 → Hint Message: %2 Duration: %3",
                 Connections = new List<BlockConnectionType> { BlockConnectionType.Previous, BlockConnectionType.Next },
                 Args = new List<Dictionary<string, object>>
                 {
                     BlockArg.Value("Player"),
-                    BlockArg.TextField("Hint Message")
+                    BlockArg.TextField("Hint Message"),
+                    BlockArg.NumberField("Duration", 5)
                 }
             });
         }
