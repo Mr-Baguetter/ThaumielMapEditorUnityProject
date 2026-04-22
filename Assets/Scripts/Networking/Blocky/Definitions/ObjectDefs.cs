@@ -47,7 +47,7 @@ namespace Assets.Scripts.Networking.Blocky.Definitions
                 Category = "Actions",
                 Color = "#1565C0",
                 Tooltip = "Runs an instance method with reflection",
-                Message = "Call Method: %2  on: %1  arg1: %3  arg2: %4  arg3: %5  arg4: %6",
+                Message = "on: %1 Call Method: %2 arg1: %3  arg2: %4  arg3: %5  arg4: %6",
                 Connections = new List<BlockConnectionType> { BlockConnectionType.Previous, BlockConnectionType.Next },
                 Args = new List<Dictionary<string, object>>
                 {
@@ -90,11 +90,11 @@ namespace Assets.Scripts.Networking.Blocky.Definitions
                 Connections = new List<BlockConnectionType> { BlockConnectionType.Previous, BlockConnectionType.Next },
                 Args = new List<Dictionary<string, object>>
                 {
-                    BlockArg.TextField("path",        ""),
-                    BlockArg.NumberField("volume",      1.0,  0.0, 1.0),
+                    BlockArg.TextField("path", ""),
+                    BlockArg.NumberField("volume",   1.0,  0.0, 1.0),
                     BlockArg.NumberField("minDistance", 1.0,  0.0),
                     BlockArg.NumberField("maxDistance", 20.0, 0.0),
-                    BlockArg.Checkbox("isSpatial",    false)
+                    BlockArg.Checkbox("isSpatial", false)
                 }
             });
         }
@@ -111,11 +111,11 @@ namespace Assets.Scripts.Networking.Blocky.Definitions
                 Connections = new List<BlockConnectionType> { BlockConnectionType.Previous, BlockConnectionType.Next },
                 Args = new List<Dictionary<string, object>>
                 {
-                    BlockArg.TextField("message",         ""),
+                    BlockArg.TextField("message", ""),
                     BlockArg.TextField("customSubtitles", ""),
-                    BlockArg.Checkbox("playBackground",   false),
-                    BlockArg.NumberField("priority",      0.0),
-                    BlockArg.NumberField("glitchScale",   0.0, 0.0, 1.0)
+                    BlockArg.Checkbox("playBackground", false),
+                    BlockArg.NumberField("priority", 0.0),
+                    BlockArg.NumberField("glitchScale", 0.0, 0.0, 1.0)
                 }
             });
         }
@@ -152,7 +152,7 @@ namespace Assets.Scripts.Networking.Blocky.Definitions
                 {
                     BlockArg.Dropdown("effect", EnumOptions<EffectType>()),
                     BlockArg.NumberField("intensity", 1, 1, 255),
-                    BlockArg.NumberField("duration",  5, 0)
+                    BlockArg.NumberField("duration", 5, 0)
                 }
             });
         }

@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.Networking;
 using System.Diagnostics;
 using System.IO;
-using System.Collections;
 using System.Threading.Tasks;
 using Debug = UnityEngine.Debug;
 using System;
@@ -21,7 +20,7 @@ public class AutoUpdateSetup
         if (EditorPrefs.HasKey(PrefKey))
         {
             if (EditorPrefs.GetBool(PrefKey))
-                TryRunGitPull();
+                EditorApplication.delayCall += CheckForUpdates;
 
             return;
         }
@@ -33,8 +32,8 @@ public class AutoUpdateSetup
     {
         bool wantsAutoUpdate = EditorUtility.DisplayDialog(
             "Automatic Updates",
-            "Would you like to enable automatic updates from GitHub?\n\nThis will install Git if it is not already installed.",
-            "Yes, enable updates",
+            "Would you like to enable update checking from GitHub?\n\nThis will install Git if it is not already installed.",
+            "Yes, enable",
             "No thanks"
         );
 
@@ -45,11 +44,68 @@ public class AutoUpdateSetup
 
         if (IsGitInstalled())
         {
-            Debug.Log("[AutoUpdate] Git already installed, proceeding.");
-            TryRunGitPull();
+            CheckForUpdates();
         }
         else
+        {
             _ = DownloadAndInstallGitAsync();
+        }
+    }
+
+    private static void CheckForUpdates()
+    {
+        if (!IsGitInstalled())
+            return;
+
+        try
+        {
+            string rootDir = Application.dataPath + "/../";
+            RunGitCommand("fetch", rootDir);
+            string status = RunGitCommand("rev-list HEAD..@{u} --count", rootDir).Trim();
+
+            if (int.TryParse(status, out int count) && count > 0)
+            {
+                string commitMessages = RunGitCommand("log HEAD..@{u} --oneline -n 5", rootDir);
+
+                bool update = EditorUtility.DisplayDialog(
+                    "Update Available",
+                    $"There are {count} new update(s) available.\n\nRecent changes:\n{commitMessages}\n\nWould you like to pull these updates now?",
+                    "Update Now",
+                    "Later"
+                );
+
+                if (update)
+                {
+                    TryRunGitPull();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.LogWarning($"[AutoUpdate] Could not check for updates: {ex.Message}");
+        }
+    }
+
+    private static string RunGitCommand(string args, string workingDir)
+    {
+        Process process = new()
+        {
+            StartInfo = new ProcessStartInfo
+            {
+                FileName = "git",
+                Arguments = args,
+                WorkingDirectory = workingDir,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            }
+        };
+
+        process.Start();
+        string output = process.StandardOutput.ReadToEnd();
+        process.WaitForExit();
+        return output;
     }
 
     private static bool IsGitInstalled()
@@ -67,7 +123,7 @@ public class AutoUpdateSetup
                     CreateNoWindow = true
                 }
             };
-
+            
             process.Start();
             process.WaitForExit();
             return process.ExitCode == 0;
@@ -85,10 +141,8 @@ public class AutoUpdateSetup
         string installerPath = InstallerPath + extension;
 
         EditorUtility.DisplayProgressBar("Auto Update Setup", "Downloading Git...", 0f);
-
         using UnityWebRequest request = new(url, UnityWebRequest.kHttpVerbGET);
         request.downloadHandler = new DownloadHandlerFile(installerPath);
-
         UnityWebRequestAsyncOperation operation = request.SendWebRequest();
 
         while (!operation.isDone)
@@ -98,125 +152,51 @@ public class AutoUpdateSetup
         }
 
         EditorUtility.ClearProgressBar();
-
-        if (request.result != UnityWebRequest.Result.Success)
-        {
-            UnityEngine.Debug.LogError($"[AutoUpdate] Failed to download Git: {request.error}");
-            return;
-        }
-
-        UnityEngine.Debug.Log("[AutoUpdate] Git downloaded, launching installer...");
-        await InstallGitAsync(installerPath);
+        if (request.result == UnityWebRequest.Result.Success)
+            await InstallGitAsync(installerPath);
     }
 
     private static async Task InstallGitAsync(string installerPath)
     {
         try
         {
-            ProcessStartInfo startInfo = Application.platform == RuntimePlatform.WindowsEditor
-                ? new ProcessStartInfo
-                {
-                    FileName = installerPath,
-                    Arguments = "/VERYSILENT /NORESTART /NOCANCEL /SP- /CLOSEAPPLICATIONS /RESTARTAPPLICATIONS",
-                    UseShellExecute = true
-                }
-                : new ProcessStartInfo
-                {
-                    FileName = "sudo",
-                    Arguments = $"installer -pkg {installerPath} -target /",
-                    UseShellExecute = true
-                };
-
+            ProcessStartInfo startInfo = Application.platform == RuntimePlatform.WindowsEditor ? new ProcessStartInfo { FileName = installerPath, Arguments = "/VERYSILENT /NORESTART", UseShellExecute = true } : new ProcessStartInfo { FileName = "sudo", Arguments = $"installer -pkg {installerPath} -target /", UseShellExecute = true };
             Process process = Process.Start(startInfo)!;
-            EditorUtility.DisplayProgressBar("Auto Update Setup", "Installing Git, please wait...", 1f);
             await Task.Run(() => process.WaitForExit());
-            EditorUtility.ClearProgressBar();
 
             if (File.Exists(installerPath))
+            {
                 File.Delete(installerPath);
+            }
 
             if (process.ExitCode == 0)
             {
-                Debug.Log("[AutoUpdate] Git installed successfully.");
-                TryRunGitPull();
+                CheckForUpdates();
             }
-            else
-                Debug.LogError($"[AutoUpdate] Git installer exited with code {process.ExitCode}.");
         }
         catch (Exception ex)
         {
-            Debug.LogError($"[AutoUpdate] Failed to launch Git installer: {ex.Message}");
+            Debug.LogError($"[AutoUpdate] Installation failed: {ex.Message}");
         }
-    }
-
-    private static IEnumerator WaitForInstall(Process process)
-    {
-        EditorUtility.DisplayProgressBar("Auto Update Setup", "Installing Git, please wait...", 1f);
-
-        while (!process.HasExited)
-            yield return null;
-
-        EditorUtility.ClearProgressBar();
-
-        if (File.Exists(InstallerPath))
-            File.Delete(InstallerPath);
-
-        if (process.ExitCode == 0)
-        {
-            Debug.Log("[AutoUpdate] Git installed successfully.");
-            TryRunGitPull();
-        }
-        else
-            Debug.LogError($"[AutoUpdate] Git installer exited with code {process.ExitCode}.");
     }
 
     private static void TryRunGitPull()
     {
-        try
-        {
-            Process process = new()
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = "git",
-                    Arguments = "pull",
-                    WorkingDirectory = Application.dataPath + "/../",
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true
-                }
-            };
-
-            process.Start();
-            string output = process.StandardOutput.ReadToEnd();
-            string error = process.StandardError.ReadToEnd();
-            process.WaitForExit();
-
-            if (process.ExitCode == 0)
-            {
-                Debug.Log($"[AutoUpdate] {output}");
-                AssetDatabase.Refresh();
-            }
-            else
-                Debug.LogError($"[AutoUpdate] Git pull failed: {error}");
-        }
-        catch (Exception ex)
-        {
-            Debug.LogError($"[AutoUpdate] Exception during git pull: {ex.Message}");
-        }
+        string output = RunGitCommand("pull", Application.dataPath + "/../");
+        Debug.Log($"[AutoUpdate] Pull Result: {output}");
+        AssetDatabase.Refresh();
     }
 
     [MenuItem("Thaumiel/Tools/Auto Update/Reset Setup")]
     private static void ResetSetup()
     {
         EditorPrefs.DeleteKey(PrefKey);
-        Debug.Log("[AutoUpdate] Setup preference cleared. Will prompt on next Unity load.");
+        Debug.Log("[AutoUpdate] Setup preference cleared.");
     }
 
-    [MenuItem("Thaumiel/Tools/Auto Update/Pull Now")]
-    private static void PullNow()
+    [MenuItem("Thaumiel/Tools/Auto Update/Check for Updates")]
+    private static void ManualCheck()
     {
-        TryRunGitPull();
+        CheckForUpdates();
     }
 }
