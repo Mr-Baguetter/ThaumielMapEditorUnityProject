@@ -38,9 +38,9 @@ namespace Assets.Scripts.Editor.Tools
             FieldInfo[] fields = target.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance);
             ToolBase tool = (ToolBase)target;
 
-            foreach (FieldInfo field in fields)
+foreach (FieldInfo field in fields)
             {
-                if (field.FieldType != typeof(InteractableClasses) && field.FieldType != typeof(ColliderClasses))
+                if (field.FieldType != typeof(InteractableClasses) && field.FieldType != typeof(ColliderClasses) && field.FieldType != typeof(CodeExportPayload))
                     continue;
 
                 if (GUILayout.Button($"Open Blocky Editor for {field.Name}", btnStyle))
@@ -106,6 +106,11 @@ namespace Assets.Scripts.Editor.Tools
             object fieldValue = field.GetValue(tool);
             if (fieldValue == null)
                 return null;
+
+            if (fieldValue is CodeExportPayload directPayload)
+            {
+                return new List<CodeExportPayload> { directPayload };
+            }
 
             FieldInfo blockyField = fieldValue.GetType().GetField("Blocky");
             if (blockyField == null)

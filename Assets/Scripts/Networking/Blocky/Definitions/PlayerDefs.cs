@@ -458,5 +458,19 @@ namespace Assets.Scripts.Networking.Blocky.Definitions
                 }
             });
         }
+
+        private void RegisterLists()
+        {
+            BlocklyServer.RegisterBlock(new BlockDefinition
+            {
+                Id = "player_list",
+                Category = "Player",
+                Color = "#df6717",
+                Tooltip = "List of all players currently on the server.",
+                Message = "Player List",
+                Connections = new List<BlockConnectionType> { BlockConnectionType.Output, BlockConnectionType.Input },
+                Args = null
+            });
+        }
     }
 }

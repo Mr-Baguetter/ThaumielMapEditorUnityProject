@@ -5,6 +5,7 @@ using Assets.Scripts.Components;
 
 namespace Assets.Scripts
 {
+#pragma warning disable CS0618
     [InitializeOnLoad]
     public class AutoAddEmpty
     {
