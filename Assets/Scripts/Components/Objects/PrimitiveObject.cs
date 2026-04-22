@@ -2,7 +2,6 @@ using Assets.Scripts.Enums;
 using Assets.Scripts.Yaml;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 namespace Assets.Scripts.Components
 {

@@ -1,5 +1,3 @@
-using YamlDotNet.Core;
-using YamlDotNet.Core.Events;
 using YamlDotNet.Serialization;
 using Assets.Scripts.Yaml.CustomConverters;
 using YamlDotNet.Serialization.NamingConventions;

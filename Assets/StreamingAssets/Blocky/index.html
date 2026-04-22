@@ -1,0 +1,1515 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unity Blockly Bridge</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600;700&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/blockly@9.3.3/blockly_compressed.js"></script>
+    <script src="https://unpkg.com/blockly@9.3.3/blocks_compressed.js"></script>
+    <script src="https://unpkg.com/blockly@9.3.3/javascript_compressed.js"></script>
+    <script src="https://unpkg.com/blockly@9.3.3/msg/en.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
+    <style>
+        :root {
+            --bg: #16161a;
+            --surface: #1f1f26;
+            --surface2: #2a2a33;
+            --surface3: #35353f;
+            --border: #3e3e4d;
+            --text: #c8c8d8;
+            --dim: #6b6b82;
+            --accent: #4dabf7;
+            --acc2: #74c0fc;
+            --green: #63e06a;
+            --red: #ff6b6b;
+            --amber: #ffd43b;
+            --orange: #ff9c3a;
+            --mono: 'Share Tech Mono', monospace;
+            --sans: 'Rajdhani', sans-serif;
+            --r: 4px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        html,
+        body {
+            height: 100%;
+            overflow: hidden
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--sans);
+            display: flex;
+            flex-direction: column;
+            height: 100vh
+        }
+
+        header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 7px 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 17px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            color: var(--red);
+            text-transform: uppercase;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .logo-sep {
+            color: var(--border);
+            font-weight: 300
+        }
+
+        .logo-sub {
+            color: var(--dim);
+            font-size: 11px;
+            font-weight: 400;
+            letter-spacing: 1px
+        }
+
+        .hbar {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 0
+        }
+
+        input.ws-url {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            font-family: var(--mono);
+            font-size: 12px;
+            padding: 5px 10px;
+            border-radius: var(--r);
+            width: 240px;
+            transition: border-color .15s;
+        }
+
+        input.ws-url:focus {
+            outline: none;
+            border-color: var(--accent)
+        }
+
+        .btn {
+            font-family: var(--sans);
+            font-weight: 700;
+            font-size: 12px;
+            letter-spacing: 1.2px;
+            padding: 5px 13px;
+            border-radius: var(--r);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all .15s;
+            background: var(--surface2);
+            color: var(--text);
+            white-space: nowrap;
+        }
+
+        .btn:hover {
+            background: var(--surface3);
+            border-color: var(--accent);
+            color: var(--accent)
+        }
+
+        .btn-connect {
+            border-color: var(--accent);
+            color: var(--accent)
+        }
+
+        .btn-connect:hover {
+            background: var(--accent);
+            color: #000
+        }
+
+        .btn-disc {
+            border-color: var(--red);
+            color: var(--red);
+            display: none
+        }
+
+        .btn-disc:hover {
+            background: var(--red);
+            color: #000
+        }
+
+        .btn-export {
+            background: linear-gradient(135deg, #1a6fa0, #1490d0);
+            color: #fff;
+            border-color: var(--accent);
+            font-size: 13px;
+            padding: 6px 18px;
+            letter-spacing: 1.5px;
+        }
+
+        .btn-export:hover {
+            background: linear-gradient(135deg, #1490d0, #40b4f0);
+            color: #fff
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--dim);
+            flex-shrink: 0;
+            transition: background .3s
+        }
+
+        .dot.connected {
+            background: var(--green);
+            box-shadow: 0 0 7px var(--green)
+        }
+
+        .dot.connecting {
+            background: var(--amber);
+            animation: pulse 1s infinite
+        }
+
+        .dot.error {
+            background: var(--red)
+        }
+
+        .status-lbl {
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--dim)
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: .3
+            }
+        }
+
+        .main {
+            display: flex;
+            flex: 1;
+            min-height: 0;
+            overflow: hidden
+        }
+
+        #blocklyDiv {
+            flex: 1;
+            min-width: 0
+        }
+
+        .blockly-badge {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 1000;
+            opacity: 0.6;
+            transition: opacity 0.2s ease-in-out;
+        }
+
+        .blockly-badge:hover {
+            opacity: 1;
+        }
+
+        .blockly-badge img {
+            height: 36px;
+            display: block;
+        }
+
+        .sidebar {
+            width: 310px;
+            flex-shrink: 0;
+            background: var(--surface);
+            border-left: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .sb-hd {
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--dim);
+            padding: 7px 11px;
+            background: var(--surface2);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+
+        .sb-hd .btn {
+            padding: 1px 7px;
+            font-size: 9px;
+            letter-spacing: 1px
+        }
+
+        .code-wrap {
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column
+        }
+
+        .code-wrap pre {
+            flex: 1;
+            font-family: var(--mono);
+            font-size: 11px;
+            color: #9ab5d4;
+            padding: 10px;
+            white-space: pre-wrap;
+            word-break: break-all;
+            line-height: 1.55;
+        }
+
+        .code-tools {
+            display: flex;
+            gap: 6px;
+            padding: 7px 10px;
+            background: var(--surface2);
+            border-top: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .code-tools select {
+            background: var(--bg);
+            color: var(--text);
+            border: 1px solid var(--border);
+            font-size: 11px;
+            padding: 3px 6px;
+            border-radius: var(--r);
+            font-family: var(--mono);
+            cursor: pointer;
+        }
+
+        .code-tools .btn {
+            padding: 3px 10px;
+            font-size: 10px
+        }
+
+        .exp-row {
+            padding: 8px 10px;
+            display: flex;
+            gap: 7px;
+            flex-shrink: 0;
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+        }
+
+        .exp-row .btn {
+            flex: 1;
+            font-size: 11px;
+            padding: 5px 6px
+        }
+
+        .auto-row {
+            padding: 5px 11px;
+            font-family: var(--mono);
+            font-size: 10px;
+            color: var(--dim);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--surface2);
+            border-top: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .auto-row input[type=checkbox] {
+            accent-color: var(--accent);
+            cursor: pointer
+        }
+
+        .log-wrap {
+            height: 175px;
+            overflow-y: auto;
+            flex-shrink: 0
+        }
+
+        .log-entry {
+            font-family: var(--mono);
+            font-size: 10.5px;
+            padding: 2px 8px;
+            display: flex;
+            gap: 6px;
+            border-bottom: 1px solid rgba(255, 255, 255, .025);
+        }
+
+        .log-entry .t {
+            color: var(--dim);
+            flex-shrink: 0
+        }
+
+        .log-entry.send {
+            color: var(--accent)
+        }
+
+        .log-entry.recv {
+            color: var(--green)
+        }
+
+        .log-entry.error {
+            color: var(--red)
+        }
+
+        .log-entry.info {
+            color: var(--dim)
+        }
+
+        .proto {
+            padding: 9px 11px;
+            font-family: var(--mono);
+            font-size: 10px;
+            color: var(--dim);
+            line-height: 1.7;
+            max-height: 130px;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        .proto .k {
+            color: var(--acc2)
+        }
+
+        .proto .v {
+            color: var(--amber)
+        }
+
+        .proto .c {
+            color: #444;
+            font-size: 9px
+        }
+
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--dim)
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">
+            <span>Thaumiel Map Editor</span>
+            <span class="logo-sep">│</span>
+            <span>Block Editor</span>
+        </div>
+        <div class="hbar">
+            <input class="ws-url" id="wsUrl" type="text" value="ws://localhost:7070"
+                placeholder="ws://localhost:7070" />
+            <button class="btn btn-connect" id="connBtn" onclick="wsConnect()">Connect</button>
+            <button class="btn btn-disc" id="discBtn" onclick="wsDisconnect()">Disconnect</button>
+            <div class="dot" id="dot"></div>
+            <span class="status-lbl" id="statusLbl">Disconnected</span>
+        </div>
+        <button class="btn btn-export" onclick="exportCode()">Export to Unity</button>
+    </header>
+    <a href="https://g.co/dev/blockly" target="_blank" rel="noopener noreferrer" class="blockly-badge">
+        <img src="https://developers.google.com/static/blockly/images/logos/built-with-blockly-badge-black.png"
+            alt="Built with Blockly">
+    </a>
+    <div class="main">
+        <div id="blocklyDiv"></div>
+
+        <div class="sidebar">
+            <div class="sb-hd">
+                <span>Generated Code</span>
+            </div>
+            <div class="code-wrap">
+                <pre id="codeOut">// Add blocks to generate code…</pre>
+            </div>
+            <div class="code-tools">
+                <select id="langSel" onchange="updateCode()">
+                    <option value="yaml">YAML</option>
+                    <option value="csharp">C#</option>
+                </select>
+                <button class="btn" onclick="copyCode()">Copy</button>
+                <button class="btn" onclick="exportCode()">Send</button>
+            </div>
+
+            <div class="exp-row">
+                <button class="btn" onclick="exportCode()">Send Code</button>
+                <button class="btn" onclick="exportXml()">Send XML</button>
+                <button class="btn" onclick="saveWorkspaceToFile()">Save File</button>
+                <button class="btn" onclick="document.getElementById('fileLoad').click()">Load File</button>
+                <button class="btn" onclick="workspace && workspace.clear()">Clear</button>
+            </div>
+            <input type="file" id="fileLoad" style="display:none" accept=".xml" onchange="loadWorkspaceFromFile(event)">
+            <div class="auto-row">
+                <input type="checkbox" id="autoExp">
+                <label for="autoExp">Auto-export on change</label>
+            </div>
+
+            <div class="sb-hd" style="border-top:1px solid var(--border)">
+                <span>WebSocket Log</span>
+                <button class="btn" onclick="clearLog()">Clear</button>
+            </div>
+            <div class="log-wrap" id="logWrap"></div>
+        </div>
+    </div>
+
+    <xml id="toolbox" style="display:none">
+        <category name="Events" colour="#E65100">
+            <block type="spawned_event"></block>
+            <block type="trigger_enter_event"></block>
+            <block type="trigger_exit_event"></block>
+            <block type="interaction_event"></block>
+            <block type="interaction_denied_event"></block>
+        </category>
+        <category name="Transform" colour="#2E7D32">
+            <block type="unity_get_pos"></block>
+            <block type="unity_set_pos"></block>
+            <block type="unity_translate"></block>
+            <block type="unity_rotate"></block>
+            <block type="unity_set_scale"></block>
+            <block type="unity_look_at"></block>
+        </category>
+        <category name="Physics" colour="#B71C1C">
+            <block type="unity_add_force"></block>
+            <block type="unity_add_torque"></block>
+            <block type="unity_set_vel"></block>
+            <block type="unity_raycast"></block>
+        </category>
+        <category name="Logging" colour="#37474F">
+            <block type="logger_log"></block>
+        </category>
+        <category name="Time" colour="#006064">
+            <block type="unity_delta"></block>
+            <block type="unity_fixed_delta"></block>
+            <block type="unity_time"></block>
+            <block type="unity_wait"></block>
+        </category>
+        <category name="Vector3" colour="#1A237E">
+            <block type="unity_vec3"></block>
+            <block type="unity_vec3_zero"></block>
+            <block type="unity_vec3_up"></block>
+            <block type="unity_distance"></block>
+            <block type="unity_lerp"></block>
+            <block type="unity_normalize"></block>
+        </category>
+
+        <sep></sep>
+        <category name="Logic" colour="%{BKY_LOGIC_HUE}">
+            <block type="controls_if"></block>
+            <block type="logic_compare"></block>
+            <block type="logic_operation"></block>
+            <block type="logic_negate"></block>
+            <block type="logic_boolean"></block>
+        </category>
+        <category name="Loops" colour="%{BKY_LOOPS_HUE}">
+            <block type="controls_repeat_ext"></block>
+            <block type="controls_whileUntil"></block>
+            <block type="controls_for"></block>
+        </category>
+        <category name="Math" colour="%{BKY_MATH_HUE}">
+            <block type="math_number"></block>
+            <block type="math_arithmetic"></block>
+            <block type="math_single"></block>
+            <block type="math_trig"></block>
+            <block type="math_round"></block>
+            <block type="math_modulo"></block>
+            <block type="math_constrain"></block>
+            <block type="math_random_float"></block>
+        </category>
+        <category name="Text" colour="%{BKY_TEXTS_HUE}">
+            <block type="text"></block>
+            <block type="text_join"></block>
+            <block type="text_length"></block>
+        </category>
+        <category name="Variables" colour="%{BKY_VARIABLES_HUE}" custom="VARIABLE"></category>
+        <category name="Functions" colour="%{BKY_PROCEDURES_HUE}" custom="PROCEDURE"></category>
+    </xml>
+
+    <script>
+        'use strict';
+
+        function toYAML(obj) {
+            return jsyaml.dump(obj, { lineWidth: -1, noRefs: true });
+        }
+
+        function fromYAML(str) {
+            return jsyaml.load(str);
+        }
+
+        function def(id, json) {
+            Blockly.Blocks[id] = {
+                init: function () {
+                    const colour = json.colour;
+                    const jsonWithoutColour = Object.assign({}, json);
+                    delete jsonWithoutColour.colour;
+                    this.jsonInit(jsonWithoutColour);
+                    if (colour !== undefined) {
+                        this.setColour(colour);
+                    }
+                }
+            };
+        }
+
+        function saveWorkspaceToFile() {
+            const xml = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(workspace));
+            const blob = new Blob([xml], { type: 'text/xml' });
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'thaumiel_workspace.xml';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            addLog('info', 'Workspace saved to local file');
+        }
+
+        function loadWorkspaceFromFile(event) {
+            const file = event.target.files[0];
+            if (!file)
+                return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                try {
+                    workspace.clear();
+                    Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(e.target.result), workspace);
+                    addLog('info', `Workspace loaded from ${file.name}`);
+                } catch (err) {
+                    addLog('error', 'Failed to load file: Invalid XML');
+                }
+            };
+
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        def('spawned_event', {
+            message0: 'OnSpawned ( %1 ) { %2 %3 }',
+            args0: [{ type: 'field_variable', name: 'PARAM', variable: 'player' },
+            { type: 'input_dummy' }, { type: 'input_statement', name: 'DO' }],
+            colour: '#E65100'
+        });
+
+        def('trigger_enter_event', {
+            message0: 'OnTriggerEnter ( %1 ) { %2 %3 }',
+            args0: [{ type: 'field_variable', name: 'PARAM', variable: 'player' },
+            { type: 'input_dummy' }, { type: 'input_statement', name: 'DO' }],
+            colour: '#E65100'
+        });
+
+        def('trigger_exit_event', {
+            message0: 'OnTriggerExit ( %1 ) { %2 %3 }',
+            args0: [{ type: 'field_variable', name: 'PARAM', variable: 'player' },
+            { type: 'input_dummy' }, { type: 'input_statement', name: 'DO' }],
+            colour: '#E65100'
+        });
+
+        def('interaction_event', {
+            message0: 'OnInteraction ( %1 ) { %2 %3 }',
+            args0: [{ type: 'field_variable', name: 'PARAM', variable: 'player' },
+            { type: 'input_dummy' }, { type: 'input_statement', name: 'DO' }],
+            colour: '#E65100'
+        });
+
+        def('interaction_denied_event', {
+            message0: 'OnInteractionDenied ( %1 ) { %2 %3 }',
+            args0: [{ type: 'field_variable', name: 'PARAM', variable: 'player' },
+            { type: 'input_dummy' }, { type: 'input_statement', name: 'DO' }],
+            colour: '#E65100'
+        });
+
+        def('unity_get_pos', {
+            message0: '%1 .transform.position',
+            args0: [{ type: 'input_value', name: 'OBJ' }],
+            output: 'Vector3', colour: '#2E7D32'
+        });
+
+        def('unity_set_pos', {
+            message0: '%1 .transform.position = %2',
+            args0: [{ type: 'input_value', name: 'OBJ' }, { type: 'input_value', name: 'POS', check: 'Vector3' }],
+            previousStatement: null, nextStatement: null, colour: '#2E7D32'
+        });
+
+        def('unity_translate', {
+            message0: '%1 .Translate ( %2 )',
+            args0: [{ type: 'input_value', name: 'OBJ' }, { type: 'input_value', name: 'V', check: 'Vector3' }],
+            previousStatement: null, nextStatement: null, colour: '#2E7D32'
+        });
+
+        def('unity_rotate', {
+            message0: '%1 .Rotate ( %2 )',
+            args0: [{ type: 'input_value', name: 'OBJ' }, { type: 'input_value', name: 'V', check: 'Vector3' }],
+            previousStatement: null, nextStatement: null, colour: '#2E7D32'
+        });
+
+        def('unity_set_scale', {
+            message0: '%1 .localScale = %2',
+            args0: [{ type: 'input_value', name: 'OBJ' }, { type: 'input_value', name: 'S', check: 'Vector3' }],
+            previousStatement: null, nextStatement: null, colour: '#2E7D32'
+        });
+
+        def('unity_look_at', {
+            message0: '%1 .LookAt ( %2 )',
+            args0: [{ type: 'input_value', name: 'OBJ' }, { type: 'input_value', name: 'T' }],
+            previousStatement: null, nextStatement: null, colour: '#2E7D32'
+        });
+
+        def('unity_add_force', { message0: '%1 .AddForce ( %2 )', args0: [{ type: 'input_value', name: 'RB' }, { type: 'input_value', name: 'F', check: 'Vector3' }], previousStatement: null, nextStatement: null, colour: '#B71C1C' });
+        def('unity_add_torque', { message0: '%1 .AddTorque ( %2 )', args0: [{ type: 'input_value', name: 'RB' }, { type: 'input_value', name: 'T', check: 'Vector3' }], previousStatement: null, nextStatement: null, colour: '#B71C1C' });
+        def('unity_set_vel', { message0: '%1 .velocity = %2', args0: [{ type: 'input_value', name: 'RB' }, { type: 'input_value', name: 'V', check: 'Vector3' }], previousStatement: null, nextStatement: null, colour: '#B71C1C' });
+        def('unity_raycast', { message0: 'Physics.Raycast ( origin: %1 , dir: %2 )', args0: [{ type: 'input_value', name: 'O', check: 'Vector3' }, { type: 'input_value', name: 'D', check: 'Vector3' }], output: 'Boolean', colour: '#B71C1C' });
+
+        def('logger_log', {
+            message0: 'LogManager.%1 ( %2 )',
+            args0: [
+                {
+                    type: 'field_dropdown',
+                    name: 'LEVEL',
+                    options: [
+                        ['Info', 'info'],
+                        ['Debug', 'debug'],
+                        ['Warn', 'warn'],
+                        ['Error', 'error']
+                    ]
+                },
+                {
+                    type: 'input_value',
+                    name: 'M'
+                }
+            ],
+
+            previousStatement: null,
+            nextStatement: null,
+            colour: '#37474F'
+        });
+
+        def('unity_delta', { message0: 'Time.deltaTime', output: 'Number', colour: '#006064' });
+        def('unity_fixed_delta', { message0: 'Time.fixedDeltaTime', output: 'Number', colour: '#006064' });
+        def('unity_time', { message0: 'Time.time', output: 'Number', colour: '#006064' });
+        def('unity_wait', {
+            message0: 'yield return new WaitForSeconds ( %1 )',
+            args0: [{ type: 'input_value', name: 'T', check: 'Number' }],
+            previousStatement: null, nextStatement: null, colour: '#006064'
+        });
+
+        def('unity_vec3', {
+            message0: 'Vector3 ( %1 , %2 , %3 )',
+            args0: [{ type: 'input_value', name: 'X', check: 'Number' },
+            { type: 'input_value', name: 'Y', check: 'Number' },
+            { type: 'input_value', name: 'Z', check: 'Number' }],
+            inputsInline: true, output: 'Vector3', colour: '#1A237E'
+        });
+
+        def('unity_vec3_zero', { message0: 'Vector3.zero', output: 'Vector3', colour: '#1A237E' });
+        def('unity_vec3_up', { message0: 'Vector3.up', output: 'Vector3', colour: '#1A237E' });
+        def('unity_distance', {
+            message0: 'Vector3.Distance ( %1 , %2 )',
+            args0: [{ type: 'input_value', name: 'A', check: 'Vector3' }, { type: 'input_value', name: 'B', check: 'Vector3' }],
+            output: 'Number', colour: '#1A237E'
+        });
+        def('unity_lerp', {
+            message0: 'Vector3.Lerp ( %1 , %2 , %3 )',
+            args0: [{ type: 'input_value', name: 'A', check: 'Vector3' }, { type: 'input_value', name: 'B', check: 'Vector3' }, { type: 'input_value', name: 'T', check: 'Number' }],
+            output: 'Vector3', colour: '#1A237E'
+        });
+        def('unity_normalize', {
+            message0: '%1 .normalized',
+            args0: [{ type: 'input_value', name: 'V', check: 'Vector3' }],
+            output: 'Vector3', colour: '#1A237E'
+        });
+
+        const CS = {};
+        const AO = 0;
+
+        function cs_val(block, name, fallback = 'null') {
+            const t = block.getInputTargetBlock(name);
+            if (!t) {
+                return fallback;
+            }
+            const r = cs_block(t);
+            return Array.isArray(r) ? r[0] : (r || fallback);
+        }
+
+        function cs_stmts(block, name) {
+            let code = '', b = block.getInputTargetBlock(name);
+            while (b) {
+                code += cs_block(b) || '';
+                b = b.getNextBlock();
+            }
+            return code;
+        }
+
+        function cs_block(b) {
+            if (!b || b.isInsertionMarker()) {
+                return '';
+            }
+            const fn = CS[b.type];
+            if (!fn) {
+                return `/* [${b.type}] */\n`;
+            }
+            return fn(b);
+        }
+
+        function ind(code) {
+            if (!code) {
+                return '';
+            }
+            return code.split('\n').map(l => l.trim() ? '    ' + l : l).join('\n');
+        }
+
+        CS['spawned_event'] = b => `void OnTriggerEnter(Collider ${b.getFieldValue('PARAM') || 'other'})\n{\n${ind(cs_stmts(b, 'DO'))}}\n\n`;
+        CS['trigger_enter_event'] = b => `void OnTriggerExit(Collider ${b.getFieldValue('PARAM') || 'other'})\n{\n${ind(cs_stmts(b, 'DO'))}}\n\n`;
+        CS['trigger_exit_event'] = b => `void OnInteractionDenied(Player ${b.getFieldValue('PARAM') || 'player'})\n{\n${ind(cs_stmts(b, 'DO'))}}\n\n`;
+        CS['interaction_event'] = b => `void OnInteraction(Player ${b.getFieldValue('PARAM') || 'player'})\n{\n${ind(cs_stmts(b, 'DO'))}}\n\n`;
+
+        CS['unity_get_pos'] = b => [`${cs_val(b, 'OBJ', 'transform')}.position`, AO];
+        CS['unity_set_pos'] = b => `${cs_val(b, 'OBJ', 'transform')}.position = ${cs_val(b, 'POS', 'Vector3.zero')};\n`;
+        CS['unity_translate'] = b => `${cs_val(b, 'OBJ', 'transform')}.Translate(${cs_val(b, 'V', 'Vector3.zero')});\n`;
+        CS['unity_rotate'] = b => `${cs_val(b, 'OBJ', 'transform')}.Rotate(${cs_val(b, 'V', 'Vector3.zero')});\n`;
+        CS['unity_set_scale'] = b => `${cs_val(b, 'OBJ', 'transform')}.localScale = ${cs_val(b, 'S', 'Vector3.one')};\n`;
+
+        CS['unity_add_force'] = b => `${cs_val(b, 'RB', 'rb')}.AddForce(${cs_val(b, 'F', 'Vector3.zero')});\n`;
+        CS['unity_add_torque'] = b => `${cs_val(b, 'RB', 'rb')}.AddTorque(${cs_val(b, 'T', 'Vector3.zero')});\n`;
+        CS['unity_set_vel'] = b => `${cs_val(b, 'RB', 'rb')}.velocity = ${cs_val(b, 'V', 'Vector3.zero')};\n`;
+        CS['unity_raycast'] = b => [`Physics.Raycast(${cs_val(b, 'O', 'Vector3.zero')}, ${cs_val(b, 'D', 'Vector3.forward')})`, AO];
+
+        CS['logger_info'] = b => `LogManager.Info(${cs_val(b, 'M', '""')});\n`;
+        CS['logger_debug'] = b => `LogManager.Debug(${cs_val(b, 'M', '""')});\n`;
+        CS['logger_warn'] = b => `LogManager.Warn(${cs_val(b, 'M', '""')});\n`;
+        CS['logger_error'] = b => `LogManager.Error(${cs_val(b, 'M', '""')});\n`;
+
+        CS['unity_delta'] = () => ['Time.deltaTime', AO];
+        CS['unity_fixed_delta'] = () => ['Time.fixedDeltaTime', AO];
+        CS['unity_time'] = () => ['Time.time', AO];
+        CS['unity_wait'] = b => `yield return new WaitForSeconds(${cs_val(b, 'T', '1f')});\n`;
+
+        CS['unity_vec3'] = b => [`new Vector3(${cs_val(b, 'X', '0f')}, ${cs_val(b, 'Y', '0f')}, ${cs_val(b, 'Z', '0f')})`, AO];
+        CS['unity_vec3_zero'] = () => ['Vector3.zero', AO];
+        CS['unity_vec3_up'] = () => ['Vector3.up', AO];
+        CS['unity_distance'] = b => [`Vector3.Distance(${cs_val(b, 'A', 'Vector3.zero')}, ${cs_val(b, 'B', 'Vector3.zero')})`, AO];
+        CS['unity_lerp'] = b => [`Vector3.Lerp(${cs_val(b, 'A', 'Vector3.zero')}, ${cs_val(b, 'B', 'Vector3.zero')}, ${cs_val(b, 'T', '0f')})`, AO];
+        CS['unity_normalize'] = b => [`${cs_val(b, 'V', 'Vector3.zero')}.normalized`, AO];
+
+        CS['math_number'] = b => [String(b.getFieldValue('NUM')), AO];
+        CS['text'] = b => [`"${b.getFieldValue('TEXT')}"`, AO];
+        CS['logic_boolean'] = b => [b.getFieldValue('BOOL') === 'TRUE' ? 'true' : 'false', AO];
+
+        CS['math_arithmetic'] = b => {
+            const ops = { ADD: '+', MINUS: '-', MULTIPLY: '*', DIVIDE: '/', POWER: null };
+            const op = b.getFieldValue('OP');
+            const a = cs_val(b, 'A', '0'), bv = cs_val(b, 'B', '0');
+            if (op === 'POWER') {
+                return [`Mathf.Pow(${a},${bv})`, AO];
+            }
+            return [`(${a}${ops[op]}${bv})`, AO];
+        };
+
+        CS['logic_compare'] = b => {
+            const ops = { EQ: '==', NEQ: '!=', LT: '<', LTE: '<=', GT: '>', GTE: '>=' };
+            return [`(${cs_val(b, 'A', '0')}${ops[b.getFieldValue('OP')]}${cs_val(b, 'B', '0')})`, AO];
+        };
+
+        CS['logic_operation'] = b => {
+            const op = b.getFieldValue('OP') === 'AND' ? '&&' : '||';
+            return [`(${cs_val(b, 'A', 'false')}${op}${cs_val(b, 'B', 'false')})`, AO];
+        };
+
+        CS['logic_negate'] = b => [`!(${cs_val(b, 'BOOL', 'false')})`, AO];
+
+        CS['math_single'] = b => {
+            const m = { ROOT: 'Mathf.Sqrt', ABS: 'Mathf.Abs', NEG: '-', LN: 'Mathf.Log', LOG10: 'Mathf.Log10', EXP: 'Mathf.Exp', POW10: null };
+            const op = b.getFieldValue('OP'), v = cs_val(b, 'NUM', '0');
+            if (op === 'POW10') {
+                return [`Mathf.Pow(10,${v})`, AO];
+            }
+            if (op === 'NEG') {
+                return [`(-${v})`, AO];
+            }
+            return [`${m[op]}(${v})`, AO];
+        };
+
+        CS['math_trig'] = b => {
+            const m = { SIN: 'Mathf.Sin', COS: 'Mathf.Cos', TAN: 'Mathf.Tan', ASIN: 'Mathf.Asin', ACOS: 'Mathf.Acos', ATAN: 'Mathf.Atan' };
+            return [`${m[b.getFieldValue('OP')]}(${cs_val(b, 'NUM', '0')})`, AO];
+        };
+
+        CS['math_round'] = b => {
+            const m = { ROUND: 'Mathf.Round', ROUNDUP: 'Mathf.Ceil', ROUNDDOWN: 'Mathf.Floor' };
+            return [`${m[b.getFieldValue('OP')]}(${cs_val(b, 'NUM', '0')})`, AO];
+        };
+
+        CS['math_modulo'] = b => [`(${cs_val(b, 'DIVIDEND', '0')}%${cs_val(b, 'DIVISOR', '1')})`, AO];
+        CS['math_constrain'] = b => [`Mathf.Clamp(${cs_val(b, 'VALUE', '0')},${cs_val(b, 'LOW', '0')},${cs_val(b, 'HIGH', '1')})`, AO];
+        CS['math_random_float'] = () => ['Random.value', AO];
+
+        CS['text_join'] = b => {
+            const ps = [];
+            for (let i = 0; i < b.itemCount_; i++) {
+                ps.push(cs_val(b, 'ADD' + i, '""'));
+            }
+            return [`string.Concat(${ps.join(',')})`, AO];
+        };
+
+        CS['text_length'] = b => [`${cs_val(b, 'VALUE', '""')}.Length`, AO];
+
+        CS['controls_if'] = b => {
+            let code = '', n = 0;
+            do {
+                const c = cs_val(b, 'IF' + n, 'false'), body = cs_stmts(b, 'DO' + n);
+                code += (n === 0 ? 'if' : '\nelse if') + ` (${c})\n{\n${ind(body)}}`;
+                n++;
+            }
+            while (b.getInput('IF' + n));
+            if (b.getInput('ELSE')) {
+                code += `\nelse\n{\n${ind(cs_stmts(b, 'ELSE'))}}`;
+            }
+            return code + '\n';
+        };
+
+        CS['controls_repeat_ext'] = b =>
+            `for(int _i=0;_i<(int)(${cs_val(b, 'TIMES', '10')});_i++)\n{\n${ind(cs_stmts(b, 'DO'))}}\n`;
+
+        CS['controls_whileUntil'] = b => {
+            const neg = b.getFieldValue('MODE') === 'UNTIL' ? '!' : '';
+            return `while(${neg}(${cs_val(b, 'BOOL', 'false')}))\n{\n${ind(cs_stmts(b, 'DO'))}}\n`;
+        };
+
+        CS['controls_for'] = b => {
+            const v = b.getFieldValue('VAR');
+            return `for(float ${v}=${cs_val(b, 'FROM', '0')};${v}<=${cs_val(b, 'TO', '10')};${v}+=${cs_val(b, 'BY', '1')})\n{\n${ind(cs_stmts(b, 'DO'))}}\n`;
+        };
+
+        CS['variables_get'] = b => [b.getFieldValue('VAR'), AO];
+        CS['variables_set'] = b => `var ${b.getFieldValue('VAR')} = ${cs_val(b, 'VALUE', 'null')};\n`;
+        CS['math_change'] = b => `${b.getFieldValue('VAR')} += ${cs_val(b, 'DELTA', '0')};\n`;
+
+        CS['procedures_defnoreturn'] = b => {
+            const n = b.getFieldValue('NAME');
+            return `void ${n}()\n{\n${ind(cs_stmts(b, 'STACK'))}}\n\n`;
+        };
+
+        CS['procedures_defreturn'] = b => {
+            const n = b.getFieldValue('NAME');
+            return `object ${n}()\n{\n${ind(cs_stmts(b, 'STACK'))}    return ${cs_val(b, 'RETURN', 'null')};\n}\n\n`;
+        };
+
+        CS['procedures_callnoreturn'] = b => `${b.getFieldValue('NAME')}();\n`;
+        CS['procedures_callreturn'] = b => [`${b.getFieldValue('NAME')}()`, AO];
+
+        function workspaceToCSharp() {
+            const blocks = workspace.getTopBlocks(true);
+            const members = [];
+            for (const b of blocks) {
+                const r = cs_block(b);
+                if (r) {
+                    members.push(r);
+                }
+            }
+            return [
+                'using System.Collections.Generic;',
+                'using UnityEngine;',
+                '',
+                'public class GeneratedScript : MonoBehaviour',
+                '{',
+                ind(members.join('\n')),
+                '}'
+            ].join('\n');
+        }
+
+        /**
+         * Recursively convert a Blockly block into a plain object.
+         *
+         * Schema per block:
+         *   type        {string} -- block type identifier
+         *   <fieldName>  {string|number|bool} -- all field values (exact casing)
+         *   <inputName>  {object}             -- connected value block (recursive)
+         *   <stmtName>   {Array}              -- connected statement chain
+         */
+        function blockToObj(b) {
+            if (!b || b.isInsertionMarker())
+                return null;
+
+            const obj = { type: b.type };
+
+            for (const input of b.inputList) {
+                for (const field of input.fieldRow) {
+                    if (!field.name)
+                        continue;
+
+                    let value;
+
+                    if (field instanceof Blockly.FieldVariable) {
+                        const variable = b.workspace.getVariableById(field.getValue());
+                        value = variable ? variable.name : field.getValue();
+                    } else {
+                        const raw = field.getValue();
+                        if (raw === 'TRUE') {
+                            value = true;
+                        } else if (raw === 'FALSE') {
+                            value = false;
+                        } else {
+                            const num = Number(raw);
+                            value = (!isNaN(num) && raw !== '') ? num : raw;
+                        }
+                    }
+
+                    obj[field.name] = value;
+                }
+            }
+
+            for (const input of b.inputList) {
+                if (!input.name || !input.connection)
+                    continue;
+
+                const target = input.connection.targetBlock();
+                if (!target)
+                    continue;
+
+                if (input.type === Blockly.INPUT_VALUE) {
+                    obj[input.name] = blockToObj(target);
+                } else if (input.type === Blockly.NEXT_STATEMENT) {
+                    const stmts = [];
+                    let curr = target;
+                    while (curr) {
+                        const entry = blockToObj(curr);
+                        if (entry)
+                            stmts.push(entry);
+
+                        curr = curr.getNextBlock();
+                    }
+                    obj[input.name] = stmts;
+                }
+            }
+
+            return obj;
+        }
+
+        /**
+         * Return the workspace as a raw JS array of block objects.
+         * Used for both the YAML preview and the always-present
+         * "blocks" field in every code_export message.
+         */
+        function workspaceToBlocks() {
+            return workspace.getTopBlocks(true).map(blockToObj).filter(Boolean);
+        }
+
+        /**
+         * Serialize the workspace block tree to a YAML string for the preview panel.
+         */
+        function workspaceToYAML() {
+            return toYAML(workspaceToBlocks());
+        }
+
+        const darkTheme = Blockly.Theme.defineTheme('unityDark', {
+            base: Blockly.Themes.Classic,
+            blockStyles: {
+                logic_blocks: { colourPrimary: '#4a90d9' },
+                loop_blocks: { colourPrimary: '#5ba55b' },
+                math_blocks: { colourPrimary: '#5b67a5' },
+                text_blocks: { colourPrimary: '#5ba58c' },
+                list_blocks: { colourPrimary: '#745ba5' },
+                variable_blocks: { colourPrimary: '#a55b80' },
+                variable_dynamic_blocks: { colourPrimary: '#a55b80' },
+                procedure_blocks: { colourPrimary: '#995ba5' },
+            },
+            categoryStyles: {},
+            componentStyles: {
+                workspaceBackgroundColour: '#16161a',
+                toolboxBackgroundColour: '#1f1f26',
+                toolboxForegroundColour: '#c8c8d8',
+                flyoutBackgroundColour: '#21212a',
+                flyoutForegroundColour: '#c8c8d8',
+                flyoutOpacity: 0.97,
+                scrollbarColour: '#3e3e4d',
+                scrollbarOpacity: 0.8,
+            }
+        });
+
+        const workspace = Blockly.inject('blocklyDiv', {
+            toolbox: document.getElementById('toolbox'),
+            theme: darkTheme,
+            grid: { spacing: 20, length: 3, colour: '#22222c', snap: true },
+            move: { scrollbars: true, drag: true, wheel: true },
+            zoom: { controls: true, wheel: true, startScale: 0.9, maxScale: 3, minScale: 0.3, scaleSpeed: 1.2 },
+            trashcan: true,
+            sounds: false,
+        });
+
+        let connectionLinesGroup = null;
+
+        function getBlockBounds(block) {
+            const pos = block.getRelativeToSurfaceXY();
+            const size = block.getHeightWidth();
+            return {
+                left: pos.x,
+                top: pos.y,
+                right: pos.x + size.width,
+                bottom: pos.y + size.height,
+            };
+        }
+
+        const LINK_COLORS = [
+            '#ff9c3a', '#4dabf7', '#63e06a', '#e599f7',
+            '#ffd43b', '#ff6b6b', '#74c0fc', '#a9e34b'
+        ];
+
+        let dragAnimationFrame = null;
+
+        function updateFunctionLines() {
+            if (!connectionLinesGroup) {
+                connectionLinesGroup = Blockly.utils.dom.createSvgElement('g', {
+                    'class': 'function-links',
+                    'style': 'pointer-events: none;'
+                }, workspace.getCanvas());
+            }
+
+            connectionLinesGroup.innerHTML = '';
+            const allBlocks = workspace.getAllBlocks(false);
+            const callers = allBlocks.filter(b =>
+                b.type === 'procedures_callnoreturn' || b.type === 'procedures_callreturn'
+            );
+
+            const funcColorMap = {};
+            let colorIdx = 0;
+            callers.forEach(caller => {
+                const name = caller.getFieldValue('NAME');
+                if (funcColorMap[name] === undefined) {
+                    funcColorMap[name] = colorIdx % LINK_COLORS.length;
+                    colorIdx++;
+                }
+            });
+
+            const funcLaneMap = {};
+
+            callers.forEach(caller => {
+                const funcName = caller.getFieldValue('NAME');
+                const definition = allBlocks.find(b =>
+                    (b.type === 'procedures_defnoreturn' || b.type === 'procedures_defreturn') &&
+                    b.getFieldValue('NAME') === funcName
+                );
+
+                if (!definition || caller === definition) return;
+
+                const srcB = getBlockBounds(caller);
+                const defB = getBlockBounds(definition);
+                const srcHeight = caller.getHeightWidth().height;
+                const defHeight = definition.getHeightWidth().height;
+
+                const color = LINK_COLORS[funcColorMap[funcName]];
+                if (funcLaneMap[funcName] === undefined) {
+                    funcLaneMap[funcName] = Object.keys(funcLaneMap).length;
+                }
+                const lane = funcLaneMap[funcName];
+
+                const startX = srcB.left;
+                const startY = srcB.top + (srcHeight / 2);
+                const endX = defB.left;
+                const endY = defB.top + (defHeight / 2);
+
+                const leftX = Math.min(startX, endX) - 40 - (lane * 20);
+
+                const d = [
+                    `M ${startX},${startY}`,
+                    `C ${leftX},${startY}`,
+                    `  ${leftX},${endY}`,
+                    `  ${endX},${endY}`
+                ].join(' ');
+
+                Blockly.utils.dom.createSvgElement('path', {
+                    d, stroke: color, 'stroke-width': '2.5',
+                    'stroke-dasharray': '5,5', fill: 'none', opacity: '0.7'
+                }, connectionLinesGroup);
+
+                Blockly.utils.dom.createSvgElement('polygon', {
+                    points: `${endX},${endY} ${endX - 8},${endY - 5} ${endX - 8},${endY + 5}`,
+                    fill: color, opacity: '0.9'
+                }, connectionLinesGroup);
+            });
+        }
+
+
+        workspace.addChangeListener((event) => {
+            updateCode();
+
+            if (event.type === Blockly.Events.BLOCK_MOVE || event.type === Blockly.Events.BLOCK_CREATE || event.type === Blockly.Events.BLOCK_DELETE || event.type === Blockly.Events.BLOCK_CHANGE) {
+                updateFunctionLines();
+            }
+
+            if (event.type === Blockly.Events.BLOCK_DRAG) {
+                if (event.isStart) {
+                    const animate = () => {
+                        updateFunctionLines();
+                        dragAnimationFrame = requestAnimationFrame(animate);
+                    };
+                    animate();
+                } else {
+                    if (dragAnimationFrame) {
+                        cancelAnimationFrame(dragAnimationFrame);
+                        dragAnimationFrame = null;
+                    }
+                    updateFunctionLines();
+                }
+            }
+
+            if (document.getElementById('autoExp').checked && ws && ws.readyState === WebSocket.OPEN) {
+                exportCode();
+            }
+        });
+        function getCodeForLang(lang) {
+            if (lang === 'yaml') {
+                return workspaceToYAML();
+            }
+            if (lang === 'csharp') {
+                return workspaceToCSharp();
+            }
+            return Blockly.JavaScript.workspaceToCode(workspace);
+        }
+
+        function updateCode() {
+            const lang = document.getElementById('langSel').value;
+            let code;
+            try {
+                code = getCodeForLang(lang);
+            }
+            catch (e) {
+                code = '# Error: ' + e.message;
+            }
+            document.getElementById('codeOut').textContent = code || '# (empty workspace)';
+        }
+
+        function copyCode() {
+            navigator.clipboard.writeText(document.getElementById('codeOut').textContent)
+                .then(() => addLog('info', 'Code copied to clipboard'));
+        }
+
+        let ws = null;
+
+        function wsConnect() {
+            const url = document.getElementById('wsUrl').value.trim();
+            setStatus('connecting');
+            try {
+                ws = new WebSocket(url);
+            }
+            catch (e) {
+                setStatus('error', e.message);
+                addLog('error', 'Invalid URL: ' + e.message);
+                return;
+            }
+
+            ws.onopen = () => {
+                setStatus('connected');
+                addLog('info', 'Connected to ' + url);
+                document.getElementById('connBtn').style.display = 'none';
+                document.getElementById('discBtn').style.display = '';
+                wsSend({ type: 'connected', client: 'unity-blockly-bridge', version: '1.0.0' });
+            };
+
+            ws.onmessage = e => {
+                addLog('recv', e.data.slice(0, 150) + (e.data.length > 150 ? '…' : ''));
+                try {
+                    handleMsg(fromYAML(e.data));
+                }
+                catch (err) {
+                    addLog('error', 'Bad YAML: ' + err.message);
+                }
+            };
+
+            ws.onerror = (err) => {
+                addLog('error', 'WebSocket Handshake/Connection Error');
+            };
+
+            ws.onclose = (event) => {
+                let reason = "Disconnected";
+                if (!event.wasClean) {
+                    reason = `Error: ${event.code}`;
+                    if (event.code === 1006) reason = "Error: Server unreachable";
+                }
+
+                setStatus('disconnected', reason);
+                addLog('info', `Connection closed: ${reason}`);
+
+                document.getElementById('connBtn').style.display = '';
+                document.getElementById('discBtn').style.display = 'none';
+                ws = null;
+            };
+        }
+
+        function wsDisconnect() {
+            if (ws) {
+                ws.close();
+            }
+        }
+
+        function wsSend(data) {
+            if (!ws || ws.readyState !== WebSocket.OPEN) {
+                addLog('error', 'Not connected');
+                return false;
+            }
+            const yaml = toYAML(data);
+            ws.send(yaml);
+            addLog('send', yaml.slice(0, 150) + (yaml.length > 150 ? '…' : ''));
+            return true;
+        }
+
+        function exportCode() {
+            const lang = document.getElementById('langSel').value;
+            const code = getCodeForLang(lang);
+            const xml = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(workspace));
+            const blocks = workspaceToBlocks();
+            return wsSend({ type: 'code_export', language: lang, code, xml, blocks, timestamp: new Date().toISOString() });
+        }
+
+        function exportXml() {
+            const xml = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(workspace));
+            return wsSend({ type: 'xml_export', xml, timestamp: new Date().toISOString() });
+        }
+
+        const dynCats = {};
+
+        function handleMsg(msg) {
+            switch (msg.type) {
+                case 'register_block': registerBlock(msg); break;
+                case 'register_category': registerCategory(msg); break;
+                case 'request_export': exportCode(); break;
+                case 'load_xml':
+                    if (msg.xml) {
+                        workspace.clear();
+                        Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(msg.xml), workspace);
+                        addLog('info', 'Workspace loaded from XML');
+                    }
+                    break;
+                case 'clear_workspace':
+                    workspace.clear();
+                    addLog('info', 'Workspace cleared');
+                    break;
+                case 'ping':
+                    wsSend({ type: 'pong', timestamp: new Date().toISOString() });
+                    break;
+                default:
+                    addLog('info', 'Unknown msg type: ' + msg.type);
+            }
+        }
+
+        /**
+         * Register a dynamic block sent from Unity (YAML payload).
+         *
+         * Required fields:
+         *   id        {string}  — unique block type identifier
+         *   message   {string}  — Blockly message string, e.g. "Do %1 times"
+         *
+         * Optional fields:
+         *   category  {string}  — category name to place it in (auto-created if missing)
+         *   args      {Array}   — Blockly args0 array
+         *   color     {number|string} — hue or hex color
+         *   output    {string|null}   — null = statement block, string = value block output type
+         *   tooltip   {string}
+         *   previousStatement {boolean}
+         *   nextStatement     {boolean}
+         *   generator {string} — function body for the C# generator.
+         *                        Available: block, Blockly, cs_val, cs_stmts
+         *
+         * Example YAML (Unity → Browser):
+         *   type: register_block
+         *   id: my_plugin_jump
+         *   category: MyPlugin
+         *   message: "Jump with force %1"
+         *   args:
+         *     - type: input_value
+         *       name: FORCE
+         *       check: Number
+         *   color: 45
+         *   generator: "return 'Jump(' + cs_val(block, 'FORCE', '0') + ');\n';"
+         */
+        function registerBlock(msg) {
+            const id = msg.id;
+            if (!id) {
+                addLog('error', 'register_block: missing id');
+                return;
+            }
+
+            Blockly.Blocks[id] = {
+                init: function () {
+                    const d = {
+                        message0: msg.message || id,
+                        args0: msg.args || [],
+                        colour: msg.color ?? msg.colour ?? 200,
+                        tooltip: msg.tooltip || '',
+                        helpUrl: msg.helpUrl || '',
+                    };
+                    if (msg.connections && Array.isArray(msg.connections)) {
+                        if (msg.connections.includes('Output')) {
+                            d.output = msg.outputType ?? null;
+                        }
+                        if (msg.connections.includes('Previous')) {
+                            d.previousStatement = null;
+                        }
+                        if (msg.connections.includes('Next')) {
+                            d.nextStatement = null;
+                        }
+                    } else {
+                        if (msg.output !== undefined && msg.output !== null) {
+                            d.output = msg.output;
+                        } else {
+                            if (msg.previousStatement !== false) d.previousStatement = null;
+                            if (msg.nextStatement !== false) d.nextStatement = null;
+                        }
+                    }
+                    this.jsonInit(d);
+                }
+            };
+
+            const genSrc = msg.generator || "return '';";
+            const makeFn = (block) => {
+                try {
+                    return new Function('block', 'Blockly', 'cs_val', 'cs_stmts', genSrc)(block, Blockly, cs_val, cs_stmts);
+                }
+                catch (e) {
+                    return `/* generator error [${id}]: ${e.message} */\n`;
+                }
+            };
+            Blockly.JavaScript[id] = makeFn;
+            CS[id] = makeFn;
+
+            const catName = msg.category || 'Unity Plugins';
+            if (!dynCats[catName]) {
+                registerCategory({ name: catName, color: msg.color ?? 200 });
+            }
+            dynCats[catName].blocks.push(id);
+            refreshToolbox();
+
+            addLog('info', `Block registered: [${id}] → "${catName}"`);
+            wsSend({ type: 'block_registered', id, category: catName });
+        }
+
+        /**
+         * Register a dynamic category from Unity (YAML payload).
+         *
+         * Fields:
+         *   name  {string} — display name (required)
+         *   color {number|string} — hue 0–360 or hex color
+         *   icon  {string} — emoji shown before the name
+         *
+         * Example YAML:
+         *   type: register_category
+         *   name: MyPlugin
+         *   color: 45
+         *   icon: "⚡"
+         */
+        function registerCategory(msg) {
+            const name = msg.name;
+            if (!name) {
+                addLog('error', 'register_category: missing name');
+                return;
+            }
+            if (dynCats[name]) {
+                addLog('info', `Category "${name}" already exists`);
+                return;
+            }
+            dynCats[name] = { color: msg.color ?? msg.colour ?? 200, icon: msg.icon || '', blocks: [] };
+            refreshToolbox();
+            addLog('info', `Category registered: "${name}"`);
+            wsSend({ type: 'category_registered', name });
+        }
+
+        function refreshToolbox() {
+            const base = document.getElementById('toolbox').cloneNode(true);
+            for (const [name, cat] of Object.entries(dynCats)) {
+                if (cat.blocks.length === 0) {
+                    continue;
+                }
+                const el = document.createElement('category');
+                el.setAttribute('name', `${cat.icon} ${name}`);
+                el.setAttribute('colour', String(cat.color));
+                for (const bid of cat.blocks) {
+                    const be = document.createElement('block');
+                    be.setAttribute('type', bid);
+                    el.appendChild(be);
+                }
+                base.appendChild(el);
+            }
+            workspace.updateToolbox(base);
+        }
+
+        function setStatus(s, msg) {
+            document.getElementById('dot').className = 'dot ' + s;
+
+            const labels = {
+                connected: 'Connected',
+                connecting: 'Connecting…',
+                disconnected: 'Disconnected',
+                error: 'Error'
+            };
+
+            document.getElementById('statusLbl').textContent = msg || labels[s] || s;
+        }
+
+        const LOG_MAX = 300;
+        function addLog(type, msg) {
+            const wrap = document.getElementById('logWrap');
+            const el = document.createElement('div');
+            el.className = 'log-entry ' + type;
+            const hms = new Date().toTimeString().slice(0, 8);
+            const pfx = { send: '→', recv: '←', error: '✖', info: '·' }[type] || ' ';
+            el.innerHTML = `<span class="t">${hms}</span><span>${pfx} ${esc(msg)}</span>`;
+            wrap.appendChild(el);
+            wrap.scrollTop = wrap.scrollHeight;
+            while (wrap.children.length > LOG_MAX) {
+                wrap.removeChild(wrap.firstChild);
+            }
+        }
+
+        function clearLog() { document.getElementById('logWrap').innerHTML = ''; }
+
+        function esc(s) {
+            return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+
+        updateCode();
+        addLog('info', 'Unity Blockly Bridge ready YAML protocol active');
+        wsConnect();
+    </script>
+</body>
+
+</html>
