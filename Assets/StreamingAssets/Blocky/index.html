@@ -625,18 +625,16 @@
             reader.readAsText(file);
             event.target.value = '';
         }
-
+        
         def('spawned_event', {
-            message0: 'OnSpawned ( %1 ) { %2 %3 }',
-            args0: [{ type: 'field_variable', name: 'PARAM', variable: 'player' },
-            { type: 'input_dummy' }, { type: 'input_statement', name: 'DO' }],
+            message0: 'OnSpawned { %1 %2 }',
+            args0: [{ type: 'input_dummy' }, { type: 'input_statement', name: 'DO' }],
             colour: '#E65100'
         });
 
         def('destroyed_event', {
-            message0: 'OnDestroted ( %1 ) { %2 %3 }',
-            args0: [{ type: 'field_variable', name: 'PARAM', variable: 'player' },
-            { type: 'input_dummy' }, { type: 'input_statement', name: 'DO' }],
+            message0: 'OnDestroyed { %1 %2 }',
+            args0: [{ type: 'input_dummy' }, { type: 'input_statement', name: 'DO' }],
             colour: '#E65100'
         });
 

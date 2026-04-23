@@ -13,6 +13,7 @@ namespace Assets.Scripts.Yaml
             .WithTypeConverter(new Vector4Converter())
             .WithTypeConverter(new CustomColorConverter())
             .WithTypeConverter(new QuaternionConverter())
+            .WithTypeConverter(new FloatTypeConverter())
             .Build();
 
         public static IDeserializer Deserializer = new DeserializerBuilder()
@@ -23,6 +24,7 @@ namespace Assets.Scripts.Yaml
             .WithTypeConverter(new CustomColorConverter())
             .WithTypeConverter(new QuaternionConverter())
             .WithTypeConverter(new IntegerEnumConverter())
+            .WithTypeConverter(new FloatTypeConverter())
             .Build();
     }
 }
