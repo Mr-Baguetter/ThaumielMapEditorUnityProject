@@ -28,8 +28,7 @@ namespace Assets.Scripts
 
             foreach (GameObject go in allObjects)
             {
-                EmptyGameObject empty = go.GetComponent<EmptyGameObject>();
-                if (empty != null)
+                if (go.TryGetComponent<EmptyGameObject>(out var empty))
                 {
                     Component[] components = go.GetComponents<Component>();
                     bool hasOtherComponent = false;

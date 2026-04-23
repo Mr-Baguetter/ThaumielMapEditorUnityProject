@@ -15,7 +15,9 @@ namespace Assets.Scripts.Networking.Blocky
             new TextToyDefs(),
             new SpeakerDefs(),
             new PlayerDefs(),
-            new TimingDefs()
+            new TimingDefs(),
+            new EnumDefs(),
+            new LogicDefs()
         };
 
         static BlocklyDefinitionRegistry()

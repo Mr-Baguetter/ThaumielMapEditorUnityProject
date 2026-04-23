@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.IO;
 using System.Net.Sockets;
 using System.Security.Cryptography;
@@ -17,7 +18,11 @@ namespace Assets.Scripts.Networking.Blocky
         private readonly NetworkStream _stream;
         private readonly Action<string> _onMessage;
         private readonly Action _onClose;
+
+        private readonly ConcurrentQueue<byte[]> _sendQueue = new();
+
         private Thread _readThread;
+        private Thread _writeThread;
 
         public WsConnection(TcpClient tcp, Action<string> onMessage, Action onClose)
         {
@@ -31,6 +36,9 @@ namespace Assets.Scripts.Networking.Blocky
         {
             _readThread = new Thread(ReadLoop) { IsBackground = true, Name = "BlocklyBridge-Read" };
             _readThread.Start();
+
+            _writeThread = new Thread(WriteLoop) { IsBackground = true, Name = "BlocklyBridge-Write" };
+            _writeThread.Start();
         }
 
         public void Close()
@@ -48,18 +56,42 @@ namespace Assets.Scripts.Networking.Blocky
             if (!IsOpen)
                 return;
 
-            try
+            byte[] frame = BuildFrame(0x1, Encoding.UTF8.GetBytes(text));
+            _sendQueue.Enqueue(frame);
+        }
+
+        private void WriteLoop()
+        {
+            while (true)
             {
-                byte[] frame = BuildFrame(0x1, Encoding.UTF8.GetBytes(text));
-                lock (_stream)
+                if (!IsOpen)
                 {
-                    _stream.Write(frame, 0, frame.Length);
+                    Thread.Sleep(100);
+                    continue;
                 }
-            }
-            catch (Exception ex)
-            {
-                Debug.LogWarning($"[BlocklyBridge] Send error: {ex.Message}");
-                Close();
+
+                if (_sendQueue.TryDequeue(out byte[] frame))
+                {
+                    try
+                    {
+                        lock (_stream)
+                        {
+                            _stream.Write(frame, 0, frame.Length);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.LogWarning($"[BlocklyBridge] Send error: {ex.Message}");
+                        Close();
+                        break;
+                    }
+
+                    Thread.Sleep(100); 
+                }
+                else
+                {
+                    Thread.Sleep(10);
+                }
             }
         }
 

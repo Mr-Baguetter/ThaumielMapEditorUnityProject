@@ -21,7 +21,6 @@ namespace Assets.Scripts.Networking.Blocky
         public static bool AutoStart { get => EditorPrefs.GetBool(PREF_ENABLED, true); set => EditorPrefs.SetBool(PREF_ENABLED, value); }
         public static float PingInterval { get => EditorPrefs.GetFloat(PREF_PING, 15f); set => EditorPrefs.SetFloat(PREF_PING, value); }
 
-
         public static bool IsRunning => _running;
         public static string ActiveTargetEvent { get; set; }
         public static bool IsClientConnected => _client != null && _client.IsOpen;

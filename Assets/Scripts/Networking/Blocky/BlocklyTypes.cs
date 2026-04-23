@@ -89,18 +89,18 @@ namespace Assets.Scripts.Networking.Blocky
         /// </summary>
         /// <param name="name">Input name, e.g. "DO".</param>
         public static Dictionary<string, object> Statement(string name) => new()
-            {
-                ["type"] = "input_statement",
-                ["name"] = name
-            };
+        {
+            ["type"] = "input_statement",
+            ["name"] = name
+        };
 
         /// <summary>
         /// A dummy input just a line break / row spacer, no socket.
         /// </summary>
         public static Dictionary<string, object> Dummy() => new()
-            {
-                ["type"] = "input_dummy"
-            };
+        {
+            ["type"] = "input_dummy"
+        };
 
         /// <summary>
         /// An inline text field.
@@ -108,11 +108,11 @@ namespace Assets.Scripts.Networking.Blocky
         /// <param name="name">Field name, e.g. "TAG".</param>
         /// <param name="defaultText">Initial text shown in the field.</param>
         public static Dictionary<string, object> TextField(string name, string defaultText = "") => new()
-            {
-                ["type"] = "field_input",
-                ["name"] = name,
-                ["text"] = defaultText
-            };
+        {
+            ["type"] = "field_input",
+            ["name"] = name,
+            ["text"] = defaultText
+        };
 
         /// <summary>
         /// An inline number field.
@@ -129,7 +129,7 @@ namespace Assets.Scripts.Networking.Blocky
                 ["name"] = name,
                 ["value"] = defaultValue
             };
-            
+
             if (min.HasValue)
                 d["min"] = min.Value;
 
@@ -166,11 +166,11 @@ namespace Assets.Scripts.Networking.Blocky
         /// <param name="name">Field name, e.g. "ENABLED".</param>
         /// <param name="checked">Initial checked state.</param>
         public static Dictionary<string, object> Checkbox(string name, bool @checked = false) => new()
-            {
-                ["type"] = "field_checkbox",
-                ["name"] = name,
-                ["checked"] = @checked
-            };
+        {
+            ["type"] = "field_checkbox",
+            ["name"] = name,
+            ["checked"] = @checked
+        };
 
         /// <summary>
         /// A colour picker field.
@@ -178,10 +178,17 @@ namespace Assets.Scripts.Networking.Blocky
         /// <param name="name">Field name, e.g. "COLOR".</param>
         /// <param name="defaultColor">Hex string, e.g. "#ff0000".</param>
         public static Dictionary<string, object> ColorField(string name, string defaultColor = "#ff0000") => new()
-            {
-                ["type"] = "field_colour",
-                ["name"] = name,
-                ["colour"] = defaultColor
-            };
+        {
+            ["type"] = "field_colour",
+            ["name"] = name,
+            ["colour"] = defaultColor
+        };
+
+        public static Dictionary<string, object> Variable(string name, string defaultName = "item") => new()
+        {
+            ["type"] = "field_variable",
+            ["name"] = name,
+            ["variable"] = defaultName
+        };
     }
 }
