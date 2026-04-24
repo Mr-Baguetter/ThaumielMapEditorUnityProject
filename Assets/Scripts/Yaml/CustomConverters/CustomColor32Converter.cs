@@ -8,6 +8,8 @@ namespace Assets.Scripts.Yaml.CustomConverters
 {
     public class CustomColor32Converter : IYamlTypeConverter
     {
+        public bool Accepts(Type type) => type == typeof(Color32);
+
         public object ReadYaml(IParser parser, Type type, ObjectDeserializer rootDeserializer)
         {
             string value = parser.Consume<Scalar>().Value;
@@ -17,11 +19,8 @@ namespace Assets.Scripts.Yaml.CustomConverters
             return (Color32)color;
         }
 
-        public void WriteYaml(IEmitter emitter, object? value, Type type, ObjectSerializer serializer) =>
+        public void WriteYaml(IEmitter emitter, object value, Type type, ObjectSerializer serializer) =>
             emitter.Emit(new Scalar(ToHex((Color)(Color32)value) ?? ToHex(Color.white)));
-
-        public bool Accepts(Type type) =>
-            type == typeof(Color32);
 
         public static string ToHex(Color color, bool includeAlpha = false)
         {

@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using UnityEngine;
 using YamlDotNet.Core;
 using YamlDotNet.Core.Events;
@@ -39,14 +40,14 @@ namespace Assets.Scripts.Yaml.CustomConverters
         private float ReadFloat(IParser parser, string key)
         {
             parser.Consume<Scalar>();
-            var scalar = parser.Consume<Scalar>();
-            return float.Parse(scalar.Value);
+            Scalar scalar = parser.Consume<Scalar>();
+            return float.Parse(scalar.Value, CultureInfo.InvariantCulture);
         }
 
         private void WriteFloat(IEmitter emitter, string key, float value)
         {
             emitter.Emit(new Scalar(key));
-            emitter.Emit(new Scalar(value.ToString()));
+            emitter.Emit(new Scalar(value.ToString("0.####################", CultureInfo.InvariantCulture)));
         }
     }
 }
