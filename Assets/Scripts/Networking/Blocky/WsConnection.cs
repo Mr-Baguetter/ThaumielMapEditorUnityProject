@@ -190,6 +190,7 @@ namespace Assets.Scripts.Networking.Blocky
             }
             else if (payLen == 127)
             {
+#pragma warning disable CS0675
                 payLen = 0;
                 for (int i = 0; i < 8; i++)
                 {

@@ -4,7 +4,7 @@ using Assets.Scripts.Yaml;
 using UnityEngine;
 using CameraType = Assets.Scripts.Enums.CameraType;
 
-namespace Assets.Scripts.Components
+namespace Assets.Scripts.Components.Objects
 {
     public class CameraObject : ObjectBase
     {

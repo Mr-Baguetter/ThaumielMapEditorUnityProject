@@ -5,7 +5,7 @@ using Assets.Scripts.Lockers;
 using Assets.Scripts.Yaml;
 using UnityEngine;
 
-namespace Assets.Scripts.Components
+namespace Assets.Scripts.Components.Objects
 {
     public class LockerObject : ObjectBase
     {

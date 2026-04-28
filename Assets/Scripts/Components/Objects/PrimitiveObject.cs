@@ -3,7 +3,7 @@ using Assets.Scripts.Yaml;
 using UnityEditor;
 using UnityEngine;
 
-namespace Assets.Scripts.Components
+namespace Assets.Scripts.Components.Objects
 {
     [ExecuteInEditMode]
     public class PrimitiveObject : ObjectBase

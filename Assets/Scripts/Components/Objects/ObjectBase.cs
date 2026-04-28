@@ -4,8 +4,9 @@ using Assets.Scripts.Yaml;
 using UnityEngine;
 using YamlDotNet.Serialization;
 
-namespace Assets.Scripts.Components
+namespace Assets.Scripts.Components.Objects
 {
+#pragma warning disable CS0618
     public class ObjectBase : MonoBehaviour
     {
         [YamlIgnore]

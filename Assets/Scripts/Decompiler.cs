@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Assets.Scripts.Components;
+using Assets.Scripts.Components.Objects;
 using Assets.Scripts.Components.Tools;
 using Assets.Scripts.Enums;
 using Assets.Scripts.Yaml;
