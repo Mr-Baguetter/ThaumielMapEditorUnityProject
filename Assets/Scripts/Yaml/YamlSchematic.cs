@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Assets.Scripts.Components;
 using UnityEngine;
 
 namespace Assets.Scripts.Yaml

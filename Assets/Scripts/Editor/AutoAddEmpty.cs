@@ -1,10 +1,12 @@
 using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
+using Assets.Scripts.Components.Objects;
 using Assets.Scripts.Components;
 
 namespace Assets.Scripts
 {
+#pragma warning disable CS0618
     [InitializeOnLoad]
     public class AutoAddEmpty
     {
@@ -27,8 +29,7 @@ namespace Assets.Scripts
 
             foreach (GameObject go in allObjects)
             {
-                EmptyGameObject empty = go.GetComponent<EmptyGameObject>();
-                if (empty != null)
+                if (go.TryGetComponent<EmptyGameObject>(out var empty))
                 {
                     Component[] components = go.GetComponents<Component>();
                     bool hasOtherComponent = false;

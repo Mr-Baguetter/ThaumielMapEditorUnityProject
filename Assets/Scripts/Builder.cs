@@ -11,10 +11,12 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using CompressionLevel = System.IO.Compression.CompressionLevel;
+using Assets.Scripts.Components.Objects;
 using Debug = UnityEngine.Debug;
 
 namespace Assets.Scripts
 {
+#pragma warning disable CS0618
     [ExecuteInEditMode]
     public class Builder : MonoBehaviour
     {
@@ -103,7 +105,9 @@ namespace Assets.Scripts
             Gizmos.DrawLine(center + right - up, center - right + up);
         }
         
+#nullable enable
         public static event Action<Builder>? OnBuilt;
+#nullable disable
 
         public void CompileData()
         {

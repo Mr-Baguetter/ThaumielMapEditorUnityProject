@@ -8,5 +8,6 @@ namespace Assets.Scripts.Enums
         Doorlink = 3,
         ColliderTrigger = 4,
         InteractableTrigger = 5,
+        BlockyRuntime = 6,
     }
 }

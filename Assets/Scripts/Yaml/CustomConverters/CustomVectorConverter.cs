@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using UnityEngine;
 using YamlDotNet.Core;
 using YamlDotNet.Core.Events;
@@ -31,18 +32,18 @@ namespace Assets.Scripts.Yaml.CustomConverters
             WriteFloat(emitter, "y", vector.y);
             emitter.Emit(new MappingEnd());
         }
-
+        
         private float ReadFloat(IParser parser, string key)
         {
             parser.Consume<Scalar>();
-            var scalar = parser.Consume<Scalar>();
-            return float.Parse(scalar.Value);
+            Scalar scalar = parser.Consume<Scalar>();
+            return float.Parse(scalar.Value, CultureInfo.InvariantCulture);
         }
 
         private void WriteFloat(IEmitter emitter, string key, float value)
         {
             emitter.Emit(new Scalar(key));
-            emitter.Emit(new Scalar(value.ToString()));
+            emitter.Emit(new Scalar(value.ToString("0.####################", CultureInfo.InvariantCulture)));
         }
     }
 
@@ -65,7 +66,7 @@ namespace Assets.Scripts.Yaml.CustomConverters
 
         public void WriteYaml(IEmitter emitter, object value, Type type, ObjectSerializer serializer)
         {
-            var vector = (Vector3)value;
+            Vector3 vector = (Vector3)value;
 
             emitter.Emit(new MappingStart());
             WriteFloat(emitter, "x", vector.x);
@@ -76,15 +77,15 @@ namespace Assets.Scripts.Yaml.CustomConverters
 
         private float ReadFloat(IParser parser, string key)
         {
-            parser.Consume<Scalar>(); // key
+            parser.Consume<Scalar>();
             Scalar scalar = parser.Consume<Scalar>();
-            return float.Parse(scalar.Value);
+            return float.Parse(scalar.Value, CultureInfo.InvariantCulture);
         }
 
         private void WriteFloat(IEmitter emitter, string key, float value)
         {
             emitter.Emit(new Scalar(key));
-            emitter.Emit(new Scalar(value.ToString()));
+            emitter.Emit(new Scalar(value.ToString("0.####################", CultureInfo.InvariantCulture)));
         }
     }
 
@@ -108,7 +109,7 @@ namespace Assets.Scripts.Yaml.CustomConverters
 
         public void WriteYaml(IEmitter emitter, object value, Type type, ObjectSerializer serializer)
         {
-            var vector = (Vector4)value;
+            Vector4 vector = (Vector4)value;
 
             emitter.Emit(new MappingStart());
             WriteFloat(emitter, "x", vector.x);
@@ -120,15 +121,15 @@ namespace Assets.Scripts.Yaml.CustomConverters
 
         private float ReadFloat(IParser parser, string key)
         {
-            parser.Consume<Scalar>(); // key
-            var scalar = parser.Consume<Scalar>();
-            return float.Parse(scalar.Value);
+            parser.Consume<Scalar>();
+            Scalar scalar = parser.Consume<Scalar>();
+            return float.Parse(scalar.Value, CultureInfo.InvariantCulture);
         }
 
         private void WriteFloat(IEmitter emitter, string key, float value)
         {
             emitter.Emit(new Scalar(key));
-            emitter.Emit(new Scalar(value.ToString()));
+            emitter.Emit(new Scalar(value.ToString("0.####################", CultureInfo.InvariantCulture)));
         }
     }
 }

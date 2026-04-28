@@ -3,6 +3,7 @@ using YamlDotNet.Core;
 using YamlDotNet.Core.Events;
 using YamlDotNet.Serialization;
 using UnityEngine;
+using System.Globalization;
 
 namespace Assets.Scripts.Yaml.CustomConverters
 {
@@ -40,13 +41,13 @@ namespace Assets.Scripts.Yaml.CustomConverters
         {
             parser.Consume<Scalar>();
             Scalar scalar = parser.Consume<Scalar>();
-            return float.Parse(scalar.Value);
+            return float.Parse(scalar.Value, CultureInfo.InvariantCulture);
         }
 
         private void WriteFloat(IEmitter emitter, string key, float value)
         {
             emitter.Emit(new Scalar(key));
-            emitter.Emit(new Scalar(value.ToString()));
+            emitter.Emit(new Scalar(value.ToString("0.####################", CultureInfo.InvariantCulture)));
         }
     }
 }

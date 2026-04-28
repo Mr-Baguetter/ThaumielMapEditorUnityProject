@@ -3,8 +3,9 @@ using Assets.Scripts.Enums;
 using Assets.Scripts.Yaml;
 using UnityEngine;
 
-namespace Assets.Scripts.Components
+namespace Assets.Scripts.Components.Objects
 {
+#pragma warning disable CS0618
     public class LightObject : ObjectBase
     {
         private Light _light;

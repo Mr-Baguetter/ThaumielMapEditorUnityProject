@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using Assets.Scripts.Components.Tools.Helpers;
 using Assets.Scripts.Enums;
+using Assets.Scripts.Networking.Blocky;
 using Assets.Scripts.Yaml;
-using Newtonsoft.Json;
+using UnityEditor;
 using UnityEngine;
 
 namespace Assets.Scripts.Components.Tools
@@ -89,6 +91,26 @@ namespace Assets.Scripts.Components.Tools
 
             if (Properties.TryGetValue("Permission", out var permission))
                 Permissions = YamlHelpers.ParseObject<Permission>(permission);
+        }
+
+        public override void OnBlocklyExportReceived(CodeExportPayload payload, string targetEvent)
+        {
+            if (targetEvent == nameof(OnInteracted))
+            {
+                OnInteracted ??= new InteractableClasses();
+                OnInteracted.Blocky ??= new List<CodeExportPayload>();
+                OnInteracted.Blocky.Add(payload);
+                Debug.Log($"[InteractableTrigger] Successfully added export to {gameObject.name}'s OnInteracted.Blocky list.");
+            }
+            else if (targetEvent == nameof(OnInteractionDenied))
+            {
+                OnInteractionDenied ??= new InteractableClasses();
+                OnInteractionDenied.Blocky ??= new List<CodeExportPayload>();
+                OnInteractionDenied.Blocky.Add(payload);
+                Debug.Log($"[InteractableTrigger] Successfully added export to {gameObject.name}'s OnInteractionDenied.Blocky list.");
+            }
+
+            EditorUtility.SetDirty(this);
         }
     }
 }

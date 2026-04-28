@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Assets.Scripts.Components;
+using Assets.Scripts.Components.Objects;
 using Assets.Scripts.Enums;
 using Assets.Scripts.Yaml;
 using Newtonsoft.Json;
@@ -12,6 +12,7 @@ using System.Linq;
 
 namespace Assets.Scripts.Converter
 {
+#pragma warning disable CS0618
     [InitializeOnLoad]
     public class PMERConverter : EditorWindow
     {
@@ -235,7 +236,9 @@ namespace Assets.Scripts.Converter
                     {
                         if (targets is object[] array)
                         {
+#nullable enable
                             List<string?> ids = array.Select(t => t.GetType().GetField("Id")?.GetValue(t) as string).Where(id => id != null).ToList();
+#nullable disable
                             if (Guid.TryParse(ids.First(), out var targetid))
                                 dict["Target"] = targetid;
                         }

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Assets.Scripts.Enums;
 using Assets.Scripts.Yaml;
 using System;

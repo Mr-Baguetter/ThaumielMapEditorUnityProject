@@ -3,7 +3,7 @@ using Assets.Scripts.Enums;
 using System;
 using Assets.Scripts.Yaml;
 
-namespace Assets.Scripts.Components
+namespace Assets.Scripts.Components.Objects
 {
     public class InteractableObject : ObjectBase
     {

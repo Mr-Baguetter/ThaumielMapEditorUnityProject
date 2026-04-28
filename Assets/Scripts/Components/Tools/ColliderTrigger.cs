@@ -1,7 +1,9 @@
+using System.Collections.Generic;
 using Assets.Scripts.Components.Tools.Helpers;
 using Assets.Scripts.Enums;
+using Assets.Scripts.Networking.Blocky;
 using Assets.Scripts.Yaml;
-using Newtonsoft.Json;
+using UnityEditor;
 using UnityEngine;
 
 namespace Assets.Scripts.Components.Tools
@@ -49,6 +51,26 @@ namespace Assets.Scripts.Components.Tools
 
             if (Properties.TryGetValue("Permission", out var perms))
                 Permissions = YamlHelpers.ParseObject<Permission>(perms);
+        }
+
+        public override void OnBlocklyExportReceived(CodeExportPayload payload, string targetEvent)
+        {
+            if (targetEvent == nameof(OnEntered))
+            {
+                OnEntered ??= new ColliderClasses();
+                OnEntered.Blocky ??= new List<CodeExportPayload>();
+                OnEntered.Blocky.Add(payload);
+                Debug.Log($"[ColliderTrigger] Successfully added export to {gameObject.name}'s OnEntered.Blocky list.");
+            }
+            else if (targetEvent == nameof(OnExited))
+            {
+                OnExited ??= new ColliderClasses();
+                OnExited.Blocky ??= new List<CodeExportPayload>();
+                OnExited.Blocky.Add(payload);
+                Debug.Log($"[ColliderTrigger] Successfully added export to {gameObject.name}'s OnExited.Blocky list.");
+            }
+
+            EditorUtility.SetDirty(this);
         }
     }
 }

@@ -2,7 +2,7 @@ using UnityEngine;
 using Assets.Scripts.Enums;
 using Assets.Scripts.Yaml;
 
-namespace Assets.Scripts.Components
+namespace Assets.Scripts.Components.Objects
 {
     public class TargetObject : ObjectBase
     {
