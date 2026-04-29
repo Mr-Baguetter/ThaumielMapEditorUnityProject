@@ -34,6 +34,7 @@ Once your map is complete and ready to go:
 1. Go to **SchematicManager > Compile** or press **Ctrl + Shift + D**.
 2. The editor will parse your scene and generate the schematic files.
 3. If you left the settings at default, your new schematic will be waiting for you in the `ThaumielMapEditor` folder on your desktop!
+4. To import the new schematic into your SCPSL server put the exported yml file in the **LabApi/configs/Thaumiel/Schematics**
 
 ## Decompiling Existing Schematics
 
