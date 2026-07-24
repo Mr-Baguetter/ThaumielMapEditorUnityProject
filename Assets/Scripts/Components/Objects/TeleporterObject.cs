@@ -36,10 +36,25 @@ namespace Assets.Scripts.Components.Objects
 
         private void OnValidate()
         {
+            if (Id == Guid.Empty)
+            {
+                Id = Guid.NewGuid();
+                UnityEditor.EditorUtility.SetDirty(this);
+            }
+
             List<Guid> ids = new();
             foreach (TeleporterObject target in Targets)
             {
-                ids.Add(target.Id);
+                if (target != null)
+                {
+                    if (target.Id == Guid.Empty)
+                    {
+                        target.Id = Guid.NewGuid();
+                        UnityEditor.EditorUtility.SetDirty(target);
+                    }
+
+                    ids.Add(target.Id);
+                }
             }
 
             TargetIds = ids;
